@@ -1,0 +1,41 @@
+using NodeMachine;
+
+/// <summary>
+///  Property holding object for <model_name> NodeMachine model
+/// </summary>
+
+// Target this property to the <model_name> model
+// WARNING: DO NOT CHANGE unless you know what you're doing!!
+[NodeMachineProperty("<model_name>")]
+public class <name> : NodeMachineProperties {
+
+    // Float properties
+<float_props>
+
+    // Int properties
+<int_props>
+
+    // Bool properties
+<bool_props>
+
+    /// <summary>
+    ///  Returns a property by name
+    /// </summary>
+    public override object GetProp (string name) {
+        switch (name) {
+<GetProps>
+        }
+        return null;
+    }
+
+    /// <summary>
+    ///  Sets a property by name
+    /// </summary>
+    public override bool SetProp (string name, object val) {
+        switch (name) {
+<SetProps>
+        }
+        return false;
+    }
+
+}
