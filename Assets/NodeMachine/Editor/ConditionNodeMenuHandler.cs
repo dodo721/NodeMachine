@@ -24,10 +24,11 @@ namespace NodeMachine.Nodes {
                 bool disabled = !propTypes.Contains(propType);
                 menuItems[i] = new NodeMenuItem("Conditions/" + propType, () =>
                 {
-                    Condition.ConditionType type = Condition.ConditionTypeFromString(propType);
+                    // TODO : CONDITIONS AND PROPERTIES WITH NO STANDARD TYPES???
+                    /*Condition.ConditionType type = Condition.ConditionTypeFromString(propType);
                     Condition condition = new Condition(editor._properties.GetPropNamesForType(type)[0], type, Condition.Comparison.EQUAL, Condition.GetDefaultValue(type));
                     ConditionNode node = new ConditionNode(editor._model, condition, mousePosition);
-                    editor.AddNode(node);
+                    editor.AddNode(node);*/
                 }, false, disabled);
                 i++;
             }

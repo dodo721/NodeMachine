@@ -6,14 +6,15 @@ namespace NodeMachine.Nodes {
 
     [Serializable]
     [NodeInfo(false)]
-    public class EntryStateNode : StateNode
+    public class EntryNode : RunnableNode
     {
 
-        public EntryStateNode(NodeMachineModel model) : base(typeof(Entry), model, new Vector2(0, 0))
+        public EntryNode(NodeMachineModel model) : base(model, new Vector2(0, 0))
         {
             background = "builtin skins/darkskin/images/node4.png";
-            normalBackground = background;
         }
+
+        public override void Checkin(Machine machine) {}
 
         public override bool CanBeRemoved()
         {

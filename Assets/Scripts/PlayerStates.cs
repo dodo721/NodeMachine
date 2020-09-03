@@ -1,21 +1,16 @@
 using UnityEngine;
 using NodeMachine.States;
+using NodeMachine;
 
 /// <summary>
 ///  Holds various state behaviours
 /// </summary>
-[StateInfo(UsesMethods=true)]
+[MachineProps("Player")]
 public class PlayerStates : State
 {
 
-	PlayerProperties props;
-
-	void Start () {
-		props = properties as PlayerProperties;
-	}
-
     // Represents a state on the node machine
-    [StateInfo]
+    [State]
     public void NewState () {
         
     }

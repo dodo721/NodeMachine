@@ -19,12 +19,7 @@ namespace NodeMachine.Nodes {
         public bool Valid { get; private set; } = true;
         public string normalBackground;
 
-        public bool IsClassState {
-            get {
-                return stateMethodName == "" || stateMethodName == null;
-            }
-        }
-
+        /*
         public StateNode(Type state, NodeMachineModel model, Vector2 position) : base(model)
         {
             stateType = state;
@@ -35,6 +30,7 @@ namespace NodeMachine.Nodes {
             normalBackground = background;
             //activeBackground = "builtin skins/darkskin/images/node5.png";
         }
+        */
 
         public StateNode(Type state, string method, NodeMachineModel model, Vector2 position) : base(model)
         {
@@ -49,7 +45,8 @@ namespace NodeMachine.Nodes {
 
         public override string ToString()
         {
-            return IsClassState ? stateType.ToString().Replace("NodeMachine.States.", "") : stateType.ToString() + "." + stateMethodName;
+            string typeName = stateType != null ? stateType.ToString() : stateTypeName.Split(',')[0];
+            return typeName + "." + stateMethodName;
         }
 
         public void SetValid(bool valid)
@@ -67,10 +64,8 @@ namespace NodeMachine.Nodes {
                 if (stateType.BaseType != typeof(State))
                 {
                     SetValid(false);
-                } else if (!IsClassState) {
-                    if (stateType.GetMethod(stateMethodName, BindingFlags.Instance | BindingFlags.Public) == null) {
-                        SetValid(false);
-                    }
+                } else if (stateType.GetMethod(stateMethodName, BindingFlags.Instance | BindingFlags.Public) == null) {
+                    SetValid(false);
                 }
             }
         }
@@ -79,8 +74,7 @@ namespace NodeMachine.Nodes {
             if (!Valid)
             {
                 string typeName = stateTypeName.Split(',')[0];
-                string stateName = typeName + (IsClassState ? "" : "." + stateMethodName);
-                model.PushError(stateName + " state is missing!", "State " + stateName + " could not be found!\nCheck if you have deleted or renamed the State script/method.", this);
+                model.PushError(ToString() + " state is missing!", "State " + ToString() + " could not be found!\nCheck if you have deleted or renamed the State script/method.", this);
             }
         }
 
@@ -136,8 +130,7 @@ namespace NodeMachine.Nodes {
                 if (state == null)
                     state = machine.gameObject.AddComponent(stateType) as State;
 
-                if (!IsClassState)
-                    stateMethod = (Action) Delegate.CreateDelegate(typeof(Action), state, stateMethodName);
+                stateMethod = (Action) Delegate.CreateDelegate(typeof(Action), state, stateMethodName);
             }
             else
             {
@@ -156,30 +149,6 @@ namespace NodeMachine.Nodes {
                     state.Checkin();
                 }
             }
-        }
-
-        public static StateNode GetStateNodeFromTypeName (NodeMachineModel model, string typeName) {
-            foreach (StateNode stateNode in model.GetNodes<StateNode>()) {
-                if (stateNode.stateTypeName == typeName)
-                    return stateNode;
-            }
-            return null;
-        }
-
-        public static StateNode GetStateNodeFromType <T> (NodeMachineModel model) where T : State {
-            Type type = typeof(T);
-            return GetStateNodeFromType(model, type);
-        }
-
-        public static StateNode GetStateNodeFromType (NodeMachineModel model, Type type) {
-            if (!typeof(State).IsAssignableFrom(type)) {
-                throw new Exception("Can only retrieve State Nodes by Type with Types inheriting State!");
-            }
-            foreach (StateNode stateNode in model.GetNodes<StateNode>()) {
-                if (stateNode.stateType == type)
-                    return stateNode;
-            }
-            return null;
         }
 
         public static StateNode GetStateNodeFromMethod (NodeMachineModel model, Type type, string methodName) {

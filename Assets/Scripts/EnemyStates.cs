@@ -1,10 +1,11 @@
 using UnityEngine;
 using NodeMachine.States;
+using NodeMachine;
 
 /// <summary>
 ///  Holds various state behaviours
 /// </summary>
-[StateInfo(UsesMethods=true)]
+[MachineProps("Enemy")]
 public class EnemyStates : State
 {
 
@@ -12,7 +13,8 @@ public class EnemyStates : State
     public float rotSpeed = 1;
     public float searchLength = 10;
 
-	EnemyProperties props;
+    [UseProp]
+    public bool FoundPlayer = false;
 
     public enum CurrentState {
         SEARCHING, CHASING, ATTACKING
@@ -22,11 +24,7 @@ public class EnemyStates : State
 
     public PlayerStates player;
 
-	void Start () {
-		props = properties as EnemyProperties;
-	}
-
-    [StateInfo]
+    [State]
     public void Searching () {
         currentState = CurrentState.SEARCHING;
     }
@@ -41,7 +39,7 @@ public class EnemyStates : State
             if (hit.collider.CompareTag("Player")) {
                 player = hit.collider.GetComponent<PlayerStates>();
                 if (player != null) {
-                    props.FoundPlayer = true;
+                    FoundPlayer = true;
                     rayColor = Color.red;
                 }
             }
@@ -49,7 +47,7 @@ public class EnemyStates : State
         Debug.DrawRay(transform.position, transform.forward * searchLength, rayColor);
     }
 
-    [StateInfo]
+    [State]
     public void Chasing () {
         currentState = CurrentState.CHASING;
     }
@@ -59,7 +57,7 @@ public class EnemyStates : State
         transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
     }
 
-    [StateInfo]
+    [State]
     public void Attacking () {
         currentState = CurrentState.ATTACKING;
     }

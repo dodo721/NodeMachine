@@ -16,38 +16,21 @@ namespace NodeMachine.Nodes {
 
         public NodeMenuItem[] AddNodeMenuItems(NodeMachineModel model, Vector2 mousePosition, NodeMachineEditor editor)
         {
-            Dictionary<Type, StateInfoAttribute> types = LoadStateTypes();
+            HashSet<Type> types = LoadStateTypes(model);
             HashSet<NodeMenuItem> menuItems = new HashSet<NodeMenuItem>();
-            foreach (Type type in types.Keys)
+            foreach (Type type in types)
             {
-                bool fromClass = false;
-                bool disabled = false;
-                StateInfoAttribute stateInfo = types[type];
-                if (stateInfo == null)
-                    fromClass = true;
-                else {
-                    if (!stateInfo.Visible)
-                        continue;
-                    else if (!stateInfo.UsesMethods) {
-                        fromClass = true;
-                    }
-                }
-                if (fromClass) {
-                    disabled = StateNode.GetStateNodeFromType(model, type) != null;
-                    menuItems.Add(new NodeMenuItem("States/" + (stateInfo != null ? (stateInfo.Machine != null ? stateInfo.Machine + "/" : "") : "") + type.ToString(), () => {
-                        StateNode node = new StateNode(type, model, mousePosition);
-                        editor.AddNode(node);
-                    } , false, disabled));
-                } else {
-                    foreach (MethodInfo method in type.GetMethods()) {
-                        StateInfoAttribute methodStateInfo = method.GetCustomAttribute<StateInfoAttribute>();
-                        if (methodStateInfo != null) {
-                            disabled = StateNode.GetStateNodeFromMethod(model, type, method.Name) != null;
-                            menuItems.Add(new NodeMenuItem("States/" + (stateInfo.Machine != null ? stateInfo.Machine + "/" : "") + type.ToString() + "/" + method.Name, () => {
-                                StateNode node = new StateNode(type, method.Name, model, mousePosition);
-                                editor.AddNode(node);
-                            } , false, disabled));
-                        }
+                foreach (MethodInfo method in type.GetMethods()) {
+                    bool disabled = false;
+                    StateAttribute methodStateInfo = method.GetCustomAttribute<StateAttribute>();
+                    if (methodStateInfo != null) {
+                        if (!methodStateInfo.Visible)
+                            continue;
+                        disabled = StateNode.GetStateNodeFromMethod(model, type, method.Name) != null;
+                        menuItems.Add(new NodeMenuItem("States/" + type.ToString() + "/" + method.Name, () => {
+                            StateNode node = new StateNode(type, method.Name, model, mousePosition);
+                            editor.AddNode(node);
+                        } , false, disabled));
                     }
                 }
             }
@@ -59,17 +42,23 @@ namespace NodeMachine.Nodes {
             return null;
         }
 
-        Dictionary<Type, StateInfoAttribute> LoadStateTypes()
+        HashSet<Type> LoadStateTypes(NodeMachineModel model)
         {
             Assembly assembly = Assembly.Load("Assembly-CSharp");
             IEnumerable<Type> stateTypes = assembly.GetTypes().Where(t => typeof(State).IsAssignableFrom(t));
-            Dictionary<Type, StateInfoAttribute> types = new Dictionary<Type, StateInfoAttribute>();
+            HashSet<Type> types = new HashSet<Type>();
             foreach (Type type in stateTypes)
             {
                 if (type == typeof(State))
                     continue;
-                StateInfoAttribute stateAttribute = type.GetCustomAttribute<StateInfoAttribute>();
-                types.Add(type, stateAttribute);
+                StateTargetAttribute stateAttribute = type.GetCustomAttribute<StateTargetAttribute>();
+                if (stateAttribute != null) {
+                    if (stateAttribute.Model == model.name) {
+                        types.Add(type);
+                    }
+                } else {
+                    types.Add(type);
+                }
             }
             return types;
         }

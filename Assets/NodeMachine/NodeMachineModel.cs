@@ -47,11 +47,11 @@ public class NodeMachineModel : ScriptableObject {
 
     void OnEnable () {
         Assembly assembly = Assembly.Load("Assembly-CSharp");
-        IEnumerable<Type> propertyTypes = assembly.GetTypes().Where(t => typeof(NodeMachineProperties).IsAssignableFrom(t));
+        IEnumerable<Type> propertyTypes = assembly.GetTypes().Where(t => t.GetCustomAttribute<MachinePropsAttribute>() != null);
         foreach (Type type in propertyTypes) {
-            NodeMachinePropertyAttribute propAttribute = type.GetCustomAttribute<NodeMachinePropertyAttribute>();
+            MachinePropsAttribute propAttribute = type.GetCustomAttribute<MachinePropsAttribute>();
             if (propAttribute != null) {
-                if (propAttribute.modelName == name) {
+                if (propAttribute.Model == name) {
                     _propertyType = type;
                     break;
                 }
@@ -103,7 +103,7 @@ public class NodeMachineModel : ScriptableObject {
     
     public static NodeMachineModel SaveNewModel (string filepath) {
         NodeMachineModel model = ScriptableObject.CreateInstance<NodeMachineModel>();
-        EntryStateNode entryNode = new EntryStateNode(model);
+        EntryNode entryNode = new EntryNode(model);
         model.AddNode(entryNode);
         model.SaveToPath(filepath);
         DestroyImmediate(model);

@@ -33,7 +33,8 @@ namespace NodeMachine.Nodes {
 
         public override bool DrawContent(Event e)
         {
-
+            // TODO : CONDITIONS??
+            /*
             bool modelNeedsSaving = false;
             ConditionNode node = _node as ConditionNode;
             string[] types = _editor._propTypesAvailable;
@@ -131,6 +132,8 @@ namespace NodeMachine.Nodes {
             GUILayout.EndArea();
 
             return modelNeedsSaving;
+            */
+            return false;
         }
 
     }

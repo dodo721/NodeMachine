@@ -7,65 +7,12 @@ using NodeMachine;
 
 public class StateAssetHandler {
 
-    [MenuItem("Assets/Create/State script/Method based")]
+    [MenuItem("Assets/Create/State script")]
     public static void ShowStateScriptMethodPopup()
     {
         NewStatePopup popup = new NewStatePopup("Create State script", "Enter a name for the new State script.", "New state", "OK", "Cancel");
-        popup.OnSubmit += (text, model) => CreateStateScript(text, GetActiveDirectory(), model, true);
+        //popup.OnSubmit += (text, model) => CreateStateScript(text, GetActiveDirectory(), model);
         popup.ShowUtility();
-    }
-
-    [MenuItem("Assets/Create/State script/Class based")]
-    public static void ShowStateScriptClassPopup()
-    {
-        NewStatePopup popup = new NewStatePopup("Create State script", "Enter a name for the new State.", "New state", "OK", "Cancel");
-        popup.OnSubmit += (text, model) => CreateStateScript(text, GetActiveDirectory(), model, false);
-        popup.ShowUtility();
-    }
-
-    static void CreateStateScript (string name, string filepath, NodeMachineModel model, bool usingMethods) {
-        if (name == null || filepath == null)
-            return;
-        
-        if (model == null)
-            if (!EditorUtility.DisplayDialog("No model", "No model was specified. You will need to set up your model properties in the State code yourself.", "OK", "Cancel"))
-                return;
-        
-        if (model._propertyType == null) {
-            EditorUtility.DisplayDialog("Uncompiled properties", "The model has uncompiled properties. Compile them from the NodeMachine editor before creating states.", "OK");
-            return;
-        }
-
-        string classname = Regex.Replace(name, "[^a-zA-Z0-9_]", "");
-        int nameAddition = 0;
-        string chosenFilepath = filepath + "/" + name + ".cs";
-        while (File.Exists(filepath))
-        {
-            chosenFilepath = filepath + "/" + name + " (" + nameAddition + ").cs";
-            nameAddition++;
-        }
-        string codeBaseMethod = Application.dataPath + "/NodeMachine/Editor/StateMethodBase.txt";
-        string codeBaseClass = Application.dataPath + "/NodeMachine/Editor/StateClassBase.txt";
-        string codeBaseFile = usingMethods ? codeBaseMethod : codeBaseClass;
-        string codeBase = File.ReadAllText(codeBaseFile);
-
-        codeBase = codeBase.Replace("<name>", classname);
-        
-        string props = "";
-
-        if (model != null) {
-            if (model._propertyType != null) {
-                props = "\t" + model._propertyType.ToString() + " props;\n\n";
-                props += "\tvoid Start () {\n";
-                props += "\t\tprops = properties as " + model._propertyType.ToString() + ";\n";
-                props += "\t}";
-            }
-        }
-
-        codeBase = codeBase.Replace("<props>", props);
-
-        File.WriteAllText(chosenFilepath, codeBase);
-        AssetDatabase.Refresh();
     }
 
     static string GetActiveDirectory () {
@@ -78,7 +25,7 @@ public class StateAssetHandler {
             }
         }
         return filepath;
-    } 
+    }
 
     private class NewStatePopup : EditorWindow {
 

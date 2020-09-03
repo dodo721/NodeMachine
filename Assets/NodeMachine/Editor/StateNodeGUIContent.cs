@@ -13,30 +13,26 @@ public class StateNodeGUIContent : NodeGUIContent {
     public override bool DrawContent(Event e) {
 
         StateNode node = _node as StateNode;
-        if (node.IsClassState && node.Valid) {
-            text = node.stateType.ToString();
-        } else {
-            GUIStyle smallText = new GUIStyle();
-            smallText.fontSize = 9;
-            smallText.alignment = TextAnchor.MiddleCenter;
-            GUIStyle largeText = new GUIStyle();
-            largeText.alignment = TextAnchor.MiddleCenter;
+        GUIStyle smallText = new GUIStyle();
+        smallText.fontSize = 9;
+        smallText.alignment = TextAnchor.MiddleCenter;
+        GUIStyle largeText = new GUIStyle();
+        largeText.alignment = TextAnchor.MiddleCenter;
 
-            GUILayout.BeginArea(Transform);
-            GUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.BeginVertical();
-            GUILayout.Label(node.Valid ? node.stateType.ToString() : node.stateTypeName.Split(',')[0] + (node.IsClassState ? "" : "." + node.stateMethodName), smallText);
-            GUILayout.Label(node.Valid ? node.stateMethodName : "State not found!", largeText);
-            GUILayout.EndVertical();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndVertical();
-            GUILayout.EndArea();
-        }
+        GUILayout.BeginArea(Transform);
+        GUILayout.BeginVertical();
+        GUILayout.FlexibleSpace();
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        GUILayout.BeginVertical();
+        GUILayout.Label(node.Valid ? node.stateType.ToString() : node.ToString(), smallText);
+        GUILayout.Label(node.Valid ? node.stateMethodName : "State not found!", largeText);
+        GUILayout.EndVertical();
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+        GUILayout.FlexibleSpace();
+        GUILayout.EndVertical();
+        GUILayout.EndArea();
 
         return false;
     }

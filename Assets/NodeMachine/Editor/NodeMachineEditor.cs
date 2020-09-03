@@ -9,7 +9,7 @@ using NodeMachine.Util;
 
 namespace NodeMachine {
 
-    public class NodeMachineEditor : EditorWindow, IModelDataHolder
+    public class NodeMachineEditor : EditorWindow
     {
 
         public Rect _nodeEditor;
@@ -32,12 +32,8 @@ namespace NodeMachine {
         public Node _selectedNode = null;
         public Link _selectedLink = null;
         public Machine _selectedMachine = null;
-        public CachedProperties _properties = null;
-        public CachedProperties _lastCompiledProps = null;
-        public NodeMachineProperties _nodeMachineProps = null;
         public NodeMachineModel _model = null;
         private int _modelInstanceID = -1;
-        private ModelLoader _loader = null;
         private PropertyMenu _propertyMenu = null;
         private ErrorPanel _errorPanel = null;
         public string[] _propTypesAvailable = new string[0];
@@ -95,13 +91,7 @@ namespace NodeMachine {
         public void LoadModel(NodeMachineModel model)
         {
             _modelInstanceID = model.GetInstanceID();
-            if (_loader == null)
-            {
-                _loader = new ModelLoader(this);
-            }
-            _loader.LoadModelProperties(model);
             model.ReloadNodes();
-            RefreshTypesAvailable();
             model.OnCheckin -= Repaint;
             model.OnCheckin += Repaint;
             model.OnSave -= MarkSaved;
@@ -246,12 +236,7 @@ namespace NodeMachine {
                 EditorGUILayout.Space();
             }
 
-            if (_propertyMenu.DrawMenu(EditorApplication.isPlayingOrWillChangePlaymode, _selectedMachine))
-            {
-                _model.properties.Serialize(_properties);
-                RefreshTypesAvailable();
-                modelNeedsSaving = true;
-            }
+            _propertyMenu.DrawMenu(EditorApplication.isPlayingOrWillChangePlaymode, _selectedMachine);
 
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
@@ -471,24 +456,6 @@ namespace NodeMachine {
             Repaint();
         }
 
-        void RefreshTypesAvailable()
-        {
-            List<string> typesList = new List<string>();
-            if (_properties._floats.Keys.Count > 0)
-            {
-                typesList.Add("FLOAT");
-            }
-            if (_properties._ints.Keys.Count > 0)
-            {
-                typesList.Add("INT");
-            }
-            if (_properties._bools.Keys.Count > 0)
-            {
-                typesList.Add("BOOL");
-            }
-            _propTypesAvailable = typesList.ToArray();
-        }
-
         void AddNode(Type type, Vector2 position)
         {
             if (!typeof(Node).IsAssignableFrom(type))
@@ -582,75 +549,6 @@ namespace NodeMachine {
             GUI.changed = true;
         }
 
-        public void RemoveFloat(string floatname)
-        {
-            List<ConditionNode> associatedConditions = new List<ConditionNode>();
-            foreach (ConditionNode conditionNode in _model.GetNodes<ConditionNode>())
-            {
-                Condition condition = conditionNode.condition;
-                if (condition._propName == floatname)
-                {
-                    associatedConditions.Add(conditionNode);
-                }
-            }
-            if (associatedConditions.Count == 0)
-                _properties.RemoveFloat(floatname);
-            else if (EditorUtility.DisplayDialog("Warning", "This property has conditions associated with it, which will be deleted. Remove anyway?", "Yes", "No"))
-            {
-                _properties.RemoveFloat(floatname);
-                foreach (ConditionNode node in associatedConditions)
-                {
-                    RemoveNode(node);
-                }
-            }
-        }
-
-        public void RemoveInt(string intname)
-        {
-            List<ConditionNode> associatedConditions = new List<ConditionNode>();
-            foreach (ConditionNode conditionNode in _model.GetNodes<ConditionNode>())
-            {
-                Condition condition = conditionNode.condition;
-                if (condition._propName == intname)
-                {
-                    associatedConditions.Add(conditionNode);
-                }
-            }
-            if (associatedConditions.Count == 0)
-                _properties.RemoveInt(intname);
-            else if (EditorUtility.DisplayDialog("Warning", "This property has conditions associated with it, which will be deleted. Remove anyway?", "Yes", "No"))
-            {
-                _properties.RemoveInt(intname);
-                foreach (ConditionNode node in associatedConditions)
-                {
-                    RemoveNode(node);
-                }
-            }
-        }
-
-        public void RemoveBool(string boolname)
-        {
-            List<ConditionNode> associatedConditions = new List<ConditionNode>();
-            foreach (ConditionNode conditionNode in _model.GetNodes<ConditionNode>())
-            {
-                Condition condition = conditionNode.condition;
-                if (condition._propName == boolname)
-                {
-                    associatedConditions.Add(conditionNode);
-                }
-            }
-            if (associatedConditions.Count == 0)
-                _properties.RemoveBool(boolname);
-            else if (EditorUtility.DisplayDialog("Warning", "This property has conditions associated with it, which will be deleted. Remove anyway?", "Yes", "No"))
-            {
-                _properties.RemoveBool(boolname);
-                foreach (ConditionNode node in associatedConditions)
-                {
-                    RemoveNode(node);
-                }
-            }
-        }
-
         /// <summary>
         ///  Builds the menu items needed for the "Add node" menu.
         ///  Looks for <c>INodeMenuHandler</c>s cached by the editor first,
@@ -703,24 +601,6 @@ namespace NodeMachine {
                     menu.AddItem(new GUIContent(menuItem.label), menuItem.ticked, menuItem.Function);
                 }
             }
-        }
-
-        public void SetModel(NodeMachineModel model)
-        {
-            this._model = model;
-        }
-        public NodeMachineModel GetModel()
-        {
-            return _model;
-        }
-
-        public void SetProperties(CachedProperties props)
-        {
-            this._properties = props;
-        }
-        public CachedProperties GetProperties()
-        {
-            return _properties;
         }
 
     }

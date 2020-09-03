@@ -1,6 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Reflection;
 using UnityEngine;
 using NodeMachine.Nodes;
 
@@ -18,19 +20,21 @@ namespace NodeMachine.States {
         public bool running = false;
         protected Machine machine;
         protected NodeMachineProperties properties;
-        private StateNode node;
+        private Dictionary<string, StateNode> nodes;
 
         void Awake()
         {
             machine = GetComponent<Machine>();
             properties = machine.properties;
-            node = StateNode.GetStateNodeFromType(machine.GetModel(), GetType());
+            foreach (MethodInfo method in GetType().GetMethods().Where(method => method.GetCustomAttribute<StateAttribute>() != null)) {
+                nodes.Add(method.Name, StateNode.GetStateNodeFromMethod(machine._model, GetType(), method.Name));
+            }
         }
 
         public virtual void Checkin() {}
 
-        protected void ActivateTrigger (string name) {
-            node.ActivateTrigger(name);
+        protected void ActivateTrigger (string name, [CallerMemberName] string caller = null) {
+            nodes[caller]?.ActivateTrigger(name);
         }
 
     }

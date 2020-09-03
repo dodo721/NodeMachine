@@ -18,7 +18,6 @@ namespace NodeMachine {
         public NodeMachineProperties properties;
 
         public bool optimiseParallel = true;
-        private ModelLoader _loader;
         private Dictionary<StateNode, State> stateInstances = new Dictionary<StateNode, State>();
         private HashSet<RunnableNode> _currentRunnables;
         public HashSet<RunnableNode> CurrentRunnables
@@ -40,7 +39,6 @@ namespace NodeMachine {
 
         void Start()
         {
-            LoadModel();
             if (Application.isPlaying)
             {
                 foreach (Node node in _model.GetNodes())
@@ -49,7 +47,7 @@ namespace NodeMachine {
                 }
                 // TODO: sometimes not working??
                 HashSet<RunnableNode> startRunnables = new HashSet<RunnableNode>();
-                startRunnables.Add(_model.GetNodes<EntryStateNode>()[0] as RunnableNode);
+                startRunnables.Add(_model.GetNodes<EntryNode>()[0] as RunnableNode);
                 //Debug.Log("Model " + _model.name + " has " + startRunnables.Count + " entry nodes");
                 SetCurrentRunnables(startRunnables);
             }
@@ -73,15 +71,6 @@ namespace NodeMachine {
         IEnumerator DelayedReload () {
             yield return new WaitForEndOfFrame();
             ReloadAll();
-        }
-
-        // TODO: needed???
-        void LoadModel()
-        {
-            if (_model != null)
-            {
-                
-            }
         }
 
         public void ReloadProperties () {
@@ -127,7 +116,6 @@ namespace NodeMachine {
 
         public void ReloadModel()
         {
-            LoadModel();
             ReloadProperties();
         }
 

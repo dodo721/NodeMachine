@@ -4,7 +4,7 @@ using NodeMachine.States;
 /// <summary>
 ///  Holds state behaviours for <model_name>
 /// </summary>
-[StateInfo(UsesMethods=true)]
+[StateInfo("<model_name>")]
 public class <name> : State
 {
 
