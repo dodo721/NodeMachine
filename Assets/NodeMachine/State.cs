@@ -19,13 +19,11 @@ namespace NodeMachine.States {
 
         public bool running = false;
         protected Machine machine;
-        protected NodeMachineProperties properties;
         private Dictionary<string, StateNode> nodes;
 
         void Awake()
         {
             machine = GetComponent<Machine>();
-            properties = machine.properties;
             foreach (MethodInfo method in GetType().GetMethods().Where(method => method.GetCustomAttribute<StateAttribute>() != null)) {
                 nodes.Add(method.Name, StateNode.GetStateNodeFromMethod(machine._model, GetType(), method.Name));
             }

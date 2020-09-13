@@ -22,12 +22,12 @@
         "serializedVersion": "2",
         "x": 0.0,
         "y": 0.0,
-        "width": 0.0,
-        "height": 0.0
+        "width": 150.0,
+        "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node4.png",
     "linkIDs": [],
     "activeBackground": ""
 }]}],
 "checkinTime":1,
-"supportParallel":False}
+"supportParallel":True}

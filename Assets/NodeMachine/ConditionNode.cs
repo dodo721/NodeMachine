@@ -76,15 +76,15 @@ namespace NodeMachine.Nodes {
             string propName = condition._propName;
             if (type == Condition.ConditionType.FLOAT)
             {
-                return condition.Compare((float)machine.properties.GetProp(propName));
+                return condition.Compare((float)machine.GetProp(propName));
             }
             else if (type == Condition.ConditionType.INT)
             {
-                return condition.Compare((int)machine.properties.GetProp(propName));
+                return condition.Compare((int)machine.GetProp(propName));
             }
             else if (type == Condition.ConditionType.BOOL)
             {
-                return condition.Compare((bool)machine.properties.GetProp(propName));
+                return condition.Compare((bool)machine.GetProp(propName));
             }
             return false;
         }

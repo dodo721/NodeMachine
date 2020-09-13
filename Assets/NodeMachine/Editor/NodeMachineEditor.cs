@@ -96,6 +96,7 @@ namespace NodeMachine {
             model.OnCheckin += Repaint;
             model.OnSave -= MarkSaved;
             model.OnSave += MarkSaved;
+            _model = model;
             Repaint();
         }
 
@@ -130,7 +131,6 @@ namespace NodeMachine {
                 _selectedMachine.OnMachineChange -= ReloadMachineModel;
             _selectedMachine = newMachine;
             _selectedMachine?.MakeEditorCheckinEventTarget(true);
-            _selectedMachine?.ReloadModel();
             if (newMachine != null) {
                 newMachine.OnMachineChange += ReloadMachineModel;
                 if (!EditorApplication.isPlayingOrWillChangePlaymode)
@@ -228,13 +228,6 @@ namespace NodeMachine {
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
             EditorGUILayout.Space();
-
-            if (_selectedMachine != null) {
-                GUILayout.Label("Previewing " + _selectedMachine.name, EditorStyles.boldLabel);
-                EditorGUILayout.Space();
-                EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-                EditorGUILayout.Space();
-            }
 
             _propertyMenu.DrawMenu(EditorApplication.isPlayingOrWillChangePlaymode, _selectedMachine);
 

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 using UnityEngine;
 using NodeMachine.Nodes;
 using NodeMachine.States;
@@ -14,9 +15,9 @@ namespace NodeMachine {
 
         public NodeMachineModel _model;
 
+        [NonSerialized]
         [HideInInspector]
-        public NodeMachineProperties properties;
-
+        public UnityEngine.Object propsObject;
         public bool optimiseParallel = true;
         private Dictionary<StateNode, State> stateInstances = new Dictionary<StateNode, State>();
         private HashSet<RunnableNode> _currentRunnables;
@@ -37,6 +38,19 @@ namespace NodeMachine {
         public delegate void MachineChangeEvent ();
         public event MachineChangeEvent OnMachineChange;
 
+        void OnEnable () {
+            Component[] objs = GetComponents<Component>();
+            foreach (UnityEngine.Object obj in objs) {
+                MachinePropsAttribute attr = obj.GetType().GetCustomAttribute<MachinePropsAttribute>();
+                if (attr != null) {
+                    if (attr.Model == _model.name) {
+                        propsObject = obj;
+                        break;
+                    }
+                }
+            }
+        }
+
         void Start()
         {
             if (Application.isPlaying)
@@ -53,89 +67,10 @@ namespace NodeMachine {
             }
         }
 
-        void OnEnable () {
-            ReloadEvents();
-        }
-
-        void OnDisable () {
-            RemoveEvents();
-        }
-
         void OnValidate () {
-            StartCoroutine (DelayedReload());
             if (OnMachineChange != null) {
                 OnMachineChange.Invoke();
             }
-        }
-
-        IEnumerator DelayedReload () {
-            yield return new WaitForEndOfFrame();
-            ReloadAll();
-        }
-
-        public void ReloadProperties () {
-            if (_model == null) {
-                foreach (NodeMachineProperties props in GetComponents<NodeMachineProperties>()) {
-                    DestroyImmediate(props);
-                }
-                return;
-            }
-            bool modelTypeIsPresent = false;
-            foreach (NodeMachineProperties props in GetComponents<NodeMachineProperties>()) {
-                if (props.name == _model._propertyType?.ToString()) {
-                    modelTypeIsPresent = true;
-                } else {
-                    DestroyImmediate(props);
-                }
-            }
-            if (!modelTypeIsPresent && _model._propertyType != null) {
-                if (gameObject.GetComponent(_model._propertyType) == null)
-                    gameObject.AddComponent(_model._propertyType);
-            }
-            if (_model._propertyType != null && gameObject != null)
-                properties = gameObject.GetComponent(_model._propertyType) as NodeMachineProperties;
-        }
-
-        void ReloadEvents()
-        {
-            if (_model == null)
-                return;
-            _model.OnPropsReload -= ReloadProperties;
-            _model.OnPropsReload += ReloadProperties;
-            _model.OnPropValueChange -= ChangePropVal;
-            _model.OnPropValueChange += ChangePropVal;
-        }
-
-        void RemoveEvents()
-        {
-            if (_model == null)
-                return;
-            _model.OnPropsReload -= ReloadProperties;
-            _model.OnPropValueChange -= ChangePropVal;
-        }
-
-        public void ReloadModel()
-        {
-            ReloadProperties();
-        }
-
-        private void ReloadAll()
-        {
-            ReloadModel();
-            ReloadEvents();
-        }
-
-        [UnityEditor.Callbacks.DidReloadScripts]
-        private static void ReloadAllMachines()
-        {
-            foreach (Machine machine in FindObjectsOfType<Machine>())
-            {
-                machine.ReloadAll();
-            }
-        }
-
-        void ChangePropVal (string name, dynamic value) {
-            properties.SetProp(name, value);
         }
 
         void Update()
@@ -284,6 +219,17 @@ namespace NodeMachine {
         public NodeMachineModel GetModel()
         {
             return _model;
+        }
+        
+        // These wrappers are left unsafe on purpose:
+        // Nothing should be trying to access non-existent fields,
+        // If they are then there should be complaints.
+        public object GetProp(string fieldName) {
+            return _model.machinePropertiesDelegates[propsObject][fieldName].getter();
+        }
+
+        public void SetProp(string fieldName, object value) {
+            _model.machinePropertiesDelegates[propsObject][fieldName].setter(value);
         }
 
     }

@@ -9,8 +9,9 @@ namespace NodeMachine.Nodes {
     public class EntryNode : RunnableNode
     {
 
-        public EntryNode(NodeMachineModel model) : base(model, new Vector2(0, 0))
+        public EntryNode(NodeMachineModel model) : base(model)
         {
+            transform = new Rect(0, 0, 150, 75);
             background = "builtin skins/darkskin/images/node4.png";
         }
 

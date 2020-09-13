@@ -13,8 +13,24 @@ public class EnemyStates : State
     public float rotSpeed = 1;
     public float searchLength = 10;
 
+    
+    [UseProp]
+    private string enemyName;
+
     [UseProp]
     public bool FoundPlayer = false;
+
+    [UseProp]
+    public float Test = 0.2f;
+
+    [UseProp]
+    public GameObject myObj = null;
+
+    [UseProp]
+    public int Hello1Tes = 10;
+
+    [UseProp]
+    private bool myprivbool = false;
 
     public enum CurrentState {
         SEARCHING, CHASING, ATTACKING

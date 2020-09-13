@@ -24,7 +24,6 @@ namespace NodeMachine.Nodes {
         public Rect drawnTransform;
         public string background;
         private bool _dragTarget = false;
-        private NodeMachineProperties properties;
 
         [NonSerialized]
         public NodeMachineModel model;
