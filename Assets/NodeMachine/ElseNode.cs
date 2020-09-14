@@ -8,7 +8,7 @@ using UnityEditor;
 namespace NodeMachine.Nodes {
 
     [Serializable]
-    [NodeInfo("Conditions/Else")]
+    [NodeInfo("Else")]
     public class ElseNode : Node
     {
 

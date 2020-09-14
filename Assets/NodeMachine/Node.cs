@@ -24,6 +24,10 @@ namespace NodeMachine.Nodes {
         public Rect drawnTransform;
         public string background;
         private bool _dragTarget = false;
+        public bool Valid {
+            get;
+            protected set;
+        } = true;
 
         [NonSerialized]
         public NodeMachineModel model;

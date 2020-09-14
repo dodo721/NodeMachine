@@ -12,7 +12,6 @@ public class EnemyStates : State
     public float speed = 1;
     public float rotSpeed = 1;
     public float searchLength = 10;
-
     
     [UseProp]
     private string enemyName;
@@ -27,15 +26,13 @@ public class EnemyStates : State
     public GameObject myObj = null;
 
     [UseProp]
-    public int Hello1Tes = 10;
-
-    [UseProp]
     private bool myprivbool = false;
 
     public enum CurrentState {
         SEARCHING, CHASING, ATTACKING
     }
 
+    [UseProp]
     public CurrentState currentState;
 
     public PlayerStates player;
@@ -44,6 +41,7 @@ public class EnemyStates : State
     public void Searching () {
         currentState = CurrentState.SEARCHING;
     }
+
 
     void OnSearching () {
         transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);

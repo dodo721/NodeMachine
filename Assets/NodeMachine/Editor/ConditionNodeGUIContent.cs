@@ -11,6 +11,7 @@ namespace NodeMachine.Nodes {
     public class ConditionNodeGUIContent : NodeGUIContent
     {
 
+        private Dictionary<string, Condition.ConditionType> fieldNames = null;
         private string[] _comparisons;
         private Vector2 _curScroll = new Vector2();
 
@@ -31,19 +32,35 @@ namespace NodeMachine.Nodes {
 
         }
 
+        void CacheFieldNames () {
+            fieldNames = new Dictionary<string, Condition.ConditionType>();
+            if (_editor._model.machinePropertiesDelegates.Count == 0)
+                return;
+            Dictionary<string, NodeMachineModel.MachinePropertyFieldDelegates> template = _editor._model.machinePropertiesDelegates.First().Value;
+            foreach (string fieldName in template.Keys) {
+                Condition.ConditionType? conType = Condition.ParseConditionType(template[fieldName].fieldType);
+                if (conType == null)
+                    continue;
+                fieldNames.Add(fieldName, (Condition.ConditionType)conType);
+            }
+        }
+
         public override bool DrawContent(Event e)
         {
             // TODO : CONDITIONS??
-            /*
+            
             bool modelNeedsSaving = false;
             ConditionNode node = _node as ConditionNode;
-            string[] types = _editor._propTypesAvailable;
+
+            if (fieldNames == null)
+                CacheFieldNames();
+
             GUIStyle wordWrap = new GUIStyle();
             wordWrap.wordWrap = true;
 
             if (node.collapsed)
             {
-                text = node.ToPrettyString();
+                text = (!node.Valid ? "Invalid property!! " : "") + node.ToPrettyString();
                 return false;
             }
 
@@ -52,30 +69,30 @@ namespace NodeMachine.Nodes {
             Rect content = new Rect();
             content.size = Transform.size;
             content.width -= 20;
-            content.height -= 50;
+            content.height -= 20;
             content.position = Transform.position;
             content.x += 10;
-            content.y += 25;
+            content.y += 10;
 
             GUILayout.BeginArea(content);
 
-            string[] propNames = _editor._properties.GetPropNamesForType(node.condition._type);
+            string[] propNames = fieldNames.Keys.ToArray();
 
             //_curScroll = EditorGUILayout.BeginScrollView(_curScroll);
             GUILayout.BeginVertical(wordWrap);
 
-            int currentType = Array.IndexOf(types, node.condition._type.ToString());
-            int newType = EditorGUILayout.Popup(currentType, types);
-            if (newType != currentType)
-            {
-                modelNeedsSaving = true;
-                node.condition.SetConditionType(Condition.ConditionTypeFromString(types[newType]));
+            GUILayout.FlexibleSpace();
+
+            if (!node.Valid) {
+                GUILayout.Label("Invalid property!!");
             }
 
+            // Prop compare 1
             int currentProp = Array.IndexOf(propNames, node.condition._propName);
             if (currentProp == -1)
             {
                 node.condition._propName = propNames[0];
+                node.condition.SetConditionType(fieldNames[propNames[0]]);
                 currentProp = 0;
             }
             int newProp = EditorGUILayout.Popup(currentProp, propNames);
@@ -83,11 +100,15 @@ namespace NodeMachine.Nodes {
             {
                 modelNeedsSaving = true;
                 node.condition._propName = propNames[newProp];
+                node.condition.SetConditionType(fieldNames[propNames[newProp]]);
             }
 
-            if (node.condition._type == Condition.ConditionType.BOOL)
+            // Comparison type
+            if (node.condition._valueType == Condition.ConditionType.BOOL || node.condition._valueType == Condition.ConditionType.STRING)
             {
                 EditorGUILayout.Popup(0, new string[] { "EQUAL" });
+                if (node.condition._comparison != Condition.Comparison.EQUAL)
+                    node.condition._comparison = Condition.Comparison.EQUAL;
             }
             else
             {
@@ -99,41 +120,83 @@ namespace NodeMachine.Nodes {
                     modelNeedsSaving = true;
                 }
             }
-            if (node.condition._type == Condition.ConditionType.FLOAT)
-            {
-                float newValue = EditorGUILayout.FloatField(node.condition.GetComparisonValue());
-                if (newValue != node.condition.GetComparisonValue())
-                {
-                    node.condition.SetComparisonValue(newValue);
-                    modelNeedsSaving = true;
+
+            // Prop compare 2
+            HashSet<string> propsCompToList = new HashSet<string>();
+            propsCompToList.Add("-constant-");
+            foreach (string prop in propNames) {
+                if (_editor._model.machinePropsSchema[prop] == Condition.FromConditionType(node.condition._valueType) && prop != node.condition._propName) {
+                    propsCompToList.Add(prop);
                 }
             }
-            else if (node.condition._type == Condition.ConditionType.INT)
-            {
-                int newValue = EditorGUILayout.IntField(node.condition.GetComparisonValue());
-                if (newValue != node.condition.GetComparisonValue())
-                {
-                    node.condition.SetComparisonValue(newValue);
-                    modelNeedsSaving = true;
+
+            string[] propsCompTo = propsCompToList.ToArray();
+            int curPropComp = Array.IndexOf(propsCompTo, node.condition._compPropName);
+            curPropComp = curPropComp == -1 ? 0 : curPropComp; // If prop isnt found default to -constant-
+            int selPropComp = EditorGUILayout.Popup(curPropComp, propsCompTo);
+            if (selPropComp != curPropComp) {
+                if (selPropComp == 0) {
+                    node.condition._compareToProp = false;
+                    node.condition._compPropName = "";
+                } else {
+                    node.condition._compareToProp = true;
+                    node.condition._compPropName = propsCompTo[selPropComp];
                 }
             }
-            else if (node.condition._type == Condition.ConditionType.BOOL)
-            {
-                bool newValue = EditorGUILayout.Toggle(node.condition.GetComparisonValue(), GUILayout.ExpandWidth(false));
-                if (newValue != node.condition.GetComparisonValue())
+
+            if (!node.condition._compareToProp) {
+
+                // Compare value input (for constant)
+                if (node.condition._valueType == Condition.ConditionType.FLOAT)
                 {
-                    node.condition.SetComparisonValue(newValue);
-                    modelNeedsSaving = true;
+                    float newValue = EditorGUILayout.FloatField(node.condition.GetComparisonValue());
+                    if (newValue != node.condition.GetComparisonValue())
+                    {
+                        node.condition.SetComparisonValue(newValue);
+                        modelNeedsSaving = true;
+                    }
                 }
+                else if (node.condition._valueType == Condition.ConditionType.INT)
+                {
+                    int newValue = EditorGUILayout.IntField(node.condition.GetComparisonValue());
+                    if (newValue != node.condition.GetComparisonValue())
+                    {
+                        node.condition.SetComparisonValue(newValue);
+                        modelNeedsSaving = true;
+                    }
+                }
+                else if (node.condition._valueType == Condition.ConditionType.BOOL)
+                {
+                    bool newValue = EditorGUILayout.Toggle(node.condition.GetComparisonValue(), GUILayout.ExpandWidth(false));
+                    if (newValue != node.condition.GetComparisonValue())
+                    {
+                        node.condition.SetComparisonValue(newValue);
+                        modelNeedsSaving = true;
+                    }
+                }
+                else if (node.condition._valueType == Condition.ConditionType.STRING)
+                {
+                    string newValue = EditorGUILayout.TextField(node.condition.GetComparisonValue());
+                    if (newValue != node.condition.GetComparisonValue())
+                    {
+                        node.condition.SetComparisonValue(newValue);
+                        modelNeedsSaving = true;
+                    }
+                }
+
             }
+
+            GUILayout.FlexibleSpace();
+
             GUILayout.EndVertical();
             //EditorGUILayout.EndScrollView();
 
             GUILayout.EndArea();
 
+            if (modelNeedsSaving)
+                node.Validate();
+
             return modelNeedsSaving;
-            */
-            return false;
         }
 
     }

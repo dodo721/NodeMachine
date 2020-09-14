@@ -11,12 +11,14 @@ namespace NodeMachine {
         }
         
         public enum ConditionType {
-            FLOAT, INT, BOOL
+            FLOAT, INT, BOOL, STRING
         }
 
-        public ConditionType _type;
+        public ConditionType _valueType;
         public Comparison _comparison;
         public string _propName;
+        public string _compPropName = "";
+        public bool _compareToProp = false;
         protected dynamic _compare;
 
         [SerializeField]
@@ -25,20 +27,29 @@ namespace NodeMachine {
         public Condition (string propName, ConditionType type, Comparison comparison, dynamic compare) {
             this._propName = propName;
             this._comparison = comparison;
-            this._type = type;
-            if (compare.GetType() != GetConditionType())
+            this._compareToProp = false;
+            this._valueType = type;
+            if (compare.GetType() != FromConditionType(_valueType))
                 throw new Exception("Wrong compare type given to Condition.Compare");
             SetComparisonValue(compare);
+        }
+
+        public Condition (string propName, string compPropName, ConditionType type, Comparison comparison) {
+            this._propName = propName;
+            this._comparison = comparison;
+            this._compPropName = compPropName;
+            this._compareToProp = true;
+            this._valueType = type;
         }
 
         public bool Compare (object compareTo) {
             dynamic typed_compareTo = GetTypedValue(compareTo);
             dynamic typed_compare = GetTypedValue(_compare);
 
-            if (_type == ConditionType.FLOAT || _type == ConditionType.INT) {
+            if (_valueType == ConditionType.FLOAT || _valueType == ConditionType.INT) {
                 switch (_comparison) {
                     case Comparison.EQUAL:
-                        return typed_compare == compareTo;
+                        return typed_compare == typed_compareTo;
                     case Comparison.GREATER_THAN:
                         return typed_compareTo > typed_compare;
                     case Comparison.GREATER_OR_EQUAL:
@@ -49,20 +60,20 @@ namespace NodeMachine {
                         return typed_compareTo <= typed_compare;
                 }
                 return false;
-            } else if (_type == ConditionType.BOOL) {
+            } else if (_valueType == ConditionType.BOOL || _valueType == ConditionType.STRING) {
                 if (_comparison == Comparison.EQUAL) {
                     return typed_compare == typed_compareTo;
                 } else {
-                    throw new Exception ("Comparisons of type Bool can only use EQUALS for LinkConditions!");
+                    throw new Exception ("Comparisons of type Bool or String can only use EQUALS for Conditions!");
                 }
             } else {
-                throw new Exception("Unrecognized LinkCondition Comparison type!");
+                throw new Exception("Unrecognized Condition Comparison type!");
             }
         }
 
-        public Type GetConditionType () {
+        public static Type FromConditionType (Condition.ConditionType valueType) {
             Type compareType = null;
-            switch (_type) {
+            switch (valueType) {
                 case ConditionType.FLOAT:
                     compareType = typeof(float);
                     break;
@@ -72,16 +83,29 @@ namespace NodeMachine {
                 case ConditionType.BOOL:
                     compareType = typeof(bool);
                     break;
-            }
-            if (compareType == null) {
-                throw new Exception ("Unrecognized LinkCondition object type!");
+                case ConditionType.STRING:
+                    compareType = typeof(string);
+                    break;
             }
             return compareType;
         }
 
+        public static ConditionType? ParseConditionType (Type type) {
+            if (type == typeof(float)) {
+                return ConditionType.FLOAT;
+            } else if (type == typeof(int)) {
+                return ConditionType.INT;
+            } else if (type == typeof(bool)) {
+                return ConditionType.BOOL;
+            } else if (type == typeof(string)) {
+                return ConditionType.STRING;
+            }
+            return null;
+        }
+
         public void SetConditionType (ConditionType type) {
-            this._type = type;
-            switch (_type) {
+            this._valueType = type;
+            switch (_valueType) {
                 case ConditionType.FLOAT:
                     SetComparisonValue(0f);
                     break;
@@ -91,11 +115,14 @@ namespace NodeMachine {
                 case ConditionType.BOOL:
                     SetComparisonValue(false);
                     break;
+                case ConditionType.STRING:
+                    SetComparisonValue("");
+                    break;
             }
         }
 
         dynamic GetTypedValue (object value) {
-            Type compareType = GetConditionType();
+            Type compareType = FromConditionType(_valueType);
             dynamic typed_value = Convert.ChangeType(value, compareType);
             return typed_value;
         }
@@ -105,15 +132,15 @@ namespace NodeMachine {
         }
 
         public void SetComparisonValue (dynamic value) {
-            if (value.GetType() != GetConditionType()) {
-                throw new Exception("Wrong value type given to LinkCondition: " + value.GetType() + "; expected " + GetConditionType());
+            if (value.GetType() != FromConditionType(_valueType)) {
+                throw new Exception("Wrong value type given to LinkCondition: " + value.GetType() + "; expected " + FromConditionType(_valueType));
             } else {
                 this._compare = value;
             }
         }
 
         public void OnAfterDeserialize () {
-            switch (_type) {
+            switch (_valueType) {
                 case ConditionType.FLOAT:
                     _compare = float.Parse(_compareValueString);
                     break;
@@ -122,6 +149,9 @@ namespace NodeMachine {
                     break;
                 case ConditionType.BOOL:
                     _compare = bool.Parse(_compareValueString);
+                    break;
+                case ConditionType.STRING:
+                    _compare = _compareValueString;
                     break;
             }
             if (_compare == null)
@@ -150,15 +180,19 @@ namespace NodeMachine {
                 defVal = 0;
             } else if (type == Condition.ConditionType.BOOL) {
                 defVal = false;
+            } else if (type == Condition.ConditionType.STRING) {
+                defVal = "";
             }
             return defVal;
         }
 
         public override string ToString() {
-            return _type + " " + _propName + " " + _comparison + " " + GetComparisonValue();
+            string quote = _valueType == ConditionType.STRING ? "\"" : "";
+            return _valueType + " " + _propName + " " + _comparison + " " + quote + (_compareToProp ? _compPropName : GetComparisonValue()) + quote;
         }
 
         public string ToPrettyString () {
+            string quote = _valueType == ConditionType.STRING ? "\"" : "";
             string comparitor = "";
             switch (_comparison) {
                 case (Comparison.EQUAL):
@@ -177,7 +211,7 @@ namespace NodeMachine {
                     comparitor = "<=";
                     break;
             }
-            return _propName + " " + comparitor + " " + GetComparisonValue();
+            return _propName + " " + comparitor + " " + quote + (_compareToProp ? _compPropName : GetComparisonValue()) + quote;
         }
         
     }

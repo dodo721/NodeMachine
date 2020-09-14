@@ -19,7 +19,7 @@ namespace NodeMachine.States {
 
         public bool running = false;
         protected Machine machine;
-        private Dictionary<string, StateNode> nodes;
+        private Dictionary<string, StateNode> nodes = new Dictionary<string, StateNode>();
 
         void Awake()
         {

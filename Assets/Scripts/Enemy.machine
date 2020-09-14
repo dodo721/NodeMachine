@@ -1,20 +1,43 @@
 {
 "links":{
-    "Items": []
-},
-"props":{
-    "floats": {
-        "keys": [],
-        "vals": []
-    },
-    "ints": {
-        "keys": [],
-        "vals": []
-    },
-    "bools": {
-        "keys": [],
-        "vals": []
-    }
+    "Items": [
+        {
+            "_id": 0,
+            "_from": 0,
+            "_to": 2,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 623.999755859375,
+                "y": 717.249755859375,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 1,
+            "_from": 2,
+            "_to": 1,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 632.499755859375,
+                "y": 550.7498168945313,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 2,
+            "_from": 1,
+            "_to": 3,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 640.8597412109375,
+                "y": 381.6897888183594,
+                "width": 25.0,
+                "height": 25.0
+            }
+        }
+    ]
 },
 "nodes":[{"Type":"NodeMachine.Nodes.EntryNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
     "_id": 0,
@@ -26,8 +49,68 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node4.png",
-    "linkIDs": [],
+    "linkIDs": [
+        0
+    ],
     "activeBackground": ""
+}]},{"Type":"NodeMachine.Nodes.ConditionNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
+    "_id": 1,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 17.000030517578126,
+        "y": -332.9998779296875,
+        "width": 160.0,
+        "height": 50.0
+    },
+    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "linkIDs": [
+        1,
+        2
+    ],
+    "condition": {
+        "_valueType": 2,
+        "_comparison": 0,
+        "_propName": "FoundPlayer",
+        "_compPropName": "",
+        "_compareToProp": false,
+        "_compareValueString": "True"
+    },
+    "collapsed": true
+}]},{"Type":"NodeMachine.Nodes.StateNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
+    "_id": 2,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 8.0,
+        "y": -171.50003051757813,
+        "width": 150.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node2.png",
+    "linkIDs": [
+        0,
+        1
+    ],
+    "activeBackground": "",
+    "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "stateMethodName": "Searching",
+    "normalBackground": "builtin skins/darkskin/images/node2.png"
+},{
+    "_id": 3,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 24.720062255859376,
+        "y": -509.62005615234377,
+        "width": 150.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node2.png",
+    "linkIDs": [
+        2
+    ],
+    "activeBackground": "",
+    "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "stateMethodName": "Chasing",
+    "normalBackground": "builtin skins/darkskin/images/node2.png"
 }]}],
 "checkinTime":1,
-"supportParallel":True}
+"supportParallel":False}

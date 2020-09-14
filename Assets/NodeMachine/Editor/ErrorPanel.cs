@@ -38,7 +38,7 @@ namespace NodeMachine {
                 foreach (NodeError error in errors) {
                     GUILayout.BeginHorizontal();
                     GUILayout.Label(error.error, errorStyle);
-                    if (GUILayout.Button(" ", GUILayout.ExpandWidth(false))) {
+                    if (GUILayout.Button("→", GUILayout.ExpandWidth(false))) {
                         _editor._uncenteredOffset = -error.source.transform.position;
                     }
                     GUILayout.EndHorizontal();

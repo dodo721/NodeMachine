@@ -137,8 +137,6 @@ GameObject:
   - component: {fileID: 92802477}
   - component: {fileID: 92802476}
   - component: {fileID: 92802475}
-  - component: {fileID: 92802479}
-  - component: {fileID: 92802480}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -222,43 +220,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &92802479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92802474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 913c8ca177aac8645af9b847258f895b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _model: {fileID: -7837472317029320426, guid: 386b82ec29df5774d8002b8f080db762, type: 3}
-  properties: {fileID: 0}
-  optimiseParallel: 1
---- !u!114 &92802480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 92802474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 952b3c14dbf776245a5bf2a922b04e25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  running: 0
-  speed: 1
-  rotSpeed: 1
-  searchLength: 10
-  FoundPlayer: 1
-  Test: 0.2
-  myObj: {fileID: 0}
-  Hello1Tes: 10
-  currentState: 0
-  player: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +522,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _model: {fileID: -7837472317029320426, guid: 386b82ec29df5774d8002b8f080db762, type: 3}
-  properties: {fileID: 0}
   optimiseParallel: 1
 --- !u!114 &1215156965
 MonoBehaviour:

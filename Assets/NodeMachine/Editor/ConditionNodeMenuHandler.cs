@@ -15,23 +15,29 @@ namespace NodeMachine.Nodes {
 
         public NodeMenuItem[] AddNodeMenuItems(NodeMachineModel model, Vector2 mousePosition, NodeMachineEditor editor)
         {
-            string[] propTypes = editor._propTypesAvailable;
-            string[] allPropTypes = { "FLOAT", "INT", "BOOL" };
-            NodeMenuItem[] menuItems = new NodeMenuItem[allPropTypes.Length];
-            int i = 0;
-            foreach (string propType in allPropTypes)
-            {
-                bool disabled = !propTypes.Contains(propType);
-                menuItems[i] = new NodeMenuItem("Conditions/" + propType, () =>
+            NodeMenuItem menuItem;
+
+            if (model.machinePropertiesDelegates.First().Value.Count > 0) {
+                menuItem = new NodeMenuItem("Condition", () =>
                 {
                     // TODO : CONDITIONS AND PROPERTIES WITH NO STANDARD TYPES???
-                    /*Condition.ConditionType type = Condition.ConditionTypeFromString(propType);
-                    Condition condition = new Condition(editor._properties.GetPropNamesForType(type)[0], type, Condition.Comparison.EQUAL, Condition.GetDefaultValue(type));
+                    KeyValuePair<string, NodeMachineModel.MachinePropertyFieldDelegates> kvp = model.machinePropertiesDelegates.First().Value.First();
+                    Condition.ConditionType? tryParseType = Condition.ParseConditionType(kvp.Value.fieldType);
+                    if (tryParseType == null) {
+                        EditorUtility.DisplayDialog("Error", "There was an error while creating the condition!", "OK");
+                        return;
+                    }
+                    Condition.ConditionType fieldType = (Condition.ConditionType) tryParseType;
+                    string fieldName = kvp.Key;
+                    Condition condition = new Condition(fieldName, fieldType, Condition.Comparison.EQUAL, Condition.GetDefaultValue(fieldType));
                     ConditionNode node = new ConditionNode(editor._model, condition, mousePosition);
-                    editor.AddNode(node);*/
-                }, false, disabled);
-                i++;
+                    editor.AddNode(node);
+                }, false, false);
+            } else {
+                menuItem = new NodeMenuItem("Condition", null, false, true);
             }
+
+            NodeMenuItem[] menuItems = {menuItem};
             return menuItems;
         }
 

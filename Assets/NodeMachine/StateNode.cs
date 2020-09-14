@@ -16,7 +16,6 @@ namespace NodeMachine.Nodes {
         public string stateMethodName;
         public Type stateType;
         public Action stateMethod;
-        public bool Valid { get; private set; } = true;
         public string normalBackground;
 
         /*

@@ -19,6 +19,7 @@ namespace NodeMachine {
         private UnityEngine.Object currentPropsObj = null;
         private Machine lastSelectedMachine = null;
         private Dictionary<UnityEngine.Object, NodeMachineModel> targetedProps = new Dictionary<UnityEngine.Object, NodeMachineModel>();
+        private Dictionary<Type, string[]> enumVals = new Dictionary<Type, string[]>();
 
         /*
         private bool UncompiledChanges {
@@ -46,6 +47,12 @@ namespace NodeMachine {
         public bool DrawMenu (bool isPlaying, Machine machine) {
             if (_editor._model == null)
                 return false;
+            
+            if (_editor._model._propertyType == null) {
+                EditorGUILayout.LabelField("This model has no associated script. Create a new State script to begin.", EditorStyles.wordWrappedLabel);
+                return false;
+            }
+
             UnityEngine.Object propsObj = null;
             if (machine != null) {
                 if (machine == lastSelectedMachine) {
@@ -70,17 +77,23 @@ namespace NodeMachine {
                         }
                     }
                 }
-            } else {
-                propsObj = _editor._model.machinePropertiesDelegates.Keys.First();
             }
             
-            if (machine != null) {
+            if (machine != null)
                 EditorGUILayout.LabelField(propsObj.name, EditorStyles.boldLabel);
-                EditorGUILayout.Space();
-            }
+            else
+                EditorGUILayout.LabelField("Select a machine in the scene to view and edit it's properties.", EditorStyles.wordWrappedLabel);
+
+            EditorGUILayout.Space();
             EditorGUI.BeginDisabledGroup(machine == null);
-            foreach (string fieldName in _editor._model.machinePropertiesDelegates[propsObj].Keys) {
-                DrawProp(fieldName, _editor._model.machinePropertiesDelegates[propsObj][fieldName]);
+            if (propsObj != null) {
+                foreach (string fieldName in _editor._model.machinePropertiesDelegates[propsObj].Keys) {
+                    DrawProp(fieldName, _editor._model.machinePropertiesDelegates[propsObj][fieldName]);
+                }
+            } else {
+                foreach (string fieldName in _editor._model.machinePropsSchema.Keys) {
+                    DrawProp(fieldName, _editor._model.machinePropsSchema[fieldName]);
+                }
             }
             EditorGUI.EndDisabledGroup();
             return false;
@@ -115,6 +128,48 @@ namespace NodeMachine {
                 string newVal = EditorGUILayout.TextField(fieldName, (string)value);
                 if (newVal != (string)value)
                     fieldDelegates.setter(newVal);
+            }
+            if (typeof(Enum).IsAssignableFrom(fieldType)) {
+                string[] options = null;
+                if (enumVals.ContainsKey(fieldType)) {
+                    options = enumVals[fieldType];
+                } else {
+                    options = Enum.GetNames(fieldType);
+                    enumVals.Add(fieldType, options);
+                }
+                int selected = Array.IndexOf<string>(options, Enum.GetName(fieldType, value));
+                int newSelected = EditorGUILayout.Popup(fieldName, selected, options);
+                if (newSelected != selected) {
+                    fieldDelegates.setter(Enum.Parse(fieldType, options[newSelected]));
+                }
+            }
+        }
+
+        void DrawProp (string fieldName, Type fieldType) {
+            if (fieldType == typeof(int)) {
+                EditorGUILayout.IntField(fieldName, default(int));
+            }
+            if (fieldType == typeof(float)) {
+                EditorGUILayout.FloatField(fieldName, default(float));
+            }
+            if (fieldType == typeof(bool)) {
+                EditorGUILayout.Toggle(fieldName, default(bool));
+            }
+            if (fieldType == typeof(GameObject)) {
+                EditorGUILayout.ObjectField(fieldName, null, typeof(GameObject), true);
+            }
+            if (fieldType == typeof(string)) {
+                EditorGUILayout.TextField(fieldName, default(string));
+            }
+            if (typeof(Enum).IsAssignableFrom(fieldType)) {
+                string[] options = null;
+                if (enumVals.ContainsKey(fieldType)) {
+                    options = enumVals[fieldType];
+                } else {
+                    options = Enum.GetNames(fieldType);
+                    enumVals.Add(fieldType, options);
+                }
+                EditorGUILayout.Popup(fieldName, 0, options);
             }
         }
     }

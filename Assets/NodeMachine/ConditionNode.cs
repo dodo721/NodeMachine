@@ -22,7 +22,7 @@ namespace NodeMachine.Nodes {
         public ConditionNode(NodeMachineModel model, Condition condition, Vector2 position) : base(model)
         {
             background = "Assets/NodeMachine/Editor/Editor Resources/condition-node.png";
-            transform = new Rect(position.x, position.y, 150, 130);
+            transform = new Rect(position.x, position.y, 160, 130);
             this.condition = condition;
         }
 
@@ -31,11 +31,11 @@ namespace NodeMachine.Nodes {
             collapsed = collapse;
             if (collapsed)
             {
-                transform.size = new Vector2(150, 50);
+                transform.size = new Vector2(160, 50);
             }
             else
             {
-                transform.size = new Vector2(150, 130);
+                transform.size = new Vector2(160, 130);
             }
         }
 
@@ -72,8 +72,12 @@ namespace NodeMachine.Nodes {
 
         bool ConditionMet(Machine machine)
         {
-            Condition.ConditionType type = condition._type;
+            Condition.ConditionType type = condition._valueType;
             string propName = condition._propName;
+            if (condition._compareToProp) {
+                Type compType = Condition.FromConditionType(condition._valueType);
+                condition.SetComparisonValue(Convert.ChangeType(machine.GetProp(condition._compPropName), compType));
+            }
             if (type == Condition.ConditionType.FLOAT)
             {
                 return condition.Compare((float)machine.GetProp(propName));
@@ -86,7 +90,31 @@ namespace NodeMachine.Nodes {
             {
                 return condition.Compare((bool)machine.GetProp(propName));
             }
+            else if (type == Condition.ConditionType.STRING)
+            {
+                return condition.Compare((string)machine.GetProp(propName));
+            }
             return false;
+        }
+
+        public override void OnLoad () {
+            Validate();
+        }
+        
+        public void OnAfterDeserialize() {
+            Valid = true;
+        }
+
+        public void Validate () {
+            if (!model.machinePropsSchema.ContainsKey(condition._propName)) {
+                Valid = false;
+            } else if (model.machinePropsSchema[condition._propName] != Condition.FromConditionType(condition._valueType)) {
+                Valid = false;
+            } else
+                Valid = true;
+            if (!Valid) {
+                model.PushError(condition._propName + " is invalid for condition!", "Condition " + ToPrettyString() + " has an invalid property. Check the field name and type are correct.", this);
+            }
         }
 
     }

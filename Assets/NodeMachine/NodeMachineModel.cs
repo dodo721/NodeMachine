@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
+using UnityEditor.Callbacks;
 using UnityEditor;
 using System.IO;
 using SimpleJSON;
@@ -15,13 +16,12 @@ public class NodeMachineModel : ScriptableObject {
 
     private Dictionary<int, Node> nodes = new Dictionary<int, Node>();
     private Dictionary<int, Link> links = new Dictionary<int, Link>();
-    public CachedProperties.PropsSerialized properties = new CachedProperties.PropsSerialized();
     public Type _propertyType;
     private float _checkinTime = 1f;
     private Dictionary<Type, List<Node>> cachedNodeTypes = new Dictionary<Type, List<Node>>();
-    
+
     [SerializeField]
-    private HashSet<Node> nodesList = new HashSet<Node>();
+    private List<Node> nodesList = new List<Node>();
 
     public static readonly string STATE_MACHINE_FILE_EXT = "machine";
 
@@ -52,75 +52,14 @@ public class NodeMachineModel : ScriptableObject {
     }
 
     public Dictionary<UnityEngine.Object, Dictionary<string, MachinePropertyFieldDelegates>> machinePropertiesDelegates = new Dictionary<UnityEngine.Object, Dictionary<string, MachinePropertyFieldDelegates>>();
+    public Dictionary<string, Type> machinePropsSchema = new Dictionary<string, Type>();
 
     [NonSerialized]
     public List<NodeError> nodeErrors = new List<NodeError>();
 
     void OnEnable () {
 
-        machinePropertiesDelegates.Clear();
-        
-        Assembly assembly = Assembly.Load("Assembly-CSharp");
-        IEnumerable<Type> propertyTypes = assembly.GetTypes().Where(t => t.GetCustomAttribute<MachinePropsAttribute>() != null);
-        foreach (Type type in propertyTypes) {
-            MachinePropsAttribute propAttribute = type.GetCustomAttribute<MachinePropsAttribute>();
-            if (propAttribute != null) {
-                if (!typeof(UnityEngine.Object).IsAssignableFrom(type)) {
-                    Debug.LogWarning("Ignoring MachineProps type " + type.ToString() + " as it is not derived from UnityEngine.Object\nThe MachineProps attribute will only be effective on classes deriving from UnityEngine.Object (MonoBehaviour, ScriptableObject, etc)");
-                    continue;
-                }
-                if (propAttribute.Model == name) {
-                    _propertyType = type;
-                    break;
-                }
-            }
-        }
-
-        Type[] getMachinePropertiesArgs = {typeof(object)};
-        Type[] setMachinePropertiesArgs = {typeof(object), typeof(object)};
-
-        FieldInfo[] fields = _propertyType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.GetCustomAttribute<UsePropAttribute>() != null).ToArray();
-        
-        foreach (FieldInfo field in fields) {
-
-            // GETTER
-            DynamicMethod getMachineProperty = new DynamicMethod(
-                "GetMachineProp_" + field.Name,       // Name
-                typeof(object),                       // Return type
-                getMachinePropertiesArgs,             // Argument types
-                _propertyType);                       // Owner type
-            ILGenerator ilMH_g = getMachineProperty.GetILGenerator();
-
-            ilMH_g.Emit(OpCodes.Ldarg_0);                       // Load "this" onto the stack
-            ilMH_g.Emit(OpCodes.Ldfld, field);                  // Load field address from "this" onto stack
-            ilMH_g.Emit(OpCodes.Box, field.FieldType);           // Convert address to reference
-            ilMH_g.Emit(OpCodes.Ret);                           // Return and finish execution
-
-            // SETTER
-            DynamicMethod setMachineProperty = new DynamicMethod(
-                "SetMachineProp_" + field.Name,       // Name
-                typeof(void),                         // Return type
-                setMachinePropertiesArgs,             // Argument types
-                _propertyType);                       // Owner type
-            ILGenerator ilMH_s = setMachineProperty.GetILGenerator();
-
-            ilMH_s.Emit(OpCodes.Ldarg_0);                       // Load "this" onto the stack - for Stfld
-            ilMH_s.Emit(OpCodes.Ldarg_1);                       // Load argument address onto stack (0 = this, 1 = first argument)
-            ilMH_s.Emit(OpCodes.Unbox_Any, field.FieldType);    // Unbox to appropriate value
-            ilMH_s.Emit(OpCodes.Stfld, field);                  // Store in field in "this"
-            ilMH_s.Emit(OpCodes.Ret);                           // Return and finish execution
-            
-            UnityEngine.Object[] propsInstances = FindObjectsOfType(_propertyType);
-            foreach (UnityEngine.Object obj in propsInstances) {
-                if (!machinePropertiesDelegates.ContainsKey(obj))
-                    machinePropertiesDelegates.Add(obj, new Dictionary<string, MachinePropertyFieldDelegates>());
-                MachinePropertyFieldDelegates delegates;
-                delegates.getter = (GetMachineProperty) getMachineProperty.CreateDelegate(typeof(GetMachineProperty), obj);
-                delegates.setter = (SetMachineProperty) setMachineProperty.CreateDelegate(typeof(SetMachineProperty), obj);
-                delegates.fieldType = field.FieldType;
-                machinePropertiesDelegates[obj].Add(field.Name, delegates);
-            }
-        }
+        ReloadModel();
 
         if (OnPropsReload != null)
             OnPropsReload.Invoke();
@@ -133,18 +72,114 @@ public class NodeMachineModel : ScriptableObject {
 #if UNITY_EDITOR
     void CheckErrorsOnPlay (PlayModeStateChange change) {
         if (change == PlayModeStateChange.ExitingEditMode && nodeErrors.Count != 0) {
-            if (EditorUtility.DisplayDialog("NodeMachine errors", "The NodeMachine model " + name + " contains errors. Play anyway?", "OK", "Cancel")) {
-                EditorApplication.isPlaying = false;
+            string errorStr = "";
+            foreach (NodeError error in nodeErrors) {
+                errorStr += error.errorFull + "\n";
             }
+            EditorUtility.DisplayDialog("NodeMachine errors", "The NodeMachine model " + name + " contains errors. The game will play on \"OK\".\n" + errorStr, "OK");
         }
     }
 #endif
+
+    static NodeMachineModel[] GetAllInstances()
+    {
+        string[] guids = AssetDatabase.FindAssets("t:" + typeof(NodeMachineModel).Name);
+        NodeMachineModel[] a = new NodeMachineModel[guids.Length];
+
+        for (int i = 0; i < guids.Length; i++) {
+            string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+            a[i] = AssetDatabase.LoadAssetAtPath<NodeMachineModel>(path);
+        }
+
+        return a;
+    }
+
+    [DidReloadScripts]
+    static void LoadProperties () {
+        foreach (NodeMachineModel model in GetAllInstances()) {
+            model.machinePropertiesDelegates.Clear();
+            
+            Assembly assembly = Assembly.Load("Assembly-CSharp");
+            IEnumerable<Type> propertyTypes = assembly.GetTypes().Where(t => t.GetCustomAttribute<MachinePropsAttribute>() != null);
+            foreach (Type type in propertyTypes) {
+                MachinePropsAttribute propAttribute = type.GetCustomAttribute<MachinePropsAttribute>();
+                if (propAttribute != null) {
+                    if (!typeof(UnityEngine.Object).IsAssignableFrom(type)) {
+                        Debug.LogWarning("Ignoring MachineProps type " + type.ToString() + " as it is not derived from UnityEngine.Object\nThe MachineProps attribute will only be effective on classes deriving from UnityEngine.Object (MonoBehaviour, ScriptableObject, etc)");
+                        continue;
+                    }
+                    if (propAttribute.Model == model.name) {
+                        model._propertyType = type;
+                        break;
+                    }
+                }
+            }
+
+            model.machinePropsSchema.Clear();
+
+            if (model._propertyType != null) {
+            
+                Type[] getMachinePropertiesArgs = {typeof(object)};
+                Type[] setMachinePropertiesArgs = {typeof(object), typeof(object)};
+
+                FieldInfo[] fields = model._propertyType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(f => f.GetCustomAttribute<UsePropAttribute>() != null).ToArray();
+                
+                foreach (FieldInfo field in fields) {
+                    // SCHEMA
+                    if (!model.machinePropsSchema.ContainsKey(field.Name))
+                        model.machinePropsSchema.Add(field.Name, field.FieldType);
+
+                    // GETTER
+                    DynamicMethod getMachineProperty = new DynamicMethod(
+                        "GetMachineProp_" + field.Name,       // Name
+                        typeof(object),                       // Return type
+                        getMachinePropertiesArgs,             // Argument types
+                        model._propertyType);                       // Owner type
+                    ILGenerator ilMH_g = getMachineProperty.GetILGenerator();
+
+                    ilMH_g.Emit(OpCodes.Ldarg_0);                       // Load "this" onto the stack
+                    ilMH_g.Emit(OpCodes.Ldfld, field);                  // Load field address from "this" onto stack
+                    ilMH_g.Emit(OpCodes.Box, field.FieldType);           // Convert address to reference
+                    ilMH_g.Emit(OpCodes.Ret);                           // Return and finish execution
+
+                    // SETTER
+                    DynamicMethod setMachineProperty = new DynamicMethod(
+                        "SetMachineProp_" + field.Name,       // Name
+                        typeof(void),                         // Return type
+                        setMachinePropertiesArgs,             // Argument types
+                        model._propertyType);                       // Owner type
+                    ILGenerator ilMH_s = setMachineProperty.GetILGenerator();
+
+                    ilMH_s.Emit(OpCodes.Ldarg_0);                       // Load "this" onto the stack - for Stfld
+                    ilMH_s.Emit(OpCodes.Ldarg_1);                       // Load argument address onto stack (0 = this, 1 = first argument)
+                    ilMH_s.Emit(OpCodes.Unbox_Any, field.FieldType);    // Unbox to appropriate value
+                    ilMH_s.Emit(OpCodes.Stfld, field);                  // Store in field in "this"
+                    ilMH_s.Emit(OpCodes.Ret);                           // Return and finish execution
+                    
+                    UnityEngine.Object[] propsInstances = FindObjectsOfType(model._propertyType);
+                    foreach (UnityEngine.Object obj in propsInstances) {
+                        if (!model.machinePropertiesDelegates.ContainsKey(obj))
+                            model.machinePropertiesDelegates.Add(obj, new Dictionary<string, MachinePropertyFieldDelegates>());
+                        MachinePropertyFieldDelegates delegates;
+                        delegates.getter = (GetMachineProperty) getMachineProperty.CreateDelegate(typeof(GetMachineProperty), obj);
+                        delegates.setter = (SetMachineProperty) setMachineProperty.CreateDelegate(typeof(SetMachineProperty), obj);
+                        delegates.fieldType = field.FieldType;
+                        model.machinePropertiesDelegates[obj].Add(field.Name, delegates);
+                    }
+                }
+
+            }
+            model.ReloadNodes();
+        }
+
+    }
 
     public void ReloadNodes () {
         nodeErrors.Clear();
         foreach (Node node in nodes.Values) {
             node.model = this;
-            node.OnLoad();
+            if (_propertyType != null)
+                node.OnLoad();
         }
     }
 
@@ -272,7 +307,6 @@ public class NodeMachineModel : ScriptableObject {
                 AddNode(node);
             }
         }
-        JsonUtility.FromJsonOverwrite(propsJSON, properties);
         links = IDArrayToDictionary(JsonHelper.FromJson<Link>(linksJSON));
         _checkinTime = json["checkinTime"].AsFloat;
         supportParallel = json["supportParallel"].AsBool;
@@ -280,7 +314,6 @@ public class NodeMachineModel : ScriptableObject {
     }
 
     private void SaveToPath (string filepath) {
-        string propsJSON = JsonUtility.ToJson(properties, true);
         string linksJSON = JsonHelper.ToJson<Link>(links.Values.ToArray(), true);
         string nodesJSON = "[";
         Type[] types = cachedNodeTypes.Keys.ToArray();
@@ -289,7 +322,7 @@ public class NodeMachineModel : ScriptableObject {
             nodesJSON += typedNodeJSON + (i == types.Length - 1 ? "" : ",");
         }
         nodesJSON += "]";
-        string allDataJSON = "{\n\"links\":" + linksJSON + ",\n\"props\":" + propsJSON + ",\n\"nodes\":" + nodesJSON + ",\n\"checkinTime\":" + _checkinTime + ",\n\"supportParallel\":" + supportParallel + "}";
+        string allDataJSON = "{\n\"links\":" + linksJSON + ",\n\"nodes\":" + nodesJSON + ",\n\"checkinTime\":" + _checkinTime + ",\n\"supportParallel\":" + supportParallel + "}";
         File.WriteAllText(filepath, allDataJSON);
         AssetDatabase.Refresh();
     }
@@ -388,7 +421,6 @@ public class NodeMachineModel : ScriptableObject {
 
     public void PushError (string error, string errorFull, Node source) {
         nodeErrors.Add(new NodeError(error, errorFull, source));
-        Debug.LogError(errorFull);
         if (OnNodeError != null)
             OnNodeError.Invoke();
     }

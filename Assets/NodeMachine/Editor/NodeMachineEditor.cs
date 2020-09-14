@@ -36,7 +36,6 @@ namespace NodeMachine {
         private int _modelInstanceID = -1;
         private PropertyMenu _propertyMenu = null;
         private ErrorPanel _errorPanel = null;
-        public string[] _propTypesAvailable = new string[0];
         private Dictionary<Type, INodeMenuHandler> nodeMenuHandlers = new Dictionary<Type, INodeMenuHandler>();
         public bool uncompiledChanges = false;
         public bool recompiling = false;
@@ -66,7 +65,6 @@ namespace NodeMachine {
             }
             if (_model != null)
             {
-                _model.ReloadModel();
                 LoadModel(_model);
                 if (_selectedLink != null)
                     _selectedLink = _model.GetLinkFromID(_selectedLink.ID);
@@ -91,7 +89,6 @@ namespace NodeMachine {
         public void LoadModel(NodeMachineModel model)
         {
             _modelInstanceID = model.GetInstanceID();
-            model.ReloadNodes();
             model.OnCheckin -= Repaint;
             model.OnCheckin += Repaint;
             model.OnSave -= MarkSaved;
