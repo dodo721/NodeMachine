@@ -11,8 +11,45 @@ public class StateAssetHandler {
     public static void ShowStateScriptMethodPopup()
     {
         NewStatePopup popup = new NewStatePopup("Create State script", "Enter a name for the new State script.", "New state", "OK", "Cancel");
-        //popup.OnSubmit += (text, model) => CreateStateScript(text, GetActiveDirectory(), model);
+        popup.OnSubmit += (text, model) => CreateStateScript(text, GetActiveDirectory(), model);
         popup.ShowUtility();
+    }
+
+    static string CreateStateScript (string name, string filepath, NodeMachineModel model) {
+        if (name == null || filepath == null)
+            return null;
+
+        if (model == null)
+            if (!EditorUtility.DisplayDialog("No model", "No model was specified. You will need to target to the model yourself.", "OK", "Cancel"))
+                return null;
+
+        if (model._propertyType != null) {
+            if (!EditorUtility.DisplayDialog("State script exists", "This model already has an associated state script. Creating a new state script will cause conflicts. Continue?", "Yes", "No"))
+                return null;
+        }
+
+        string classname = Regex.Replace(name, "[^a-zA-Z0-9_]", "");
+        int nameAddition = 0;
+        string chosenFilepath = filepath + "/" + name + ".cs";
+        while (File.Exists(filepath))
+        {
+            chosenFilepath = filepath + "/" + name + " (" + nameAddition + ").cs";
+            nameAddition++;
+        }
+
+        string codeBase = File.ReadAllText(Application.dataPath + "/NodeMachine/Editor/StateScriptBase.txt");
+        
+        codeBase = codeBase.Replace("<name>", classname);
+        if (model != null) {
+            codeBase = codeBase.Replace("<model_name>", model.name);
+            codeBase = codeBase.Replace("<warning_comment>", "");
+        } else {
+            codeBase = codeBase.Replace("<warning_comment>", "!!WARNING!! State script is not targeted to a model!");
+        }
+
+        File.WriteAllText(chosenFilepath, codeBase);
+        AssetDatabase.Refresh();
+        return classname;
     }
 
     static string GetActiveDirectory () {

@@ -125,6 +125,10 @@ namespace NodeMachine.Nodes {
             return toLinks;
         }
 
+        public override string ToString () {
+            return this.GetType().ToString().Replace("NodeMachine.Nodes.", "");
+        }
+
         /// <summary>
         ///  Tells the editor if this node can support a new link from it.
         /// </summary>

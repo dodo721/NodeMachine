@@ -109,18 +109,6 @@ namespace NodeMachine.Nodes {
                 Debug.LogError("Encountered an invalid state! Check the referenced class exists and extends State");
         }
 
-        public override void OnRunStart(Machine machine)
-        {
-            State state = machine.GetComponent(stateType) as State;
-            state.running = true;
-        }
-
-        public override void OnRunEnd(Machine machine)
-        {
-            State state = machine.GetComponent(stateType) as State;
-            state.running = false;
-        }
-
         public override void OnGameStart(Machine machine)
         {
             if (Valid)
@@ -140,13 +128,10 @@ namespace NodeMachine.Nodes {
         public override void Checkin(Machine machine)
         {
             State state = machine.GetComponent(stateType) as State;
-            if (state.running)
-            {
-                if (stateMethod != null) {
-                    stateMethod.Invoke();
-                } else {
-                    state.Checkin();
-                }
+            if (stateMethod != null) {
+                stateMethod.Invoke();
+            } else {
+                state.Checkin();
             }
         }
 

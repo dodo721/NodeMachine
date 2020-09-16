@@ -130,8 +130,7 @@ namespace NodeMachine {
             _selectedMachine?.MakeEditorCheckinEventTarget(true);
             if (newMachine != null) {
                 newMachine.OnMachineChange += ReloadMachineModel;
-                if (!EditorApplication.isPlayingOrWillChangePlaymode)
-                    ReloadMachineModel();
+                ReloadMachineModel();
             }
             Repaint();
         }
@@ -212,8 +211,8 @@ namespace NodeMachine {
 
             float checkinTimeBeforeDraw = _model.CheckinTime;
             bool supportParallelBeforeDraw = _model.supportParallel;
-            _model.CheckinTime = EditorGUILayout.FloatField("Checkin time:", _model.CheckinTime);
-            _model.supportParallel = EditorGUILayout.Toggle("Support parallel flow:", _model.supportParallel);
+            _model.CheckinTime = EditorGUILayout.FloatField("Checkin time", _model.CheckinTime);
+            _model.supportParallel = EditorGUILayout.Toggle("Parallel flow", _model.supportParallel);
             if (checkinTimeBeforeDraw != _model.CheckinTime || supportParallelBeforeDraw != _model.supportParallel) {
                 modelNeedsSaving = true;
             }

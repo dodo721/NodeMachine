@@ -39,8 +39,16 @@ namespace NodeMachine {
         public event MachineChangeEvent OnMachineChange;
 
         void OnEnable () {
+            if (_model != null)
+                ReloadProperties();
+        }
+
+        public void ReloadProperties () {
+            _model.ForceReloadProperties();
             Component[] objs = GetComponents<Component>();
             foreach (UnityEngine.Object obj in objs) {
+                if (obj == null)
+                    continue;
                 MachinePropsAttribute attr = obj.GetType().GetCustomAttribute<MachinePropsAttribute>();
                 if (attr != null) {
                     if (attr.Model == _model.name) {
@@ -55,19 +63,23 @@ namespace NodeMachine {
         {
             if (Application.isPlaying)
             {
+                _model.ReloadProperties();
                 foreach (Node node in _model.GetNodes())
                 {
                     node.OnGameStart(this);
                 }
-                // TODO: sometimes not working??
                 HashSet<RunnableNode> startRunnables = new HashSet<RunnableNode>();
                 startRunnables.Add(_model.GetNodes<EntryNode>()[0] as RunnableNode);
-                //Debug.Log("Model " + _model.name + " has " + startRunnables.Count + " entry nodes");
                 SetCurrentRunnables(startRunnables);
             }
         }
 
         void OnValidate () {
+            if (_model != null) {
+                if (propsObject != null && !_model.machinePropertiesDelegates.ContainsKey(propsObject)) {
+                    ReloadProperties();
+                }
+            }
             if (OnMachineChange != null) {
                 OnMachineChange.Invoke();
             }
@@ -88,8 +100,13 @@ namespace NodeMachine {
         void Checkin()
         {
             // Run checkin for current runnables
-            foreach (RunnableNode runnable in _currentRunnables)
+            if (_currentRunnables == null) {
+                Debug.LogError("Machine " + name + " has nothing to run!");
+                return;
+            }
+            foreach (RunnableNode runnable in _currentRunnables) {
                 runnable.Checkin(this);
+            }
             // Test the model for the next node.
             DoNodeFollow();
             if (triggerModelCheckinEvent)
@@ -176,7 +193,7 @@ namespace NodeMachine {
             currentNode.OnPassed(nextNodes, this);
             foreach (Node nextNode in nextNodes) {
                 // If nextNode is a RunnableNode, store it as the next return point.
-                // Otherwise continue with the last return point. 
+                // Otherwise continue with the last return point.
                 RunnableNode makeLastRunnable = lastRunnable;
                 if (nextNode is RunnableNode)
                     makeLastRunnable = nextNode as RunnableNode;

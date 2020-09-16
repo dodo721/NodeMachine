@@ -13,6 +13,7 @@ namespace NodeMachine.Nodes {
     public abstract class RunnableNode : Node
     {
         public string activeBackground;
+        public bool runOnEncounter = false;
 
         protected RunnableNode(NodeMachineModel model, Vector2 position) : base(model, position) { }
         protected RunnableNode(NodeMachineModel model) : base(model) { }
@@ -36,6 +37,11 @@ namespace NodeMachine.Nodes {
                 }
             }
             return foundTriggersOfName;
+        }
+
+        public override void OnEncountered(Node prevNode, Machine machine) {
+            if (runOnEncounter)
+                Checkin(machine);
         }
 
     }

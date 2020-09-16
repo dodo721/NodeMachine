@@ -136,15 +136,15 @@ namespace NodeMachine.Nodes {
             int selPropComp = EditorGUILayout.Popup(curPropComp, propsCompTo);
             if (selPropComp != curPropComp) {
                 if (selPropComp == 0) {
-                    node.condition._compareToProp = false;
+                    node.condition._compareMode = Condition.CompareTo.CONSTANT;
                     node.condition._compPropName = "";
                 } else {
-                    node.condition._compareToProp = true;
+                    node.condition._compareMode = Condition.CompareTo.PROP;
                     node.condition._compPropName = propsCompTo[selPropComp];
                 }
             }
 
-            if (!node.condition._compareToProp) {
+            if (node.condition._compareMode == Condition.CompareTo.CONSTANT) {
 
                 // Compare value input (for constant)
                 if (node.condition._valueType == Condition.ConditionType.FLOAT)

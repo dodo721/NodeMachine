@@ -11,6 +11,7 @@ namespace NodeMachine {
 
         public int _from;
         public int _to;
+        private object passVal;
 
         public Rect _transform;
 

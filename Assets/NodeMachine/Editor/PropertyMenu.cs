@@ -55,26 +55,15 @@ namespace NodeMachine {
 
             UnityEngine.Object propsObj = null;
             if (machine != null) {
-                if (machine == lastSelectedMachine) {
+                if (machine == lastSelectedMachine && currentPropsObj != null) {
                     propsObj = currentPropsObj;
                 } else {
-                    Component[] objs = machine.GetComponents<Component>();
-                    foreach (UnityEngine.Object obj in objs) {
-                        if (targetedProps.ContainsKey(obj)) {
-                            if (targetedProps[obj] == _editor._model) {
-                                propsObj = obj;
-                                break;
-                            }
-                        } else {
-                            MachinePropsAttribute attr = obj.GetType().GetCustomAttribute<MachinePropsAttribute>();
-                            if (attr != null) {
-                                if (attr.Model == _editor._model.name) {
-                                    targetedProps.Add(obj, _editor._model);
-                                    propsObj = obj;
-                                    break;
-                                }
-                            }
-                        }
+                    if (machine.propsObject == null)
+                        machine.ReloadProperties();
+                    propsObj = machine.propsObject;
+                    if (propsObj == null) {
+                        EditorGUILayout.LabelField("Add the " + machine._model._propertyType.ToString() + " state script to " + machine.name + " to begin editing.", EditorStyles.wordWrappedLabel);
+                        return false;
                     }
                 }
             }
@@ -87,6 +76,12 @@ namespace NodeMachine {
             EditorGUILayout.Space();
             EditorGUI.BeginDisabledGroup(machine == null);
             if (propsObj != null) {
+                if (!_editor._model.machinePropertiesDelegates.ContainsKey(propsObj)) {
+                    EditorGUILayout.LabelField("Props are being loaded...");
+                    machine.ReloadProperties();
+                    GUI.changed = true;
+                    return false;
+                }
                 foreach (string fieldName in _editor._model.machinePropertiesDelegates[propsObj].Keys) {
                     DrawProp(fieldName, _editor._model.machinePropertiesDelegates[propsObj][fieldName]);
                 }

@@ -1,27 +1,48 @@
 using UnityEngine;
-using NodeMachine.States;
 using NodeMachine;
+using NodeMachine.States;
+
 
 /// <summary>
-///  Holds various state behaviours
+///  Holds state behaviours for Player
 /// </summary>
 [MachineProps("Player")]
 public class PlayerStates : State
 {
 
-    // Represents a state on the node machine
+    [UseProp]
+    float horizontal = 0f;
+    
+    [UseProp]
+    float vertical = 0f;
+
+    public float speed;
+
     [State]
-    public void NewState () {
-        
+    public void MoveForward () {
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    }
+
+    [State]
+    public void MoveBackward () {
+        transform.Translate(Vector3.back * speed * Time.deltaTime);
+    }
+
+    [State]
+    public void MoveLeft () {
+        transform.Translate(Vector3.left * speed * Time.deltaTime);
+    }
+
+    [State]
+    public void MoveRight () {
+        transform.Translate(Vector3.right * speed * Time.deltaTime);
     }
 
     // Runs every frame as normal
     void Update () {
 
-        // Runs when any state method in this class is running
-        if (running) {
-            
-        }
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
 
     }
 

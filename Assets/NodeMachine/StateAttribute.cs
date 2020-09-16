@@ -6,13 +6,9 @@ namespace NodeMachine.States {
     public class StateAttribute : Attribute
     {
         public bool Visible = true;
+        public bool RunOnEncounter = false;
 
         public StateAttribute() { }
-
-        public StateAttribute(bool visible)
-        {
-            this.Visible = visible;
-        }
 
     }
 

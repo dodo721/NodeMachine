@@ -8,7 +8,7 @@ using SimpleJSON;
 namespace NodeMachine.Nodes {
 
     [Serializable]
-    [NodeInfo("Conditions/Condition")]
+    [NodeInfo("Condition")]
     public class ConditionNode : Node
     {
 
@@ -18,6 +18,7 @@ namespace NodeMachine.Nodes {
 
         [NonSerialized]
         public bool conditionMet = false;
+        private object prevOutput;
 
         public ConditionNode(NodeMachineModel model, Condition condition, Vector2 position) : base(model)
         {
@@ -74,7 +75,7 @@ namespace NodeMachine.Nodes {
         {
             Condition.ConditionType type = condition._valueType;
             string propName = condition._propName;
-            if (condition._compareToProp) {
+            if (condition._compareMode == Condition.CompareTo.PROP) {
                 Type compType = Condition.FromConditionType(condition._valueType);
                 condition.SetComparisonValue(Convert.ChangeType(machine.GetProp(condition._compPropName), compType));
             }

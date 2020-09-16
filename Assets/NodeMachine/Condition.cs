@@ -14,11 +14,15 @@ namespace NodeMachine {
             FLOAT, INT, BOOL, STRING
         }
 
+        public enum CompareTo {
+            CONSTANT, PROP
+        }
+
         public ConditionType _valueType;
         public Comparison _comparison;
+        public CompareTo _compareMode;
         public string _propName;
         public string _compPropName = "";
-        public bool _compareToProp = false;
         protected dynamic _compare;
 
         [SerializeField]
@@ -27,7 +31,8 @@ namespace NodeMachine {
         public Condition (string propName, ConditionType type, Comparison comparison, dynamic compare) {
             this._propName = propName;
             this._comparison = comparison;
-            this._compareToProp = false;
+            this._compareMode = CompareTo.CONSTANT;
+            this._compPropName = "-constant-";
             this._valueType = type;
             if (compare.GetType() != FromConditionType(_valueType))
                 throw new Exception("Wrong compare type given to Condition.Compare");
@@ -38,7 +43,7 @@ namespace NodeMachine {
             this._propName = propName;
             this._comparison = comparison;
             this._compPropName = compPropName;
-            this._compareToProp = true;
+            this._compareMode = CompareTo.PROP;
             this._valueType = type;
         }
 
@@ -188,11 +193,13 @@ namespace NodeMachine {
 
         public override string ToString() {
             string quote = _valueType == ConditionType.STRING ? "\"" : "";
-            return _valueType + " " + _propName + " " + _comparison + " " + quote + (_compareToProp ? _compPropName : GetComparisonValue()) + quote;
+            string compareToString = _compareMode == CompareTo.PROP ? _compPropName : (_compareMode == CompareTo.CONSTANT ? GetComparisonValue().ToString() : " previous output");
+            return _valueType + " " + _propName + " " + _comparison + " " + quote + compareToString + quote;
         }
 
         public string ToPrettyString () {
             string quote = _valueType == ConditionType.STRING ? "\"" : "";
+            string compareToString = _compareMode == CompareTo.PROP ? _compPropName : (_compareMode == CompareTo.CONSTANT ? GetComparisonValue().ToString() : " previous output");
             string comparitor = "";
             switch (_comparison) {
                 case (Comparison.EQUAL):
@@ -211,7 +218,7 @@ namespace NodeMachine {
                     comparitor = "<=";
                     break;
             }
-            return _propName + " " + comparitor + " " + quote + (_compareToProp ? _compPropName : GetComparisonValue()) + quote;
+            return _propName + " " + comparitor + " " + quote + compareToString + quote;
         }
         
     }

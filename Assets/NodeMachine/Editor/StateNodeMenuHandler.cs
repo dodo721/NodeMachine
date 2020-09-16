@@ -21,16 +21,16 @@ namespace NodeMachine.Nodes {
             foreach (Type type in types)
             {
                 foreach (MethodInfo method in type.GetMethods()) {
-                    bool disabled = false;
                     StateAttribute methodStateInfo = method.GetCustomAttribute<StateAttribute>();
                     if (methodStateInfo != null) {
                         if (!methodStateInfo.Visible)
                             continue;
-                        disabled = StateNode.GetStateNodeFromMethod(model, type, method.Name) != null;
+                        bool runOnEncounter = methodStateInfo.RunOnEncounter;
                         menuItems.Add(new NodeMenuItem("States/" + type.ToString() + "/" + method.Name, () => {
                             StateNode node = new StateNode(type, method.Name, model, mousePosition);
+                            node.runOnEncounter = runOnEncounter;
                             editor.AddNode(node);
-                        } , false, disabled));
+                        } , false, false));
                     }
                 }
             }

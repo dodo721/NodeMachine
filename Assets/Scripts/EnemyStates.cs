@@ -11,93 +11,52 @@ public class EnemyStates : State
 
     public float speed = 1;
     public float rotSpeed = 1;
-    public float searchLength = 10;
-    
+
     [UseProp]
-    private string enemyName;
+    public float searchLength = 10;
 
     [UseProp]
     public bool FoundPlayer = false;
 
     [UseProp]
-    public float Test = 0.2f;
+    private float distToPlayer = Mathf.Infinity;
 
-    [UseProp]
-    public GameObject myObj = null;
-
-    [UseProp]
-    private bool myprivbool = false;
-
-    public enum CurrentState {
-        SEARCHING, CHASING, ATTACKING
-    }
-
-    [UseProp]
-    public CurrentState currentState;
-
-    public PlayerStates player;
+    public Transform player;
 
     [State]
     public void Searching () {
-        currentState = CurrentState.SEARCHING;
-    }
-
-
-    void OnSearching () {
         transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         transform.Rotate(0f, rotSpeed * Time.deltaTime, 0);
         RaycastHit hit;
         Color rayColor = Color.green;
+        bool hitPlayer = false;
         if (Physics.Raycast(transform.position, transform.forward, out hit, searchLength)) {
             rayColor = Color.magenta;
-            if (hit.collider.CompareTag("Player")) {
-                player = hit.collider.GetComponent<PlayerStates>();
-                if (player != null) {
-                    FoundPlayer = true;
-                    rayColor = Color.red;
-                }
+            if (hit.transform.tag == "Player") {
+                FoundPlayer = true;
+                hitPlayer = true;
+                rayColor = Color.red;
             }
         }
+        if (!hitPlayer)
+            FoundPlayer = false;
         Debug.DrawRay(transform.position, transform.forward * searchLength, rayColor);
     }
 
     [State]
     public void Chasing () {
-        currentState = CurrentState.CHASING;
-    }
-
-    void OnChasing () {
-        transform.LookAt(player.transform, Vector3.up);
+        FoundPlayer = false;
+        transform.LookAt(player, Vector3.up);
         transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
     }
 
     [State]
     public void Attacking () {
-        currentState = CurrentState.ATTACKING;
+        GetComponent<Renderer>().material.color = Color.magenta;
     }
 
-    void OnAttacking () {
-
-    }
-
-    // Runs every frame as normal
     void Update () {
-
-        // Runs when any state method in this class is running
-        if (running) {
-            switch (currentState) {
-                case CurrentState.SEARCHING:
-                    OnSearching();
-                    break;
-                case CurrentState.CHASING:
-                    OnChasing();
-                    break;
-                case CurrentState.ATTACKING:
-                    OnAttacking();
-                    break;
-            }
-        }
-
+        distToPlayer = Vector3.Distance(player.position, transform.position);
     }
 
 }

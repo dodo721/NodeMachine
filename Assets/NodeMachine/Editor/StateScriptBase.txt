@@ -1,17 +1,20 @@
 using UnityEngine;
+using NodeMachine;
 using NodeMachine.States;
 
+<warning_comment>
 /// <summary>
 ///  Holds state behaviours for <model_name>
 /// </summary>
-[StateInfo("<model_name>")]
+[MachineProps("<model_name>")]
 public class <name> : State
 {
 
-<props>
+    [UseProp]
+    float newStateProperty = 1f;
 
     // Represents a state on the node machine
-    [StateInfo]
+    [State]
     public void NewState () {
         
     }
