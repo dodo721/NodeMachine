@@ -25,6 +25,7 @@ public class EnemyStates : State
 
     [State]
     public void Searching () {
+        GetComponent<Renderer>().material.color = Color.blue;
         transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         transform.Rotate(0f, rotSpeed * Time.deltaTime, 0);
         RaycastHit hit;
@@ -45,6 +46,7 @@ public class EnemyStates : State
 
     [State]
     public void Chasing () {
+        GetComponent<Renderer>().material.color = Color.red;
         FoundPlayer = false;
         transform.LookAt(player, Vector3.up);
         transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);

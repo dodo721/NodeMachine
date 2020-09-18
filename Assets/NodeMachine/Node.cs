@@ -126,7 +126,7 @@ namespace NodeMachine.Nodes {
         }
 
         public override string ToString () {
-            return this.GetType().ToString().Replace("NodeMachine.Nodes.", "");
+            return this.GetType().ToString().Replace("NodeMachine.Nodes.", "").Replace("Node", "");
         }
 
         /// <summary>

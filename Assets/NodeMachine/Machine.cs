@@ -20,6 +20,7 @@ namespace NodeMachine {
         public UnityEngine.Object propsObject;
         public bool optimiseParallel = true;
         private Dictionary<StateNode, State> stateInstances = new Dictionary<StateNode, State>();
+        private HashSet<ActiveNode> _activeNodes;
         private HashSet<RunnableNode> _currentRunnables;
         public HashSet<RunnableNode> CurrentRunnables
         {
@@ -64,9 +65,12 @@ namespace NodeMachine {
             if (Application.isPlaying)
             {
                 _model.ReloadProperties();
+                _activeNodes = new HashSet<ActiveNode>();
                 foreach (Node node in _model.GetNodes())
                 {
                     node.OnGameStart(this);
+                    if (node is ActiveNode)
+                        _activeNodes.Add(node as ActiveNode);
                 }
                 HashSet<RunnableNode> startRunnables = new HashSet<RunnableNode>();
                 startRunnables.Add(_model.GetNodes<EntryNode>()[0] as RunnableNode);
@@ -127,12 +131,17 @@ namespace NodeMachine {
             _currentLinks.Clear();
             triedNodes.Clear();
             HashSet<RunnableNode> nextNodes = new HashSet<RunnableNode>();
-            foreach (RunnableNode node in _currentRunnables) {
+            HashSet<RunnableNode> testNodes = new HashSet<RunnableNode>(_currentRunnables);
+            foreach (RunnableNode node in _activeNodes) {
+                testNodes.Add(node);
+            }
+            foreach (RunnableNode node in testNodes) {
                 HashSet<RunnableNode> branchedNodes = FollowNode(node, null, node);
                 foreach (RunnableNode branchedNode in branchedNodes) {
                     nextNodes.Add(branchedNode);
                 }
             }
+            nextNodes.RemoveWhere(n => n is ActiveNode);
             HashSet<RunnableNode> nodesChanged = NodeHashSetsDiff(_currentRunnables, nextNodes);
             if (nodesChanged.Count != 0)
             {
@@ -192,6 +201,10 @@ namespace NodeMachine {
             }
             currentNode.OnPassed(nextNodes, this);
             foreach (Node nextNode in nextNodes) {
+                // If nextNode is an EndNode, kill the chain
+                if (nextNode is EndNode) {
+                    return new HashSet<RunnableNode>();
+                }
                 // If nextNode is a RunnableNode, store it as the next return point.
                 // Otherwise continue with the last return point.
                 RunnableNode makeLastRunnable = lastRunnable;

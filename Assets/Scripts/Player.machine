@@ -2,25 +2,13 @@
 "links":{
     "Items": [
         {
-            "_id": 3,
-            "_from": 2,
-            "_to": 7,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 502.00006103515627,
-                "y": 250.99996948242188,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
             "_id": 9,
             "_from": 6,
             "_to": 4,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 977.5000610351563,
-                "y": 810.5,
+                "x": 898.9998168945313,
+                "y": 671.5001220703125,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -31,20 +19,8 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 434.5001220703125,
-                "y": 811.4999389648438,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 5,
-            "_from": 1,
-            "_to": 8,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 854.0001220703125,
-                "y": 259.49993896484377,
+                "x": 607.0,
+                "y": 670.0,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -55,8 +31,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 382.00006103515627,
-                "y": 251.00006103515626,
+                "x": 563.9999389648438,
+                "y": 380.500244140625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -67,80 +43,80 @@
             "_to": 1,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 911.5001831054688,
-                "y": 258.50006103515627,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 7,
-            "_from": 3,
-            "_to": 9,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 493.0002136230469,
-                "y": 811.4998779296875,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 10,
-            "_from": 4,
-            "_to": 10,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 860.5,
-                "y": 814.9999389648438,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 0,
-            "_from": 0,
-            "_to": 11,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 882.5001220703125,
-                "y": 524.75,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 2,
-            "_from": 11,
-            "_to": 14,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 526.500244140625,
-                "y": 432.50006103515627,
+                "x": 885.0,
+                "y": 379.5002136230469,
                 "width": 25.0,
                 "height": 25.0
             }
         },
         {
             "_id": 4,
-            "_from": 11,
+            "_from": 13,
+            "_to": 6,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 799.499755859375,
+                "y": 575.0001220703125,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 3,
+            "_from": 13,
+            "_to": 5,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 694.499755859375,
+                "y": 573.0001220703125,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 2,
+            "_from": 13,
+            "_to": 14,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 668.499755859375,
+                "y": 476.00018310546877,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 0,
+            "_from": 13,
             "_to": 12,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 800.000244140625,
-                "y": 439.00006103515627,
+                "x": 780.999755859375,
+                "y": 476.5001525878906,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 5,
+            "_from": 4,
+            "_to": 15,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 984.4995727539063,
+                "y": 760.5001220703125,
                 "width": 25.0,
                 "height": 25.0
             }
         },
         {
             "_id": 6,
-            "_from": 11,
-            "_to": 5,
+            "_from": 15,
+            "_to": 10,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 561.500244140625,
-                "y": 628.5,
+                "x": 1061.4996337890625,
+                "y": 845.0001831054688,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -148,59 +124,71 @@
         {
             "_id": 8,
             "_from": 11,
-            "_to": 6,
+            "_to": 9,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 845.000244140625,
-                "y": 619.5000610351563,
+                "x": 471.4998474121094,
+                "y": 844.5,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 7,
+            "_from": 3,
+            "_to": 11,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 540.9998779296875,
+                "y": 763.0,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 10,
+            "_from": 1,
+            "_to": 17,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 951.9998779296875,
+                "y": 288.5002136230469,
                 "width": 25.0,
                 "height": 25.0
             }
         },
         {
             "_id": 11,
-            "_from": 7,
-            "_to": 11,
+            "_from": 17,
+            "_to": 7,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 646.5001831054688,
-                "y": 432.4999694824219,
+                "x": 1008.999755859375,
+                "y": 197.500244140625,
                 "width": 25.0,
                 "height": 25.0
             }
         },
         {
             "_id": 12,
-            "_from": 8,
-            "_to": 11,
+            "_from": 2,
+            "_to": 16,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 742.5001831054688,
-                "y": 439.99993896484377,
+                "x": 468.99981689453127,
+                "y": 286.500244140625,
                 "width": 25.0,
                 "height": 25.0
             }
         },
         {
             "_id": 13,
-            "_from": 10,
-            "_to": 11,
+            "_from": 16,
+            "_to": 8,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 728.000244140625,
-                "y": 624.0,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 14,
-            "_from": 9,
-            "_to": 11,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 620.0003051757813,
-                "y": 628.4999389648438,
+                "x": 397.9998474121094,
+                "y": 194.50027465820313,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -217,24 +205,22 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node4.png",
-    "linkIDs": [
-        0
-    ],
+    "linkIDs": [],
     "activeBackground": "",
     "runOnEncounter": false
 }]},{"Type":"NodeMachine.Nodes.StateNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
     "_id": 1,
     "transform": {
         "serializedVersion": "2",
-        "x": 221.0,
-        "y": -478.5000305175781,
+        "x": 206.00006103515626,
+        "y": -304.50006103515627,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
         17,
-        5
+        10
     ],
     "activeBackground": "",
     "runOnEncounter": false,
@@ -245,8 +231,8 @@
     "_id": 3,
     "transform": {
         "serializedVersion": "2",
-        "x": -256.0,
-        "y": 248.49990844726563,
+        "x": -176.99993896484376,
+        "y": 83.49966430664063,
         "width": 150.0,
         "height": 75.0
     },
@@ -264,15 +250,15 @@
     "_id": 2,
     "transform": {
         "serializedVersion": "2",
-        "x": -291.0000915527344,
-        "y": -480.5,
+        "x": -211.00009155273438,
+        "y": -301.5,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
         15,
-        3
+        12
     ],
     "activeBackground": "",
     "runOnEncounter": false,
@@ -283,15 +269,15 @@
     "_id": 4,
     "transform": {
         "serializedVersion": "2",
-        "x": 262.9997253417969,
-        "y": 264.4998779296875,
+        "x": 196.99972534179688,
+        "y": 82.4998779296875,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
         9,
-        10
+        5
     ],
     "activeBackground": "",
     "runOnEncounter": false,
@@ -302,15 +288,15 @@
     "_id": 5,
     "transform": {
         "serializedVersion": "2",
-        "x": -283.0,
-        "y": 85.5,
+        "x": -105.0,
+        "y": -16.5,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
         1,
-        6
+        3
     ],
     "condition": {
         "_valueType": 0,
@@ -325,15 +311,15 @@
     "_id": 6,
     "transform": {
         "serializedVersion": "2",
-        "x": 284.0001220703125,
-        "y": 67.5001220703125,
+        "x": 105.00006103515625,
+        "y": -12.49993896484375,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
         9,
-        8
+        4
     ],
     "condition": {
         "_valueType": 0,
@@ -348,15 +334,15 @@
     "_id": 12,
     "transform": {
         "serializedVersion": "2",
-        "x": 254.0001220703125,
-        "y": -293.4998779296875,
+        "x": 128.00006103515626,
+        "y": -209.4998779296875,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
         17,
-        4
+        0
     ],
     "condition": {
         "_valueType": 0,
@@ -371,8 +357,8 @@
     "_id": 14,
     "transform": {
         "serializedVersion": "2",
-        "x": -293.0,
-        "y": -306.4998474121094,
+        "x": -96.99996948242188,
+        "y": -210.49984741210938,
         "width": 160.0,
         "height": 50.0
     },
@@ -391,64 +377,18 @@
     },
     "collapsed": true
 },{
-    "_id": 7,
+    "_id": 11,
     "transform": {
         "serializedVersion": "2",
-        "x": -113.00003051757813,
-        "y": -306.50006103515627,
-        "width": 160.0,
-        "height": 50.0
-    },
-    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
-    "linkIDs": [
-        3,
-        11
-    ],
-    "condition": {
-        "_valueType": 0,
-        "_comparison": 2,
-        "_compareMode": 0,
-        "_propName": "vertical",
-        "_compPropName": "-constant-",
-        "_compareValueString": "0"
-    },
-    "collapsed": true
-},{
-    "_id": 8,
-    "transform": {
-        "serializedVersion": "2",
-        "x": 78.99993896484375,
-        "y": -291.5000915527344,
-        "width": 160.0,
-        "height": 50.0
-    },
-    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
-    "linkIDs": [
-        5,
-        12
-    ],
-    "condition": {
-        "_valueType": 0,
-        "_comparison": 4,
-        "_compareMode": 0,
-        "_propName": "vertical",
-        "_compPropName": "-constant-",
-        "_compareValueString": "0"
-    },
-    "collapsed": true
-},{
-    "_id": 9,
-    "transform": {
-        "serializedVersion": "2",
-        "x": -105.99981689453125,
-        "y": 85.4998779296875,
+        "x": -237.0001220703125,
+        "y": 169.4998779296875,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
         7,
-        14
+        8
     ],
     "condition": {
         "_valueType": 0,
@@ -460,18 +400,18 @@
     },
     "collapsed": true
 },{
-    "_id": 10,
+    "_id": 15,
     "transform": {
         "serializedVersion": "2",
-        "x": 110.00006103515625,
-        "y": 76.5,
+        "x": 275.99957275390627,
+        "y": 165.50006103515626,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
-        10,
-        13
+        5,
+        6
     ],
     "condition": {
         "_valueType": 0,
@@ -482,29 +422,122 @@
         "_compareValueString": "0"
     },
     "collapsed": true
-}]},{"Type":"NodeMachine.Nodes.BlankNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
-    "_id": 11,
+},{
+    "_id": 16,
     "transform": {
         "serializedVersion": "2",
-        "x": -1.99981689453125,
-        "y": -117.5,
+        "x": -287.0001220703125,
+        "y": -398.4998779296875,
+        "width": 160.0,
+        "height": 50.0
+    },
+    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "linkIDs": [
+        12,
+        13
+    ],
+    "condition": {
+        "_valueType": 0,
+        "_comparison": 2,
+        "_compareMode": 0,
+        "_propName": "vertical",
+        "_compPropName": "-constant-",
+        "_compareValueString": "0"
+    },
+    "collapsed": true
+},{
+    "_id": 17,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 261.999755859375,
+        "y": -391.4998779296875,
+        "width": 160.0,
+        "height": 50.0
+    },
+    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "linkIDs": [
+        10,
+        11
+    ],
+    "condition": {
+        "_valueType": 0,
+        "_comparison": 4,
+        "_compareMode": 0,
+        "_propName": "vertical",
+        "_compPropName": "-constant-",
+        "_compareValueString": "0"
+    },
+    "collapsed": true
+}]},{"Type":"NodeMachine.Nodes.ActiveNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
+    "_id": 13,
+    "transform": {
+        "serializedVersion": "2",
+        "x": -2.000457763671875,
+        "y": -110.50015258789063,
         "width": 100.0,
         "height": 75.0
     },
-    "background": "builtin skins/darkskin/images/node3.png",
+    "background": "builtin skins/darkskin/images/node5.png",
     "linkIDs": [
         0,
         2,
-        4,
-        6,
-        8,
-        11,
-        12,
-        13,
-        14
+        3,
+        4
     ],
     "activeBackground": "",
     "runOnEncounter": false
+}]},{"Type":"NodeMachine.Nodes.EndNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
+    "_id": 7,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 319.99981689453127,
+        "y": -486.5,
+        "width": 100.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node6.png",
+    "linkIDs": [
+        11
+    ]
+},{
+    "_id": 8,
+    "transform": {
+        "serializedVersion": "2",
+        "x": -353.00006103515627,
+        "y": -485.49993896484377,
+        "width": 100.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node6.png",
+    "linkIDs": [
+        13
+    ]
+},{
+    "_id": 9,
+    "transform": {
+        "serializedVersion": "2",
+        "x": -316.00006103515627,
+        "y": 246.49981689453126,
+        "width": 100.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node6.png",
+    "linkIDs": [
+        8
+    ]
+},{
+    "_id": 10,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 350.9998779296875,
+        "y": 251.49993896484376,
+        "width": 100.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node6.png",
+    "linkIDs": [
+        6
+    ]
 }]}],
 "checkinTime":0,
 "supportParallel":True}

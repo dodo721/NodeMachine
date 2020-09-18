@@ -16,8 +16,6 @@ namespace NodeMachine.States {
     [AddComponentMenu("")]
     public abstract class State : MonoBehaviour
     {
-
-        public bool running = false;
         protected Machine machine;
         private Dictionary<string, StateNode> nodes = new Dictionary<string, StateNode>();
 

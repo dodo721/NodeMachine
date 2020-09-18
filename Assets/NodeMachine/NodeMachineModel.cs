@@ -4,7 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor.Callbacks;
+#endif
 using UnityEditor;
 using System.IO;
 using SimpleJSON;
@@ -82,7 +84,6 @@ public class NodeMachineModel : ScriptableObject {
             EditorUtility.DisplayDialog("NodeMachine errors", "The NodeMachine model " + name + " contains errors. The game will play on \"OK\".\n" + errorStr, "OK");
         }
     }
-#endif
 
     static NodeMachineModel[] GetAllInstances()
     {
@@ -96,6 +97,7 @@ public class NodeMachineModel : ScriptableObject {
 
         return a;
     }
+#endif
 
     public void ReloadProperties () {
         if (!hasLoadedProps) {
@@ -109,12 +111,14 @@ public class NodeMachineModel : ScriptableObject {
         hasLoadedProps = true;
     }
 
+#if UNITY_EDITOR
     [DidReloadScripts]
     static void ReloadAllProperties () {
         foreach (NodeMachineModel model in GetAllInstances()) {
             model.LoadProperties();
         }
     }
+#endif
 
     void LoadProperties () {
         
@@ -212,6 +216,7 @@ public class NodeMachineModel : ScriptableObject {
             OnCheckin.Invoke();
     }
 
+#if UNITY_EDITOR
     public void SaveModel () {
         string filepath = AssetDatabase.GetAssetPath(GetInstanceID());
         if (File.Exists(filepath))
@@ -219,7 +224,7 @@ public class NodeMachineModel : ScriptableObject {
         if (OnSave != null)
             OnSave.Invoke();
     }
-    
+
     public static NodeMachineModel SaveNewModel (string filepath) {
         NodeMachineModel model = ScriptableObject.CreateInstance<NodeMachineModel>();
         EntryNode entryNode = new EntryNode(model);
@@ -230,6 +235,7 @@ public class NodeMachineModel : ScriptableObject {
         Selection.activeObject = model;
         return model;
     }
+#endif
 
     public void ReloadModel () {
         string filepath = AssetDatabase.GetAssetPath(GetInstanceID());
