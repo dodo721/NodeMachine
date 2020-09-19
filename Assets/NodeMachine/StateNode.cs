@@ -15,7 +15,8 @@ namespace NodeMachine.Nodes {
         public string stateTypeName;
         public string stateMethodName;
         public Type stateType;
-        public Action stateMethod;
+        public int testInt = 0;
+        private Dictionary<Machine, Action> stateMethods;
         public string normalBackground;
 
         /*
@@ -111,13 +112,16 @@ namespace NodeMachine.Nodes {
 
         public override void OnGameStart(Machine machine)
         {
+            if (stateMethods == null)
+                stateMethods = new Dictionary<Machine, Action>();
+
             if (Valid)
             {
                 State state = machine.gameObject.GetComponent(stateType) as State;
                 if (state == null)
                     state = machine.gameObject.AddComponent(stateType) as State;
 
-                stateMethod = (Action) Delegate.CreateDelegate(typeof(Action), state, stateMethodName);
+                stateMethods.Add(machine, (Action) Delegate.CreateDelegate(typeof(Action), state, stateMethodName));
             }
             else
             {
@@ -127,12 +131,8 @@ namespace NodeMachine.Nodes {
 
         public override void Checkin(Machine machine)
         {
-            State state = machine.GetComponent(stateType) as State;
-            if (stateMethod != null) {
-                stateMethod.Invoke();
-            } else {
-                state.Checkin();
-            }
+            if (stateMethods.ContainsKey(machine))
+                stateMethods[machine]();
         }
 
         public static StateNode GetStateNodeFromMethod (NodeMachineModel model, Type type, string methodName) {

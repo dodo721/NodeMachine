@@ -5,8 +5,6 @@ using UnityEditor;
 
 [NodeGUI(typeof(StateNode))]
 public class StateNodeGUIContent : NodeGUIContent {
-    
-    private bool editingName = false;
 
     public StateNodeGUIContent (StateNode node, NodeMachineEditor editor) : base (node, editor) {}
 

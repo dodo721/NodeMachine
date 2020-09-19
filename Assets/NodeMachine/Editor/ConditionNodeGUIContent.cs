@@ -13,7 +13,6 @@ namespace NodeMachine.Nodes {
 
         private Dictionary<string, Condition.ConditionType> fieldNames = null;
         private string[] _comparisons;
-        private Vector2 _curScroll = new Vector2();
 
         public ConditionNodeGUIContent(ConditionNode node, NodeMachineEditor editor) : base(node, editor)
         {

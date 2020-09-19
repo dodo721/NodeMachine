@@ -33,6 +33,7 @@ public class NodeMachineModel : ScriptableObject {
     }
 
     public bool supportParallel = true;
+    public string filepath;
 
     public delegate void PropValueChangeEvent (string name, dynamic value);
     public event PropValueChangeEvent OnPropValueChange;
@@ -59,12 +60,11 @@ public class NodeMachineModel : ScriptableObject {
     [NonSerialized]
     public List<NodeError> nodeErrors = new List<NodeError>();
 
-    private bool hasLoadedProps = false;
+    private bool hasLoadedOnce = false;
 
     void OnEnable () {
-        hasLoadedProps = false;
-        LoadProperties();
-        ReloadModel();
+        hasLoadedOnce = false;
+        Reload();
 
         if (OnPropsReload != null)
             OnPropsReload.Invoke();
@@ -72,6 +72,19 @@ public class NodeMachineModel : ScriptableObject {
 #if UNITY_EDITOR
         EditorApplication.playModeStateChanged += CheckErrorsOnPlay;
 #endif
+    }
+
+    public void Reload () {
+        LoadProperties();
+        ReloadModel();
+    }
+
+    public void ReloadOnce () {
+        if (!hasLoadedOnce) {
+            LoadProperties();
+            ReloadModel();
+            hasLoadedOnce = true;
+        }
     }
 
 #if UNITY_EDITOR
@@ -100,15 +113,15 @@ public class NodeMachineModel : ScriptableObject {
 #endif
 
     public void ReloadProperties () {
-        if (!hasLoadedProps) {
+        if (!hasLoadedOnce) {
             LoadProperties();
-            hasLoadedProps = true;
+            hasLoadedOnce = true;
         }
     }
 
     public void ForceReloadProperties () {
         LoadProperties();
-        hasLoadedProps = true;
+        hasLoadedOnce = true;
     }
 
 #if UNITY_EDITOR
@@ -218,9 +231,8 @@ public class NodeMachineModel : ScriptableObject {
 
 #if UNITY_EDITOR
     public void SaveModel () {
-        string filepath = AssetDatabase.GetAssetPath(GetInstanceID());
         if (File.Exists(filepath))
-            SaveToPath(filepath);
+            SaveToPath();
         if (OnSave != null)
             OnSave.Invoke();
     }
@@ -229,7 +241,7 @@ public class NodeMachineModel : ScriptableObject {
         NodeMachineModel model = ScriptableObject.CreateInstance<NodeMachineModel>();
         EntryNode entryNode = new EntryNode(model);
         model.AddNode(entryNode);
-        model.SaveToPath(filepath);
+        model.SaveToPath();
         DestroyImmediate(model);
         model = AssetDatabase.LoadAssetAtPath<NodeMachineModel>(filepath);
         Selection.activeObject = model;
@@ -238,9 +250,14 @@ public class NodeMachineModel : ScriptableObject {
 #endif
 
     public void ReloadModel () {
-        string filepath = AssetDatabase.GetAssetPath(GetInstanceID());
+        if (filepath == null)
+            return;
+        if (filepath.Length == 0)
+            return;
         if (File.Exists(filepath))
-            LoadFromPath(filepath);
+            LoadFromPath();
+        else
+            Debug.LogError("File " + filepath + " doesn't exist!");
     }
 
     public Node[] GetNodes () {
@@ -317,7 +334,7 @@ public class NodeMachineModel : ScriptableObject {
         return nodelinks;
     }
 
-    public void LoadFromPath (string filepath) {
+    public void LoadFromPath () {
         string jsonStr = File.ReadAllText(filepath);
         JSONObject json = JSON.Parse(jsonStr).AsObject;
         string propsJSON = json["props"].ToString();
@@ -348,7 +365,8 @@ public class NodeMachineModel : ScriptableObject {
         ReloadNodes();
     }
 
-    private void SaveToPath (string filepath) {
+#if UNITY_EDITOR
+    private void SaveToPath () {
         string linksJSON = JsonHelper.ToJson<Link>(links.Values.ToArray(), true);
         string nodesJSON = "[";
         Type[] types = cachedNodeTypes.Keys.ToArray();
@@ -361,6 +379,7 @@ public class NodeMachineModel : ScriptableObject {
         File.WriteAllText(filepath, allDataJSON);
         AssetDatabase.Refresh();
     }
+#endif
 
     private Dictionary<int, T> IDListToDictionary <T> (List<T> list) where T : IDObject {
         Dictionary<int, T> dict = new Dictionary<int, T>();

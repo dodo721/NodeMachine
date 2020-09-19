@@ -12,8 +12,6 @@ namespace NodeMachine.Nodes {
     public class ElseNode : Node
     {
 
-        private bool prevConditionFailed = false;
-
         public ElseNode(NodeMachineModel model, Vector2 position) : base(model)
         {
             background = "Assets/NodeMachine/Editor/Editor Resources/else-node.png";

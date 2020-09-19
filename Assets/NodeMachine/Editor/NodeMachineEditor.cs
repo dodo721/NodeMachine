@@ -22,8 +22,6 @@ namespace NodeMachine {
         public float _zoom = 1;
         private bool _creatingLink = false;
         private bool _dragging = false;
-        private bool _popupMenuShowing = false;
-        private bool _wasPlayingPrevFrame = false;
         private bool _changesMade = false;
         private static GUIContent titlePlain = new GUIContent("NodeMachine");
         private static GUIContent titleUnsaved = new GUIContent("NodeMachine *");
@@ -195,11 +193,7 @@ namespace NodeMachine {
             bool livePreview = _selectedMachine != null && EditorApplication.isPlaying;
 
             bool modelNeedsSaving = false;
-
-            if (!_popupMenuShowing)
-                _nodeEditor = new Rect(250, 0, position.width - 250, position.height);
-            else
-                _nodeEditor = new Rect(250, 0, position.width - 500, position.height);
+            _nodeEditor = new Rect(250, 0, position.width - 250, position.height);
             _sideMenu = new Rect(10, 20, 230, position.height);
             _popupMenu = new Rect(position.width - 240, 20, 230, position.height);
             _toolbar = new Rect(0, 0, position.width, 20);
@@ -433,7 +427,6 @@ namespace NodeMachine {
             }
             _selectedNode = node;
             _selectedLink = null;
-            _popupMenuShowing = false;
             Repaint();
         }
 

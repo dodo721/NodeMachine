@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Reflection;
+using System.Linq;
 using UnityEngine;
 using NodeMachine.Nodes;
 using NodeMachine.States;
@@ -32,7 +33,6 @@ namespace NodeMachine {
             get { return _currentLinks; }
         }
         private HashSet<Node> triedNodes = new HashSet<Node>();
-        public event Action<State> OnStateChange;
         private float _lastCheckinTime = 0f;
         private bool triggerModelCheckinEvent = false;
         private bool loadedInitialProps;
@@ -64,7 +64,7 @@ namespace NodeMachine {
         {
             if (Application.isPlaying)
             {
-                _model.ReloadProperties();
+                _model.ReloadOnce();
                 _activeNodes = new HashSet<ActiveNode>();
                 foreach (Node node in _model.GetNodes())
                 {
@@ -178,7 +178,7 @@ namespace NodeMachine {
             Link[] links = currentNode.NextLinks();
             if (links == null)
             {
-                links = _model.GetAssociatedLinks(currentNode).ToArray();
+                links = _model.GetOutputLinks(currentNode).ToArray();
             }
             // Store the node in the loop checking HashSet if doing so
             if (optimiseParallel)
@@ -190,14 +190,10 @@ namespace NodeMachine {
             // Test connected links
             foreach (Link link in links)
             {
-                // Check the link is from this node, and not to
-                if (currentNode == _model.GetNodeFromID(link._from))
-                {
-                    Node nextNode = _model.GetNodeFromID(link._to);
-                    // Add the tested link to the current link chain for live preview
-                    _currentLinks.Add(link);
-                    nextNodes.Add(nextNode);
-                }
+                Node nextNode = _model.GetNodeFromID(link._to);
+                // Add the tested link to the current link chain for live preview
+                _currentLinks.Add(link);
+                nextNodes.Add(nextNode);
             }
             currentNode.OnPassed(nextNodes, this);
             foreach (Node nextNode in nextNodes) {
@@ -220,6 +216,18 @@ namespace NodeMachine {
                         runnables.Add(runnable);
                     }
                 }
+            }
+            // Check if there are any runnables different from the last one given for this chain.
+            bool runnableChange = false;
+            foreach (RunnableNode runnable in runnables) {
+                if (runnable != lastRunnable) {
+                    runnableChange = true;
+                    break;
+                }
+            }
+            // If there is a change, remove the last runnable, otherwise maintain the chain.
+            if (runnableChange) {
+                runnables.Remove(lastRunnable);
             }
             return runnables;
         }

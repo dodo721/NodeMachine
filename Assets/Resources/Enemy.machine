@@ -7,8 +7,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 636.0000610351563,
-                "y": 768.2501220703125,
+                "x": 719.0,
+                "y": 789.250244140625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -19,8 +19,8 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 620.0001220703125,
-                "y": 324.0,
+                "x": 703.0,
+                "y": 345.0001220703125,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -31,8 +31,8 @@
             "_to": 5,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 707.0301513671875,
-                "y": 324.1800537109375,
+                "x": 790.030029296875,
+                "y": 345.18017578125,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -43,8 +43,8 @@
             "_to": 7,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 701.2799072265625,
-                "y": 191.93011474609376,
+                "x": 784.2798461914063,
+                "y": 212.93023681640626,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -55,8 +55,8 @@
             "_to": 1,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 587.0000610351563,
-                "y": 607.2501831054688,
+                "x": 670.0,
+                "y": 628.2503051757813,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -67,8 +67,8 @@
             "_to": 6,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 614.2498779296875,
-                "y": 191.75006103515626,
+                "x": 697.2498168945313,
+                "y": 212.75018310546876,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -79,8 +79,8 @@
             "_to": 4,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 739.5001831054688,
-                "y": 460.50006103515627,
+                "x": 822.5000610351563,
+                "y": 481.50018310546877,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -91,8 +91,8 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 593.0001831054688,
-                "y": 457.7501220703125,
+                "x": 676.0000610351563,
+                "y": 478.750244140625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -103,8 +103,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 733.5001220703125,
-                "y": 610.0001220703125,
+                "x": 816.5,
+                "y": 631.000244140625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -215,7 +215,7 @@
         "_compareMode": 1,
         "_propName": "distToPlayer",
         "_compPropName": "searchLength",
-        "_compareValueString": "0"
+        "_compareValueString": "10"
     },
     "collapsed": true
 }]},{"Type":"NodeMachine.Nodes.StateNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
@@ -237,6 +237,7 @@
     "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Searching",
+    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 },{
     "_id": 7,
@@ -256,6 +257,7 @@
     "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Attacking",
+    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 },{
     "_id": 3,
@@ -277,6 +279,7 @@
     "runOnEncounter": true,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Chasing",
+    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 }]}],
 "checkinTime":0,

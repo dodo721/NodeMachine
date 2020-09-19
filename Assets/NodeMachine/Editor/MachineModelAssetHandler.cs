@@ -94,7 +94,7 @@ public class MachineModelAssetHandler
         {
             if (!Directory.Exists(filepath))
             {
-                filepath = Regex.Replace(filepath, "/.*$", "/");
+                filepath = Regex.Replace(filepath, "/[^/]*$", "/");
             }
         }
         return filepath;

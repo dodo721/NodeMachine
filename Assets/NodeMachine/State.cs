@@ -27,8 +27,6 @@ namespace NodeMachine.States {
             }
         }
 
-        public virtual void Checkin() {}
-
         protected void ActivateTrigger (string name, [CallerMemberName] string caller = null) {
             nodes[caller]?.ActivateTrigger(name);
         }
