@@ -8,7 +8,7 @@ using SimpleJSON;
 namespace NodeMachine.Nodes {
 
     [Serializable]
-    [NodeInfo("Condition")]
+    [NodeInfo("Conditional/Condition")]
     public class ConditionNode : Node
     {
 

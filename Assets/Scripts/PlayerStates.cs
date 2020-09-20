@@ -19,24 +19,36 @@ public class PlayerStates : State
 
     public float speed;
 
+    [UseProp]
+    public bool dead;
+
+    public GameObject deadMe;
+
     [Event]
-    public void MoveForward () {
+    void MoveForward () {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     [Event]
-    public void MoveBackward () {
+    void MoveBackward () {
         transform.Translate(Vector3.back * speed * Time.deltaTime);
     }
 
     [Event]
-    public void MoveLeft () {
+    void MoveLeft () {
         transform.Translate(Vector3.left * speed * Time.deltaTime);
     }
 
     [Event]
-    public void MoveRight () {
+    void MoveRight () {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
+    }
+
+    [Event]
+    void Kill () {
+        dead = true;
+        Instantiate(deadMe, transform.position, transform.rotation);
+        Destroy(gameObject);
     }
 
     // Runs every frame as normal

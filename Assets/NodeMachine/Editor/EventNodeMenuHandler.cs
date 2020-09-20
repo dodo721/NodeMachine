@@ -21,7 +21,7 @@ namespace NodeMachine.Nodes {
             int eventCount = 0;
             foreach (Type type in types)
             {
-                foreach (MethodInfo method in type.GetMethods()) {
+                foreach (MethodInfo method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
                     EventAttribute methodEventInfo = method.GetCustomAttribute<EventAttribute>();
                     if (methodEventInfo != null) {
                         eventCount++;

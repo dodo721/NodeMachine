@@ -103,6 +103,8 @@ namespace NodeMachine {
 
         void Checkin()
         {
+            if (propsObject == null)
+                return;
             // Run checkin for current runnables
             if (_currentRunnables == null) {
                 Debug.LogError("Machine " + name + " has nothing to run!");

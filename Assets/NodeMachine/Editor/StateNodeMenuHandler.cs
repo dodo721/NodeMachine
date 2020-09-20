@@ -21,7 +21,7 @@ namespace NodeMachine.Nodes {
             int stateCount = 0;
             foreach (Type type in types)
             {
-                foreach (MethodInfo method in type.GetMethods()) {
+                foreach (MethodInfo method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
                     StateAttribute methodStateInfo = method.GetCustomAttribute<StateAttribute>();
                     if (methodStateInfo != null) {
                         if (!methodStateInfo.Visible)

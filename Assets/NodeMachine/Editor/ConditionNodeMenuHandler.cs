@@ -18,7 +18,7 @@ namespace NodeMachine.Nodes {
             NodeMenuItem menuItem;
 
             if (model.machinePropertiesDelegates.First().Value.Count > 0) {
-                menuItem = new NodeMenuItem("Condition", () =>
+                menuItem = new NodeMenuItem("Conditional/Condition", () =>
                 {
                     // TODO : CONDITIONS AND PROPERTIES WITH NO STANDARD TYPES???
                     KeyValuePair<string, NodeMachineModel.MachinePropertyFieldDelegates> kvp = model.machinePropertiesDelegates.First().Value.First();
