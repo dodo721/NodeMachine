@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace NodeMachine {
@@ -11,7 +12,7 @@ namespace NodeMachine {
         }
         
         public enum ConditionType {
-            FLOAT, INT, BOOL, STRING
+            FLOAT, INT, BOOL, STRING, ENUM
         }
 
         public enum CompareTo {
@@ -27,6 +28,11 @@ namespace NodeMachine {
 
         [SerializeField]
         private string _compareValueString;
+
+        public Type _enumType;
+
+        [SerializeField]
+        private string _enumTypeString;
 
         public Condition (string propName, ConditionType type, Comparison comparison, dynamic compare) {
             this._propName = propName;
@@ -73,7 +79,18 @@ namespace NodeMachine {
                 } else if (_comparison == Comparison.NOT_EQUAL) {
                     return typed_compare != typed_compareTo;
                 } else {
-                    throw new Exception ("Comparisons of type Bool or String can only use EQUAL or NOT_EQUAL for Conditions!");
+                    throw new Exception ("Comparisons of type Bool, String or Enum can only use EQUAL or NOT_EQUAL for Conditions!");
+                }
+            } else if (_valueType == ConditionType.ENUM) {
+                dynamic enum_compare = Convert.ChangeType(_compare, _enumType);
+                dynamic enum_compareTo = Convert.ChangeType(compareTo, _enumType);
+                //Debug.Log(enum_compare + " == " + enum_compareTo + ": " + (enum_compare.Equals(enum_compareTo)));
+                if (_comparison == Comparison.EQUAL) {
+                    return enum_compare.Equals(enum_compareTo);
+                } else if (_comparison == Comparison.NOT_EQUAL) {
+                    return !enum_compare.Equals(enum_compareTo);
+                } else {
+                    throw new Exception ("Comparisons of type Bool, String or Enum can only use EQUAL or NOT_EQUAL for Conditions!");
                 }
             } else {
                 throw new Exception("Unrecognized Condition Comparison type!");
@@ -95,6 +112,9 @@ namespace NodeMachine {
                 case ConditionType.STRING:
                     compareType = typeof(string);
                     break;
+                case ConditionType.ENUM:
+                    compareType = typeof(Enum);
+                    break;
             }
             return compareType;
         }
@@ -108,6 +128,8 @@ namespace NodeMachine {
                 return ConditionType.BOOL;
             } else if (type == typeof(string)) {
                 return ConditionType.STRING;
+            } else if (typeof(Enum).IsAssignableFrom(type)) {
+                return ConditionType.ENUM;
             }
             return null;
         }
@@ -127,6 +149,30 @@ namespace NodeMachine {
                 case ConditionType.STRING:
                     SetComparisonValue("");
                     break;
+                case ConditionType.ENUM:
+                    throw new Exception("Condition types of Enum must be given a reference type!");
+            }
+        }
+
+        public void SetConditionType (ConditionType type, Type enumType) {
+            this._valueType = type;
+            switch (_valueType) {
+                case ConditionType.FLOAT:
+                    SetComparisonValue(0f);
+                    break;
+                case ConditionType.INT:
+                    SetComparisonValue(0);
+                    break;
+                case ConditionType.BOOL:
+                    SetComparisonValue(false);
+                    break;
+                case ConditionType.STRING:
+                    SetComparisonValue("");
+                    break;
+                case ConditionType.ENUM:
+                    _enumType = enumType;
+                    SetComparisonValue(Enum.Parse(enumType, Enum.GetNames(enumType).First()));
+                    break;
             }
         }
 
@@ -141,8 +187,8 @@ namespace NodeMachine {
         }
 
         public void SetComparisonValue (dynamic value) {
-            if (value.GetType() != FromConditionType(_valueType)) {
-                throw new Exception("Wrong value type given to LinkCondition: " + value.GetType() + "; expected " + FromConditionType(_valueType));
+            if (!FromConditionType(_valueType).IsAssignableFrom(value.GetType())) {
+                throw new Exception("Wrong value type given to Condition: " + value.GetType() + "; expected " + FromConditionType(_valueType));
             } else {
                 this._compare = value;
             }
@@ -162,6 +208,10 @@ namespace NodeMachine {
                 case ConditionType.STRING:
                     _compare = _compareValueString;
                     break;
+                case ConditionType.ENUM:
+                    _enumType = Type.GetType(_enumTypeString);
+                    _compare = Enum.Parse(_enumType, _compareValueString);
+                    break;
             }
             if (_compare == null)
                 throw new Exception ("Unable to deserialize Condition!");
@@ -169,6 +219,10 @@ namespace NodeMachine {
 
         public void OnBeforeSerialize () {
             this._compareValueString = _compare.ToString();
+            if (this._valueType == ConditionType.ENUM)
+                this._enumTypeString = _enumType.AssemblyQualifiedName;
+            else
+                this._enumTypeString = "";
         }
 
         public static Condition.ConditionType ConditionTypeFromString (string s) {
@@ -191,6 +245,24 @@ namespace NodeMachine {
                 defVal = false;
             } else if (type == Condition.ConditionType.STRING) {
                 defVal = "";
+            } else if (type == Condition.ConditionType.ENUM) {
+                throw new Exception ("Cannot get default value of Enum without a reference type!");
+            }
+            return defVal;
+        }
+
+        public static dynamic GetDefaultValue (ConditionType type, Type enumType) {
+            dynamic defVal = null;
+            if (type == Condition.ConditionType.FLOAT) {
+                defVal = 0f;
+            } else if (type == Condition.ConditionType.INT) {
+                defVal = 0;
+            } else if (type == Condition.ConditionType.BOOL) {
+                defVal = false;
+            } else if (type == Condition.ConditionType.STRING) {
+                defVal = "";
+            } else if (type == Condition.ConditionType.ENUM) {
+                defVal = Enum.GetNames(enumType).First();
             }
             return defVal;
         }

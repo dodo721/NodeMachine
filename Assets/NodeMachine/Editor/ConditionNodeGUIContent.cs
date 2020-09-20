@@ -11,7 +11,7 @@ namespace NodeMachine.Nodes {
     public class ConditionNodeGUIContent : NodeGUIContent
     {
 
-        private Dictionary<string, Condition.ConditionType> fieldNames = null;
+        private Dictionary<string, Type> fieldNames = null;
         private string[] _comparisons;
 
         public ConditionNodeGUIContent(ConditionNode node, NodeMachineEditor editor) : base(node, editor)
@@ -32,7 +32,7 @@ namespace NodeMachine.Nodes {
         }
 
         void CacheFieldNames () {
-            fieldNames = new Dictionary<string, Condition.ConditionType>();
+            fieldNames = new Dictionary<string, Type>();
             if (_editor._model.machinePropsSchema.Count == 0)
                 return;
             Dictionary<string, Type> template = _editor._model.machinePropsSchema;
@@ -40,7 +40,7 @@ namespace NodeMachine.Nodes {
                 Condition.ConditionType? conType = Condition.ParseConditionType(template[fieldName]);
                 if (conType == null)
                     continue;
-                fieldNames.Add(fieldName, (Condition.ConditionType)conType);
+                fieldNames.Add(fieldName, template[fieldName]);
             }
         }
 
@@ -91,7 +91,7 @@ namespace NodeMachine.Nodes {
             if (currentProp == -1)
             {
                 node.condition._propName = propNames[0];
-                node.condition.SetConditionType(fieldNames[propNames[0]]);
+                node.condition.SetConditionType((Condition.ConditionType)Condition.ParseConditionType(fieldNames[propNames[0]]), fieldNames[propNames[0]]);
                 currentProp = 0;
             }
             int newProp = EditorGUILayout.Popup(currentProp, propNames);
@@ -99,11 +99,13 @@ namespace NodeMachine.Nodes {
             {
                 modelNeedsSaving = true;
                 node.condition._propName = propNames[newProp];
-                node.condition.SetConditionType(fieldNames[propNames[newProp]]);
+                node.condition.SetConditionType((Condition.ConditionType)Condition.ParseConditionType(fieldNames[propNames[newProp]]), fieldNames[propNames[newProp]]);
             }
 
             // Comparison type
-            if (node.condition._valueType == Condition.ConditionType.BOOL || node.condition._valueType == Condition.ConditionType.STRING)
+            if (node.condition._valueType == Condition.ConditionType.BOOL ||
+                node.condition._valueType == Condition.ConditionType.STRING ||
+                node.condition._valueType == Condition.ConditionType.ENUM)
             {
                 string[] comparisons = { "EQUAL", "NOT_EQUAL" };
                 int currentComparison = Array.IndexOf(comparisons, node.condition._comparison.ToString());
@@ -130,8 +132,13 @@ namespace NodeMachine.Nodes {
             HashSet<string> propsCompToList = new HashSet<string>();
             propsCompToList.Add("-constant-");
             foreach (string prop in propNames) {
-                if (_editor._model.machinePropsSchema[prop] == Condition.FromConditionType(node.condition._valueType) && prop != node.condition._propName) {
-                    propsCompToList.Add(prop);
+                if (Condition.FromConditionType(node.condition._valueType).IsAssignableFrom(_editor._model.machinePropsSchema[prop]) && prop != node.condition._propName) {
+                    if (node.condition._valueType == Condition.ConditionType.ENUM) {
+                        if (_editor._model.machinePropsSchema[prop] == node.condition._enumType) {
+                            propsCompToList.Add(prop);
+                        }
+                    } else
+                        propsCompToList.Add(prop);
                 }
             }
 
@@ -186,6 +193,17 @@ namespace NodeMachine.Nodes {
                     {
                         node.condition.SetComparisonValue(newValue);
                         modelNeedsSaving = true;
+                    }
+                }
+                else if (node.condition._valueType == Condition.ConditionType.ENUM)
+                {
+                    string[] enumNames = Enum.GetNames(node.condition._enumType);
+                    int sel = Array.IndexOf(enumNames, node.condition._valueType.ToString());
+                    if (sel == -1)
+                        sel = 0;
+                    int newSel = EditorGUILayout.Popup(sel, enumNames);
+                    if (newSel != sel) {
+                        node.condition.SetComparisonValue(Enum.Parse(node.condition._enumType, enumNames[newSel]));
                     }
                 }
 

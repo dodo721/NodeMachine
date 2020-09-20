@@ -47,7 +47,9 @@ public class DebugNodeGUIContent : NodeGUIContent {
 
         int selectedProp = Array.IndexOf(fieldNames, node.propName);
         if (selectedProp == -1) {
+            Debug.Log("Could not find " + node.propName + "!");
             selectedProp = 0;
+            node.propName = "-message-";
             node.message = "Prop " + node.propName + " missing for debug node!";
         }
 

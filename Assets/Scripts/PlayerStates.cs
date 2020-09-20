@@ -28,8 +28,18 @@ public class PlayerStates : State
         HAPPY, SAD, ANGRY, CALM, CONFUSED, DETERMINED
     }
 
+    private enum TestEnum {
+        TEST1, ETST1, BOOL
+    }
+
     [UseProp]
     private PlayerEmotion emotion;
+
+    [UseProp]
+    private PlayerEmotion otherEmotion;
+
+    [UseProp]
+    private TestEnum testEnums;
 
     [Event]
     void MoveForward () {

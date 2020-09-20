@@ -95,6 +95,10 @@ namespace NodeMachine.Nodes {
             {
                 return condition.Compare((string)machine.GetProp(propName));
             }
+            else if (type == Condition.ConditionType.ENUM)
+            {
+                return condition.Compare(machine.GetProp(propName));
+            }
             return false;
         }
 
@@ -110,7 +114,7 @@ namespace NodeMachine.Nodes {
             if (!model.machinePropsSchema.ContainsKey(condition._propName) ||
                 (condition._compareMode == Condition.CompareTo.PROP && !model.machinePropsSchema.ContainsKey(condition._compPropName))) {
                 Valid = false;
-            } else if (model.machinePropsSchema[condition._propName] != Condition.FromConditionType(condition._valueType)) {
+            } else if (!Condition.FromConditionType(condition._valueType).IsAssignableFrom(model.machinePropsSchema[condition._propName])) {
                 Valid = false;
             } else
                 Valid = true;

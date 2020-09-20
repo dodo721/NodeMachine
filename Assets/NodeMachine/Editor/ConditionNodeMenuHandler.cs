@@ -29,7 +29,7 @@ namespace NodeMachine.Nodes {
                     }
                     Condition.ConditionType fieldType = (Condition.ConditionType) tryParseType;
                     string fieldName = kvp.Key;
-                    Condition condition = new Condition(fieldName, fieldType, Condition.Comparison.EQUAL, Condition.GetDefaultValue(fieldType));
+                    Condition condition = new Condition(fieldName, fieldType, Condition.Comparison.EQUAL, Condition.GetDefaultValue(fieldType, kvp.Value));
                     ConditionNode node = new ConditionNode(editor._model, condition, mousePosition);
                     editor.AddNode(node);
                 }, false, false);
