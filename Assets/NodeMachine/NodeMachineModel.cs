@@ -241,6 +241,7 @@ public class NodeMachineModel : ScriptableObject {
         NodeMachineModel model = ScriptableObject.CreateInstance<NodeMachineModel>();
         EntryNode entryNode = new EntryNode(model);
         model.AddNode(entryNode);
+        model.filepath = filepath;
         model.SaveToPath();
         DestroyImmediate(model);
         model = AssetDatabase.LoadAssetAtPath<NodeMachineModel>(filepath);

@@ -24,6 +24,13 @@ public class PlayerStates : State
 
     public GameObject deadMe;
 
+    private enum PlayerEmotion {
+        HAPPY, SAD, ANGRY, CALM, CONFUSED, DETERMINED
+    }
+
+    [UseProp]
+    private PlayerEmotion emotion;
+
     [Event]
     void MoveForward () {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);

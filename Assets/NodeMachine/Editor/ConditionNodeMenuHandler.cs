@@ -17,12 +17,12 @@ namespace NodeMachine.Nodes {
         {
             NodeMenuItem menuItem;
 
-            if (model.machinePropertiesDelegates.First().Value.Count > 0) {
+            if (model.machinePropsSchema.Count > 0) {
                 menuItem = new NodeMenuItem("Conditional/Condition", () =>
                 {
                     // TODO : CONDITIONS AND PROPERTIES WITH NO STANDARD TYPES???
-                    KeyValuePair<string, NodeMachineModel.MachinePropertyFieldDelegates> kvp = model.machinePropertiesDelegates.First().Value.First();
-                    Condition.ConditionType? tryParseType = Condition.ParseConditionType(kvp.Value.fieldType);
+                    KeyValuePair<string, Type> kvp = model.machinePropsSchema.First();
+                    Condition.ConditionType? tryParseType = Condition.ParseConditionType(kvp.Value);
                     if (tryParseType == null) {
                         EditorUtility.DisplayDialog("Error", "There was an error while creating the condition!", "OK");
                         return;
