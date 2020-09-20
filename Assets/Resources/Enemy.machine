@@ -7,80 +7,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 719.0,
-                "y": 789.250244140625,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 8,
-            "_from": 6,
-            "_to": 3,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 703.0,
-                "y": 345.0001220703125,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 5,
-            "_from": 3,
-            "_to": 5,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 790.030029296875,
-                "y": 345.18017578125,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 6,
-            "_from": 5,
-            "_to": 7,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 784.2798461914063,
-                "y": 212.93023681640626,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 1,
-            "_from": 2,
-            "_to": 1,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 670.0,
-                "y": 628.2503051757813,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 7,
-            "_from": 7,
-            "_to": 6,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 697.2498168945313,
-                "y": 212.75018310546876,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 3,
-            "_from": 3,
-            "_to": 4,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 822.5000610351563,
-                "y": 481.50018310546877,
+                "x": 634.499755859375,
+                "y": 718.2418212890625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -91,8 +19,80 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 676.0000610351563,
-                "y": 478.750244140625,
+                "x": 575.6427612304688,
+                "y": 441.7418212890625,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 5,
+            "_from": 3,
+            "_to": 5,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 700.580322265625,
+                "y": 322.46490478515627,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 6,
+            "_from": 5,
+            "_to": 8,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 754.2589111328125,
+                "y": 219.21481323242188,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 1,
+            "_from": 2,
+            "_to": 1,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 570.2855224609375,
+                "y": 575.2240600585938,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 7,
+            "_from": 7,
+            "_to": 6,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 589.5621337890625,
+                "y": 142.22378540039063,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 3,
+            "_from": 3,
+            "_to": 4,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 736.4105834960938,
+                "y": 442.96490478515627,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 8,
+            "_from": 6,
+            "_to": 3,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 595.589111328125,
+                "y": 300.0362548828125,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -103,8 +103,20 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 816.5,
-                "y": 631.000244140625,
+                "x": 731.0533447265625,
+                "y": 576.4471435546875,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 9,
+            "_from": 8,
+            "_to": 7,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 693.7587280273438,
+                "y": 119.4559326171875,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -130,8 +142,8 @@
     "_id": 1,
     "transform": {
         "serializedVersion": "2",
-        "x": -97.99996948242188,
-        "y": -321.9998779296875,
+        "x": -143.83993530273438,
+        "y": -320.3597106933594,
         "width": 160.0,
         "height": 50.0
     },
@@ -153,15 +165,15 @@
     "_id": 5,
     "transform": {
         "serializedVersion": "2",
-        "x": 130.05999755859376,
-        "y": -589.1400756835938,
+        "x": 136.0201873779297,
+        "y": -587.5401000976563,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
-        6,
-        5
+        5,
+        6
     ],
     "condition": {
         "_valueType": 0,
@@ -176,8 +188,8 @@
     "_id": 6,
     "transform": {
         "serializedVersion": "2",
-        "x": -104.00006103515625,
-        "y": -589.5001831054688,
+        "x": -159.16014099121095,
+        "y": -637.7802734375,
         "width": 160.0,
         "height": 50.0
     },
@@ -199,8 +211,8 @@
     "_id": 4,
     "transform": {
         "serializedVersion": "2",
-        "x": 135.00006103515626,
-        "y": -316.50006103515627,
+        "x": 156.27996826171876,
+        "y": -317.62005615234377,
         "width": 160.0,
         "height": 50.0
     },
@@ -210,12 +222,12 @@
         3
     ],
     "condition": {
-        "_valueType": 0,
-        "_comparison": 1,
-        "_compareMode": 1,
-        "_propName": "distToPlayer",
-        "_compPropName": "searchLength",
-        "_compareValueString": "10"
+        "_valueType": 2,
+        "_comparison": 0,
+        "_compareMode": 0,
+        "_propName": "FoundPlayer",
+        "_compPropName": "",
+        "_compareValueString": "False"
     },
     "collapsed": true
 }]},{"Type":"NodeMachine.Nodes.StateNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
@@ -237,27 +249,25 @@
     "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Searching",
-    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 },{
     "_id": 7,
     "transform": {
         "serializedVersion": "2",
-        "x": 2.499755859375,
-        "y": -721.9999389648438,
+        "x": 0.499755859375,
+        "y": -810.9999389648438,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
-        6,
-        7
+        7,
+        9
     ],
     "activeBackground": "",
     "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Attacking",
-    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 },{
     "_id": 3,
@@ -270,17 +280,33 @@
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
-        2,
         3,
         5,
+        2,
         8
     ],
     "activeBackground": "",
     "runOnEncounter": true,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Chasing",
-    "testInt": 0,
     "normalBackground": "builtin skins/darkskin/images/node2.png"
+}]},{"Type":"NodeMachine.Nodes.EventNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
+    "_id": 8,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 134.24024963378907,
+        "y": -688.7802124023438,
+        "width": 150.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node1.png",
+    "linkIDs": [
+        6,
+        9
+    ],
+    "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "eventMethodName": "SayHi",
+    "normalBackground": "builtin skins/darkskin/images/node1.png"
 }]}],
 "checkinTime":0,
 "supportParallel":True}

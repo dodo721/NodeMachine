@@ -6,49 +6,54 @@ using NodeMachine;
 ///  Holds various state behaviours
 /// </summary>
 [MachineProps("Enemy")]
+[StateTarget("Enemy")]
 public class EnemyStates : State
 {
 
     public float speed = 1;
     public float rotSpeed = 1;
+    public float lookSpeed = 1;
+
+    public GameObject vision;
 
     [UseProp]
-    public float searchLength = 10;
-
-    [UseProp]
-    public bool FoundPlayer = false;
+    private bool FoundPlayer = false;
 
     [UseProp]
     private float distToPlayer = Mathf.Infinity;
 
     public Transform player;
 
+    private float startTime;
+
     [State]
     public void Searching () {
-        GetComponent<Renderer>().material.color = Color.blue;
+        vision.GetComponent<Renderer>().material.color = new Color(1f, 0.5f, 0f);
         transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         transform.Rotate(0f, rotSpeed * Time.deltaTime, 0);
-        RaycastHit hit;
-        Color rayColor = Color.green;
-        bool hitPlayer = false;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, searchLength)) {
-            rayColor = Color.magenta;
-            if (hit.transform.tag == "Player") {
-                FoundPlayer = true;
-                hitPlayer = true;
-                rayColor = Color.red;
-            }
+    }
+
+    void OnTriggerEnter (Collider other) {
+        if (other.tag == "Player") {
+            FoundPlayer = true;
         }
-        if (!hitPlayer)
+    }
+
+    void OnTriggerExit (Collider other) {
+        if (other.tag == "Player") {
             FoundPlayer = false;
-        Debug.DrawRay(transform.position, transform.forward * searchLength, rayColor);
+        }
+    }
+
+    [Event]
+    public void StartChase () {
+        startTime = Time.time;
     }
 
     [State]
     public void Chasing () {
-        GetComponent<Renderer>().material.color = Color.red;
-        FoundPlayer = false;
-        transform.LookAt(player, Vector3.up);
+        vision.GetComponent<Renderer>().material.color = Color.red;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.position - transform.position, Vector3.up), lookSpeed * Time.deltaTime);
         transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
     }
 
@@ -57,6 +62,11 @@ public class EnemyStates : State
         GetComponent<Renderer>().material.color = Color.magenta;
     }
 
+    [Event]
+    public void SayHi () {
+        Debug.Log("Hi pal!");
+    }
+    
     void Update () {
         distToPlayer = Vector3.Distance(player.position, transform.position);
     }

@@ -19,13 +19,14 @@ public class StateAssetHandler {
         if (name == null || filepath == null)
             return null;
 
-        if (model == null)
-            if (!EditorUtility.DisplayDialog("No model", "No model was specified. You will need to target to the model yourself.", "OK", "Cancel"))
+        if (model == null) {
+            if (!EditorUtility.DisplayDialog("No model", "No model was specified. You will need to target to the model yourself.", "OK", "Cancel")) {
                 return null;
-
-        if (model._propertyType != null) {
-            if (!EditorUtility.DisplayDialog("State script exists", "This model already has an associated state script. Creating a new state script will cause conflicts. Continue?", "Yes", "No"))
+            }
+        } else if (model._propertyType != null) {
+            if (!EditorUtility.DisplayDialog("State script exists", "This model already has an associated state script. Creating a new state script will cause conflicts. Continue?", "Yes", "No")) {
                 return null;
+            }
         }
 
         string classname = Regex.Replace(name, "[^a-zA-Z0-9_]", "");
@@ -43,8 +44,10 @@ public class StateAssetHandler {
         if (model != null) {
             codeBase = codeBase.Replace("<model_name>", model.name);
             codeBase = codeBase.Replace("<warning_comment>", "");
+            codeBase = codeBase.Replace("<remove_no_model>", "").Replace("</remove_no_model>", "");
         } else {
-            codeBase = codeBase.Replace("<warning_comment>", "!!WARNING!! State script is not targeted to a model!");
+            codeBase = codeBase.Replace("<warning_comment>", "// !!WARNING!! State script is not targeted to a model!");
+            codeBase = codeBase.Replace("<model_name>", "NOT SET");
         }
 
         File.WriteAllText(chosenFilepath, codeBase);

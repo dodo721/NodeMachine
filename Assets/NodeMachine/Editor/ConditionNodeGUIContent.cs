@@ -95,7 +95,7 @@ namespace NodeMachine.Nodes {
                 currentProp = 0;
             }
             int newProp = EditorGUILayout.Popup(currentProp, propNames);
-            if (newProp != currentProp)
+            if (newProp != currentProp || !node.Valid)
             {
                 modelNeedsSaving = true;
                 node.condition._propName = propNames[newProp];
@@ -133,7 +133,7 @@ namespace NodeMachine.Nodes {
             int curPropComp = Array.IndexOf(propsCompTo, node.condition._compPropName);
             curPropComp = curPropComp == -1 ? 0 : curPropComp; // If prop isnt found default to -constant-
             int selPropComp = EditorGUILayout.Popup(curPropComp, propsCompTo);
-            if (selPropComp != curPropComp) {
+            if (selPropComp != curPropComp || !node.Valid) {
                 if (selPropComp == 0) {
                     node.condition._compareMode = Condition.CompareTo.CONSTANT;
                     node.condition._compPropName = "";

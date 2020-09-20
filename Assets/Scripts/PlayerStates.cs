@@ -7,6 +7,7 @@ using NodeMachine.States;
 ///  Holds state behaviours for Player
 /// </summary>
 [MachineProps("Player")]
+[StateTarget("Player")]
 public class PlayerStates : State
 {
 
@@ -18,22 +19,22 @@ public class PlayerStates : State
 
     public float speed;
 
-    [State]
+    [Event]
     public void MoveForward () {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
-    [State]
+    [Event]
     public void MoveBackward () {
         transform.Translate(Vector3.back * speed * Time.deltaTime);
     }
 
-    [State]
+    [Event]
     public void MoveLeft () {
         transform.Translate(Vector3.left * speed * Time.deltaTime);
     }
 
-    [State]
+    [Event]
     public void MoveRight () {
         transform.Translate(Vector3.right * speed * Time.deltaTime);
     }

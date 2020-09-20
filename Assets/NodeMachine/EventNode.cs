@@ -8,36 +8,23 @@ using NodeMachine.States;
 namespace NodeMachine.Nodes {
 
     [Serializable]
-    [NodeInfo("State")]
-    public class StateNode : RunnableNode, ISerializationCallbackReceiver
+    [NodeInfo("Event")]
+    public class EventNode : Node, ISerializationCallbackReceiver
     {
 
         public string stateTypeName;
-        public string stateMethodName;
+        public string eventMethodName;
         public Type stateType;
-        private Dictionary<Machine, Action> stateMethods;
+        private Dictionary<Machine, Action> eventMethods;
         public string normalBackground;
 
-        /*
-        public StateNode(Type state, NodeMachineModel model, Vector2 position) : base(model)
+        public EventNode(Type state, string method, NodeMachineModel model, Vector2 position) : base(model)
         {
             stateType = state;
             stateTypeName = stateType.AssemblyQualifiedName;
-            stateMethodName = "";
+            eventMethodName = method;
             transform = new Rect(position.x, position.y, 150, 75);
             background = "builtin skins/darkskin/images/node1.png";
-            normalBackground = background;
-            //activeBackground = "builtin skins/darkskin/images/node5.png";
-        }
-        */
-
-        public StateNode(Type state, string method, NodeMachineModel model, Vector2 position) : base(model)
-        {
-            stateType = state;
-            stateTypeName = stateType.AssemblyQualifiedName;
-            stateMethodName = method;
-            transform = new Rect(position.x, position.y, 150, 75);
-            background = "builtin skins/darkskin/images/node2.png";
             normalBackground = background;
             //activeBackground = "builtin skins/darkskin/images/node5.png";
         }
@@ -45,7 +32,7 @@ namespace NodeMachine.Nodes {
         public override string ToString()
         {
             string typeName = stateType != null ? stateType.ToString() : stateTypeName.Split(',')[0];
-            return typeName + "." + stateMethodName;
+            return typeName + "." + eventMethodName;
         }
 
         public void SetValid(bool valid)
@@ -64,10 +51,10 @@ namespace NodeMachine.Nodes {
                 {
                     SetValid(false);
                 } else {
-                    MethodInfo method = stateType.GetMethod(stateMethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    MethodInfo method = stateType.GetMethod(eventMethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     if (method == null)
                         SetValid(false);
-                    else if (method.GetCustomAttribute<StateAttribute>() == null)
+                    else if (method.GetCustomAttribute<EventAttribute>() == null)
                         SetValid(false);
                 }
             }
@@ -77,7 +64,7 @@ namespace NodeMachine.Nodes {
             if (!Valid)
             {
                 string typeName = stateTypeName.Split(',')[0];
-                model.PushError(ToString() + " state is missing!", "State " + ToString() + " could not be found!\nCheck if you have deleted or renamed the State script/method.", this);
+                model.PushError(ToString() + " event is missing!", "Event " + ToString() + " could not be found!\nCheck if you have deleted or renamed the State script/method.", this);
             }
         }
 
@@ -92,16 +79,6 @@ namespace NodeMachine.Nodes {
             return true;
         }
 
-        public override void OnAddLink(Link link)
-        {
-            /*
-            if (GetLinksFrom().Count == 2) {
-                link.Auto = false;
-                link._lockAutoState = true;
-            }
-            */
-        }
-
         public override bool IsBlocking()
         {
             return !Valid;
@@ -109,14 +86,18 @@ namespace NodeMachine.Nodes {
 
         public override void OnEncountered(Node prevNode, Machine machine)
         {
-            if (!Valid)
+            if (!Valid) {
                 Debug.LogError("Encountered an invalid state! Check the referenced class exists and extends State");
+                return;
+            }
+            if (eventMethods.ContainsKey(machine))
+                eventMethods[machine]();
         }
 
         public override void OnGameStart(Machine machine)
         {
-            if (stateMethods == null)
-                stateMethods = new Dictionary<Machine, Action>();
+            if (eventMethods == null)
+                eventMethods = new Dictionary<Machine, Action>();
 
             if (Valid)
             {
@@ -124,23 +105,17 @@ namespace NodeMachine.Nodes {
                 if (state == null)
                     state = machine.gameObject.AddComponent(stateType) as State;
 
-                stateMethods.Add(machine, (Action) Delegate.CreateDelegate(typeof(Action), state, stateMethodName));
+                eventMethods.Add(machine, (Action) Delegate.CreateDelegate(typeof(Action), state, eventMethodName));
             }
             else
             {
-                throw new Exception("Could not add State for " + ToString() + " as it could not be found!");
+                throw new Exception("Could not add Event for " + ToString() + " as it could not be found!");
             }
         }
 
-        public override void Checkin(Machine machine)
-        {
-            if (stateMethods.ContainsKey(machine))
-                stateMethods[machine]();
-        }
-
-        public static StateNode GetStateNodeFromMethod (NodeMachineModel model, Type type, string methodName) {
-            foreach (StateNode stateNode in model.GetNodes<StateNode>()) {
-                if (stateNode.stateType == type && stateNode.stateMethodName == methodName)
+        public static EventNode GetEventNodeFromMethod (NodeMachineModel model, Type type, string methodName) {
+            foreach (EventNode stateNode in model.GetNodes<EventNode>()) {
+                if (stateNode.stateType == type && stateNode.eventMethodName == methodName)
                     return stateNode;
             }
             return null;

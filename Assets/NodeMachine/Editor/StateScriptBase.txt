@@ -7,6 +7,7 @@ using NodeMachine.States;
 ///  Holds state behaviours for <model_name>
 /// </summary>
 [MachineProps("<model_name>")]
+[StateTarget("<model_name>")]
 public class <name> : State
 {
 
@@ -19,13 +20,13 @@ public class <name> : State
         
     }
 
-    // Runs every frame as normal
-    void Update () {
+    // Runs on game start
+    void Start () {
 
-        // Runs when any state method in this class is running
-        if (running) {
-            
-        }
+    }
+
+    // Runs every frame
+    void Update () {
 
     }
 

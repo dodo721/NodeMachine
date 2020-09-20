@@ -107,7 +107,8 @@ namespace NodeMachine.Nodes {
         }
 
         public void Validate () {
-            if (!model.machinePropsSchema.ContainsKey(condition._propName)) {
+            if (!model.machinePropsSchema.ContainsKey(condition._propName) ||
+                (condition._compareMode == Condition.CompareTo.PROP && !model.machinePropsSchema.ContainsKey(condition._compPropName))) {
                 Valid = false;
             } else if (model.machinePropsSchema[condition._propName] != Condition.FromConditionType(condition._valueType)) {
                 Valid = false;
