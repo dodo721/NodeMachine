@@ -33,11 +33,11 @@ namespace NodeMachine.Nodes {
 
         void CacheFieldNames () {
             fieldNames = new Dictionary<string, Condition.ConditionType>();
-            if (_editor._model.machinePropertiesDelegates.Count == 0)
+            if (_editor._model.machinePropsSchema.Count == 0)
                 return;
-            Dictionary<string, NodeMachineModel.MachinePropertyFieldDelegates> template = _editor._model.machinePropertiesDelegates.First().Value;
+            Dictionary<string, Type> template = _editor._model.machinePropsSchema;
             foreach (string fieldName in template.Keys) {
-                Condition.ConditionType? conType = Condition.ParseConditionType(template[fieldName].fieldType);
+                Condition.ConditionType? conType = Condition.ParseConditionType(template[fieldName]);
                 if (conType == null)
                     continue;
                 fieldNames.Add(fieldName, (Condition.ConditionType)conType);
@@ -105,9 +105,15 @@ namespace NodeMachine.Nodes {
             // Comparison type
             if (node.condition._valueType == Condition.ConditionType.BOOL || node.condition._valueType == Condition.ConditionType.STRING)
             {
-                EditorGUILayout.Popup(0, new string[] { "EQUAL" });
-                if (node.condition._comparison != Condition.Comparison.EQUAL)
-                    node.condition._comparison = Condition.Comparison.EQUAL;
+                string[] comparisons = { "EQUAL", "NOT_EQUAL" };
+                int currentComparison = Array.IndexOf(comparisons, node.condition._comparison.ToString());
+                currentComparison = currentComparison == -1 ? 0 : currentComparison;
+                int newComparison = EditorGUILayout.Popup(currentComparison, comparisons);
+                if (newComparison != currentComparison)
+                {
+                    node.condition._comparison = Condition.ComparisonFromString(_comparisons[newComparison]);
+                    modelNeedsSaving = true;
+                }
             }
             else
             {

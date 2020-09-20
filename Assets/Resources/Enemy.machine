@@ -7,8 +7,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 798.4998168945313,
-                "y": 716.2498779296875,
+                "x": 974.214111328125,
+                "y": 780.0269165039063,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -19,8 +19,8 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 556.0800170898438,
-                "y": 301.5700378417969,
+                "x": 630.5357055664063,
+                "y": 403.0805358886719,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -31,32 +31,8 @@
             "_to": 5,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 695.0100708007813,
-                "y": 180.47984313964845,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 9,
-            "_from": 8,
-            "_to": 7,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 685.7498168945313,
-                "y": -47.7501220703125,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 7,
-            "_from": 7,
-            "_to": 6,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 570.669677734375,
-                "y": -21.390167236328126,
+                "x": 710.803466796875,
+                "y": 299.04473876953127,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -67,20 +43,8 @@
             "_to": 4,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 745.1399536132813,
-                "y": 303.93988037109377,
-                "width": 25.0,
-                "height": 25.0
-            }
-        },
-        {
-            "_id": 8,
-            "_from": 6,
-            "_to": 3,
-            "_transform": {
-                "serializedVersion": "2",
-                "x": 577.419921875,
-                "y": 155.35975646972657,
+                "x": 801.8392333984375,
+                "y": 404.19647216796877,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -91,8 +55,8 @@
             "_to": 8,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 753.510009765625,
-                "y": 63.97979736328125,
+                "x": 726.7409057617188,
+                "y": 191.48245239257813,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -103,8 +67,8 @@
             "_to": 1,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 391.0798034667969,
-                "y": 494.57012939453127,
+                "x": 486.7140808105469,
+                "y": 575.4020385742188,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -115,8 +79,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 900.6397705078125,
-                "y": 494.43988037109377,
+                "x": 940.678466796875,
+                "y": 574.2857666015625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -127,8 +91,68 @@
             "_to": 1,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 711.579833984375,
-                "y": 492.070068359375,
+                "x": 769.3748779296875,
+                "y": 573.1698608398438,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 1,
+            "_from": 2,
+            "_to": 10,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 836.714111328125,
+                "y": 676.723388671875,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 10,
+            "_from": 9,
+            "_to": 11,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 519.23193359375,
+                "y": 729.134033203125,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 11,
+            "_from": 11,
+            "_to": 12,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 682.6963500976563,
+                "y": 759.7144775390625,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 13,
+            "_from": 12,
+            "_to": 2,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 885.3748779296875,
+                "y": 726.0090942382813,
+                "width": 25.0,
+                "height": 25.0
+            }
+        },
+        {
+            "_id": 4,
+            "_from": 10,
+            "_to": 9,
+            "_transform": {
+                "serializedVersion": "2",
+                "x": 580.8390502929688,
+                "y": 678.95556640625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -139,8 +163,8 @@
     "_id": 0,
     "transform": {
         "serializedVersion": "2",
-        "x": 32.0,
-        "y": 103.0,
+        "x": 316.99993896484377,
+        "y": 118.00006103515625,
         "width": 150.0,
         "height": 75.0
     },
@@ -178,19 +202,19 @@
     "_id": 5,
     "transform": {
         "serializedVersion": "2",
-        "x": 136.0201873779297,
-        "y": -587.5401000976563,
+        "x": 37.95981216430664,
+        "y": -578.39990234375,
         "width": 160.0,
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
     "linkIDs": [
-        5,
-        6
+        6,
+        5
     ],
     "condition": {
         "_valueType": 0,
-        "_comparison": 3,
+        "_comparison": 5,
         "_compareMode": 0,
         "_propName": "distToPlayer",
         "_compPropName": "",
@@ -198,34 +222,11 @@
     },
     "collapsed": true
 },{
-    "_id": 6,
-    "transform": {
-        "serializedVersion": "2",
-        "x": -159.16014099121095,
-        "y": -637.7802734375,
-        "width": 160.0,
-        "height": 50.0
-    },
-    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
-    "linkIDs": [
-        7,
-        8
-    ],
-    "condition": {
-        "_valueType": 0,
-        "_comparison": 2,
-        "_compareMode": 0,
-        "_propName": "distToPlayer",
-        "_compPropName": "-constant-",
-        "_compareValueString": "1.5"
-    },
-    "collapsed": true
-},{
     "_id": 4,
     "transform": {
         "serializedVersion": "2",
-        "x": 176.27996826171876,
-        "y": -340.62005615234377,
+        "x": 181.8799591064453,
+        "y": -342.86004638671877,
         "width": 160.0,
         "height": 50.0
     },
@@ -243,6 +244,52 @@
         "_compareValueString": "False"
     },
     "collapsed": true
+},{
+    "_id": 10,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 8.999955177307129,
+        "y": -113.39988708496094,
+        "width": 160.0,
+        "height": 50.0
+    },
+    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "linkIDs": [
+        1,
+        4
+    ],
+    "condition": {
+        "_valueType": 0,
+        "_comparison": 1,
+        "_compareMode": 0,
+        "_propName": "startAvoidingWallTime",
+        "_compPropName": "-constant-",
+        "_compareValueString": "0"
+    },
+    "collapsed": true
+},{
+    "_id": 11,
+    "transform": {
+        "serializedVersion": "2",
+        "x": -128.9998779296875,
+        "y": -1.00006103515625,
+        "width": 160.0,
+        "height": 50.0
+    },
+    "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "linkIDs": [
+        10,
+        11
+    ],
+    "condition": {
+        "_valueType": 0,
+        "_comparison": 3,
+        "_compareMode": 1,
+        "_propName": "timeSinceAvoidWallStart",
+        "_compPropName": "avoidWallTime",
+        "_compareValueString": "1"
+    },
+    "collapsed": true
 }]},{"Type":"NodeMachine.Nodes.StateNode, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null", "Items":[{
     "_id": 2,
     "transform": {
@@ -256,31 +303,14 @@
     "linkIDs": [
         0,
         15,
-        14
+        14,
+        1,
+        13
     ],
     "activeBackground": "",
     "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Searching",
-    "normalBackground": "builtin skins/darkskin/images/node2.png"
-},{
-    "_id": 7,
-    "transform": {
-        "serializedVersion": "2",
-        "x": 0.499755859375,
-        "y": -810.9999389648438,
-        "width": 150.0,
-        "height": 75.0
-    },
-    "background": "builtin skins/darkskin/images/node2.png",
-    "linkIDs": [
-        7,
-        9
-    ],
-    "activeBackground": "",
-    "runOnEncounter": false,
-    "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-    "stateMethodName": "Attacking",
     "normalBackground": "builtin skins/darkskin/images/node2.png"
 },{
     "_id": 3,
@@ -294,9 +324,8 @@
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
         3,
-        5,
         2,
-        8
+        5
     ],
     "activeBackground": "",
     "runOnEncounter": true,
@@ -307,14 +336,16 @@
     "_id": 9,
     "transform": {
         "serializedVersion": "2",
-        "x": -316.0002136230469,
+        "x": -308.1602478027344,
         "y": -71.49993896484375,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
     "linkIDs": [
-        12
+        12,
+        10,
+        4
     ],
     "activeBackground": "",
     "runOnEncounter": false,
@@ -325,18 +356,34 @@
     "_id": 8,
     "transform": {
         "serializedVersion": "2",
-        "x": 131.00009155273438,
-        "y": -690.5001831054688,
+        "x": 49.70002365112305,
+        "y": -698.4395751953125,
         "width": 150.0,
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
     "linkIDs": [
-        6,
-        9
+        6
     ],
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "eventMethodName": "KillPlayer",
+    "normalBackground": "builtin skins/darkskin/images/node1.png"
+},{
+    "_id": 12,
+    "transform": {
+        "serializedVersion": "2",
+        "x": 118.0,
+        "y": -2.99993896484375,
+        "width": 150.0,
+        "height": 75.0
+    },
+    "background": "builtin skins/darkskin/images/node1.png",
+    "linkIDs": [
+        11,
+        13
+    ],
+    "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "eventMethodName": "StopAvoidingWall",
     "normalBackground": "builtin skins/darkskin/images/node1.png"
 }]}],
 "checkinTime":0,

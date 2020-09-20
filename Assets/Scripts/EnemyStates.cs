@@ -11,6 +11,7 @@ public class EnemyStates : State
 {
 
     public float speed = 1;
+    public float chaseMultiplier = 2;
     public float rotSpeed = 1;
     public float lookSpeed = 1;
 
@@ -23,10 +24,15 @@ public class EnemyStates : State
     private float startAvoidingWallTime = 0;
 
     [UseProp]
+    private float timeSinceAvoidWallStart = 0;
+
+    [UseProp]
     public float avoidWallTime = 1;
 
     [UseProp]
     private float distToPlayer = Mathf.Infinity;
+
+    private string Hola;
 
     public PlayerStates player;
 
@@ -44,7 +50,6 @@ public class EnemyStates : State
             RaycastHit hit;
             int layerMask = (1 << 9) | (1 << 2);
             if (Physics.Raycast(transform.position, player.transform.position - transform.position, out hit, layerMask)) {
-                Debug.Log("Found " + hit.collider.tag);
                 if (hit.collider.tag == "Player") {
                     FoundPlayer = true;
                 }
@@ -69,24 +74,24 @@ public class EnemyStates : State
 
     [State]
     public void Chasing () {
-        vision.GetComponent<Renderer>().material.color = Color.red;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up), lookSpeed * Time.deltaTime);
-        transform.Translate(Vector3.forward * Time.deltaTime * speed, Space.Self);
-    }
-
-    [State]
-    public void Attacking () {
+        if (player != null) {
+            vision.GetComponent<Renderer>().material.color = Color.red;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up), lookSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * Time.deltaTime * speed * chaseMultiplier, Space.Self);
+        }
     }
 
     [State]
     private void AvoidWall () {
         transform.Translate(Vector3.back * Time.deltaTime * speed);
         transform.Rotate(0f, rotSpeed * Time.deltaTime, 0);
+        timeSinceAvoidWallStart = Time.time - startAvoidingWallTime;
     }
 
     [Event]
     private void StopAvoidingWall () {
         startAvoidingWallTime = 0;
+        timeSinceAvoidWallStart = 0;
     }
 
     [Event]
@@ -107,6 +112,11 @@ public class EnemyStates : State
                     FoundPlayer = false;
             }
         }
+    }
+
+    void FixedUpdate () {
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     }
 
 }

@@ -7,7 +7,7 @@ namespace NodeMachine {
     public class Condition : ISerializationCallbackReceiver {
         
         public enum Comparison {
-            EQUAL, GREATER_THAN, GREATER_OR_EQUAL, LESS_THAN, LESS_OR_EQUAL
+            EQUAL, NOT_EQUAL, GREATER_THAN, GREATER_OR_EQUAL, LESS_THAN, LESS_OR_EQUAL
         }
         
         public enum ConditionType {
@@ -55,6 +55,8 @@ namespace NodeMachine {
                 switch (_comparison) {
                     case Comparison.EQUAL:
                         return typed_compare == typed_compareTo;
+                    case Comparison.NOT_EQUAL:
+                        return typed_compare != typed_compareTo;
                     case Comparison.GREATER_THAN:
                         return typed_compareTo > typed_compare;
                     case Comparison.GREATER_OR_EQUAL:
@@ -68,8 +70,10 @@ namespace NodeMachine {
             } else if (_valueType == ConditionType.BOOL || _valueType == ConditionType.STRING) {
                 if (_comparison == Comparison.EQUAL) {
                     return typed_compare == typed_compareTo;
+                } else if (_comparison == Comparison.NOT_EQUAL) {
+                    return typed_compare != typed_compareTo;
                 } else {
-                    throw new Exception ("Comparisons of type Bool or String can only use EQUALS for Conditions!");
+                    throw new Exception ("Comparisons of type Bool or String can only use EQUAL or NOT_EQUAL for Conditions!");
                 }
             } else {
                 throw new Exception("Unrecognized Condition Comparison type!");
@@ -204,6 +208,9 @@ namespace NodeMachine {
             switch (_comparison) {
                 case (Comparison.EQUAL):
                     comparitor = "==";
+                    break;
+                case (Comparison.NOT_EQUAL):
+                    comparitor = "!=";
                     break;
                 case (Comparison.GREATER_THAN):
                     comparitor = ">";
