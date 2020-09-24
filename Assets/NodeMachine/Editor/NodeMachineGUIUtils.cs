@@ -14,16 +14,19 @@ namespace NodeMachine.Util {
         private static GUIStyle _stateNodeStyle = null;
         private static GUIStyle _linkBoxStyle = null;
         private static GUIStyle _linkBoxStyleClicked = null;
+        private static GUIStyle _linkBoxStyle_t = null;
+        private static GUIStyle _linkBoxStyleClicked_t = null;
         private static GUIStyle _nothingOpenStyle = null;
         private static Dictionary<string, Texture2D> cachedBackgrounds = new Dictionary<string, Texture2D>();
         private static Dictionary<Node, NodeGUIContent> cachedNodeGUIContents = new Dictionary<Node, NodeGUIContent>();
 
         private static Texture2D arrowCapTex = null;
-        private static Texture2D programmaticLineTex = null;
-        private static Texture2D staticLineTex = null;
-        private static Texture2D conditionLineTex = null;
+        private static Texture2D arrowCapTex_t = null;
+        private static Texture2D whiteLineTex_t = null;
         private static Texture2D greyBoxTex = null;
+        private static Texture2D greyBoxTex_t = null;
         private static Texture2D greyBoxInvertedTex = null;
+        private static Texture2D greyBoxInvertedTex_t = null;
         private static Texture2D runningIconTex = null;
         private static Texture2D nodeActive = null;
 
@@ -36,11 +39,12 @@ namespace NodeMachine.Util {
         public static void Init()
         {
             arrowCapTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/arrow-icon-14-16.png") as Texture2D;
-            programmaticLineTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/programmatic_line.png") as Texture2D;
-            staticLineTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/static_line.png") as Texture2D;
-            conditionLineTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/empty_line.png") as Texture2D;
+            arrowCapTex_t = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/arrow-icon-14-16_t.png") as Texture2D;
+            whiteLineTex_t = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/white_line_t.png") as Texture2D;
             greyBoxTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/small-grey-box.png") as Texture2D;
+            greyBoxTex_t = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/small-grey-box.png_t") as Texture2D;
             greyBoxInvertedTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/small-grey-box-inverted.png") as Texture2D;
+            greyBoxInvertedTex_t = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/small-grey-box-inverted_t.png") as Texture2D;
             runningIconTex = EditorGUIUtility.Load("Assets/NodeMachine/Editor/Editor Resources/running.png") as Texture2D;
             nodeActive = EditorGUIUtility.Load("Assets/Editor Resource/node-active.png") as Texture2D;
 
@@ -68,6 +72,18 @@ namespace NodeMachine.Util {
             _linkBoxStyleClicked.border = new RectOffset(1, 1, 1, 1);
             _linkBoxStyleClicked.padding = new RectOffset(1, 1, 1, 1);
             _linkBoxStyleClicked.alignment = TextAnchor.MiddleCenter;
+
+            _linkBoxStyle_t = new GUIStyle();
+            _linkBoxStyle_t.normal.background = greyBoxTex_t;
+            _linkBoxStyle_t.border = new RectOffset(1, 1, 1, 1);
+            _linkBoxStyle_t.padding = new RectOffset(1, 1, 1, 1);
+            _linkBoxStyle_t.alignment = TextAnchor.MiddleCenter;
+
+            _linkBoxStyleClicked_t = new GUIStyle();
+            _linkBoxStyleClicked_t.normal.background = greyBoxInvertedTex_t;
+            _linkBoxStyleClicked_t.border = new RectOffset(1, 1, 1, 1);
+            _linkBoxStyleClicked_t.padding = new RectOffset(1, 1, 1, 1);
+            _linkBoxStyleClicked_t.alignment = TextAnchor.MiddleCenter;
         }
 
         /// <summary>
@@ -88,6 +104,9 @@ namespace NodeMachine.Util {
         /// <param name="editor">The <c>NodeMachineEditor</c> to draw to.</param>
         public static bool DrawNode(Node node, string overrideBackground, NodeMachineEditor editor, Event e)
         {
+            if (!node.visible)
+                if (!editor._showInivisibleNodes)
+                    return false;
             Vector2 drawnNodePos = (node.transform.position / editor._zoom) + editor._offset;
 
             Rect nodeRect = new Rect(
@@ -166,11 +185,15 @@ namespace NodeMachine.Util {
         /// <summary>
         ///  Draws a link between 2 nodes.
         /// </summary>
-        /// <param name="node">The link to draw.</param>
+        /// <param name="link">The link to draw.</param>
         /// <param name="active">For live preview: true if the link is currently in use.</param>
         /// <param name="editor">The <c>NodeMachineEditor</c> to draw to.</param>
         public static void DrawLink(Link link, bool active, NodeMachineEditor editor)
         {
+            if (!editor._model.GetNodeFromID(link._from).visible || !editor._model.GetNodeFromID(link._to).visible)
+                if (!editor._showInivisibleNodes)
+                    return;
+            
             Rect start = editor._model.GetNodeFromID(link._from).drawnTransform;
             Rect end = editor._model.GetNodeFromID(link._to).drawnTransform;
             start.position -= editor._nodeEditor.position;
@@ -197,6 +220,47 @@ namespace NodeMachine.Util {
             float arrowAngle = Mathf.Rad2Deg * Mathf.Atan2(yDis, xDis);
             GUIUtility.RotateAroundPivot(arrowAngle, arrowPos);
             GUI.DrawTexture(new Rect(arrowPos.x - 5, arrowPos.y - 5, 10, 10), arrowCapTex, ScaleMode.StretchToFill);
+            GUIUtility.RotateAroundPivot(-arrowAngle, arrowPos);
+        }
+
+        /// <summary>
+        ///  Draws a transparent link between 2 nodes.
+        /// </summary>
+        /// <param name="link">The link to draw.</param>
+        /// <param name="active">For live preview: true if the link is currently in use.</param>
+        /// <param name="editor">The <c>NodeMachineEditor</c> to draw to.</param>
+        public static void DrawTransparentLink(Link link, bool active, NodeMachineEditor editor)
+        {
+            if (!editor._model.GetNodeFromID(link._from).visible || !editor._model.GetNodeFromID(link._to).visible)
+                if (!editor._showInivisibleNodes)
+                    return;
+            
+            Rect start = editor._model.GetNodeFromID(link._from).drawnTransform;
+            Rect end = editor._model.GetNodeFromID(link._to).drawnTransform;
+            start.position -= editor._nodeEditor.position;
+            end.position -= editor._nodeEditor.position;
+            float dirOffset = start.y > end.y ? -15 / editor._zoom : 15 / editor._zoom;
+            Vector3 startPos = new Vector3(start.x + start.width / 2 + dirOffset, start.y + start.height / 2, 0);
+            Vector3 endPos = new Vector3(end.x + end.width / 2 + dirOffset, end.y + end.height / 2, 0);
+            Vector2 arrowPos = new Vector2((endPos.x - startPos.x) / 2 + startPos.x, (endPos.y - startPos.y) / 2 + startPos.y);
+            Handles.color = Color.white;
+
+            Handles.DrawAAPolyLine(whiteLineTex_t, 5f, startPos, endPos);
+
+            Rect transform = new Rect(arrowPos.x - (25 / 2), arrowPos.y - (25 / 2), 25f, 25f);
+            link._transform = new Rect(transform.position + editor._nodeEditor.position, transform.size);
+
+            GUIStyle style = _linkBoxStyle_t;
+            if (active)
+                style = _linkBoxStyleClicked_t;
+
+            GUI.Box(transform, "", style);
+
+            float xDis = endPos.x - startPos.x;
+            float yDis = endPos.y - startPos.y;
+            float arrowAngle = Mathf.Rad2Deg * Mathf.Atan2(yDis, xDis);
+            GUIUtility.RotateAroundPivot(arrowAngle, arrowPos);
+            GUI.DrawTexture(new Rect(arrowPos.x - 5, arrowPos.y - 5, 10, 10), arrowCapTex_t, ScaleMode.StretchToFill);
             GUIUtility.RotateAroundPivot(-arrowAngle, arrowPos);
         }
 
@@ -257,6 +321,8 @@ namespace NodeMachine.Util {
             Handles.DrawLine(new Vector3(start.x, start.y, 0), new Vector3(end.x, end.y, 0));
         }
 
+        // TODO: needed?
+        /*
         public static void DrawArrow(Rect start, Rect end, bool programmatic, NodeMachineEditor editor)
         {
             Vector3 startPos = new Vector3(start.x + start.width / 2, start.y + start.height / 2, 0);
@@ -273,7 +339,7 @@ namespace NodeMachine.Util {
             GUIUtility.RotateAroundPivot(arrowAngle, arrowPos);
             GUI.DrawTexture(new Rect(arrowPos.x - 5, arrowPos.y - 5, 10, 10), arrowCapTex, ScaleMode.StretchToFill);
             GUIUtility.RotateAroundPivot(-arrowAngle, arrowPos);
-        }
+        }*/
 
         public static void DrawArrow(Rect start, Vector2 end, NodeMachineEditor editor)
         {

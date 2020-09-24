@@ -66,11 +66,6 @@ namespace NodeMachine.Nodes {
             return links.ToArray();
         }
 
-        public override bool CanCreateLinkFrom()
-        {
-            return true;
-        }
-
         bool ConditionMet(Machine machine)
         {
             Condition.ConditionType type = condition._valueType;

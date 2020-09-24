@@ -6,6 +6,9 @@ using System.Linq;
 using UnityEngine;
 using NodeMachine.Nodes;
 using NodeMachine.States;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace NodeMachine {
 
@@ -32,12 +35,20 @@ namespace NodeMachine {
         {
             get { return _currentLinks; }
         }
-        private HashSet<Node> triedNodes = new HashSet<Node>();
         private float _lastCheckinTime = 0f;
         private bool triggerModelCheckinEvent = false;
         private bool loadedInitialProps;
         public delegate void MachineChangeEvent ();
         public event MachineChangeEvent OnMachineChange;
+        public event Action OnCheckin;
+
+        public class NodePath {
+            public NodePath fromPath;
+            public Node currentNode;
+            public NodePath toPath;
+        }
+        public bool recordNodePaths = false;
+        public HashSet<NodePath> checkinNodePaths;
 
         void OnEnable () {
             if (_model != null)
@@ -79,6 +90,13 @@ namespace NodeMachine {
         }
 
         void OnValidate () {
+#if UNITY_EDITOR
+            if (!optimiseParallel && !EditorApplication.isPlayingOrWillChangePlaymode) {
+                if (!EditorUtility.DisplayDialog("WARNING", "Using machines without the Optimise Parallel feature makes them LOOP UNSAFE. Are you sure you want to do this?", "Yes", "No")) {
+                    optimiseParallel = true;
+                }
+            }
+#endif
             if (_model != null) {
                 if (propsObject != null && !_model.machinePropertiesDelegates.ContainsKey(propsObject)) {
                     ReloadProperties();
@@ -117,6 +135,8 @@ namespace NodeMachine {
             DoNodeFollow();
             if (triggerModelCheckinEvent)
                 _model.TriggerCheckinEvent();
+            if (OnCheckin != null)
+                OnCheckin();
         }
 
         public void MakeEditorCheckinEventTarget(bool isTarget)
@@ -131,14 +151,43 @@ namespace NodeMachine {
         bool DoNodeFollow()
         {
             _currentLinks.Clear();
-            triedNodes.Clear();
             HashSet<RunnableNode> nextNodes = new HashSet<RunnableNode>();
             HashSet<RunnableNode> testNodes = new HashSet<RunnableNode>(_currentRunnables);
             foreach (RunnableNode node in _activeNodes) {
                 testNodes.Add(node);
             }
+
+            // Set up node paths
+            Dictionary<RunnableNode, NodePath> paths = null;
+            if (checkinNodePaths == null)
+                checkinNodePaths = new HashSet<NodePath>();
+            if (recordNodePaths) {
+                paths = new Dictionary<RunnableNode, NodePath>();
+                foreach (RunnableNode node in testNodes) {
+                    NodePath nodePath = new NodePath();
+                    foreach (NodePath path in checkinNodePaths) {
+                        if (path.fromPath.currentNode == node) {
+                            nodePath.fromPath = path;
+                            break;
+                        }
+                    }
+                    nodePath.currentNode = node;
+                    checkinNodePaths.Add(nodePath);
+                    paths.Add(node, nodePath);
+                }
+            }
+            checkinNodePaths.Clear();
+
+            // Run node follows
             foreach (RunnableNode node in testNodes) {
-                HashSet<RunnableNode> branchedNodes = FollowNode(node, null, node);
+                HashSet<RunnableNode> branchedNodes;
+
+                if (recordNodePaths) {
+                    branchedNodes = FollowNode(node, null, node, new HashSet<Node>(), paths[node]);
+                } else {
+                    branchedNodes = FollowNode(node, null, node, new HashSet<Node>(), null);
+                }
+
                 foreach (RunnableNode branchedNode in branchedNodes) {
                     nextNodes.Add(branchedNode);
                 }
@@ -163,11 +212,19 @@ namespace NodeMachine {
             return false;
         }
 
-        HashSet<RunnableNode> FollowNode(Node currentNode, Node prevNode, RunnableNode lastRunnable)
+        HashSet<RunnableNode> FollowNode(Node currentNode, Node prevNode, RunnableNode lastRunnable, HashSet<Node> triedNodes, NodePath path)
         {
             // If this node has already been tried, it's path has already been followed - cancel this branch
-            if (triedNodes.Contains(currentNode) && optimiseParallel)
+            if (triedNodes.Contains(currentNode) && optimiseParallel) {
+                if (recordNodePaths)
+                    checkinNodePaths.Add(path);
                 return new HashSet<RunnableNode>();
+            }
+            /*if (triedNodes.Contains(currentNode) && optimiseParallel) {
+                HashSet<RunnableNode> retNodes = new HashSet<RunnableNode>();
+                retNodes.Add(lastRunnable);
+                return retNodes;
+            }*/
             // Node has been encountered - trigger the event
             currentNode.OnEncountered(prevNode, this);
             // The current chain's HashSet of runnables to stop at
@@ -175,32 +232,53 @@ namespace NodeMachine {
             runnables.Add(lastRunnable);
             // The HashSet of nodes to test next
             HashSet<Node> nextNodes = new HashSet<Node>();
-            // Get links from the current node to test next
-            // Use node specified links if specified
-            Link[] links = currentNode.NextLinks();
-            if (links == null)
-            {
-                links = _model.GetOutputLinks(currentNode).ToArray();
-            }
-            // Store the node in the loop checking HashSet if doing so
-            if (optimiseParallel)
-                triedNodes.Add(currentNode);
-            // If the current node is blocking, kill the chain
-            if (currentNode.IsBlocking()) {
-                return runnables;
-            }
-            // Test connected links
-            foreach (Link link in links)
-            {
-                Node nextNode = _model.GetNodeFromID(link._to);
-                // Add the tested link to the current link chain for live preview
-                _currentLinks.Add(link);
-                nextNodes.Add(nextNode);
+            // Get nodes from the current node to test next
+            // If not specified, default to link testing
+            Node[] givenNextNodes = currentNode.NextNodes();
+            if (givenNextNodes != null) {
+                foreach (Node node in givenNextNodes) {
+                    nextNodes.Add(node);
+                }
+            } else {
+                // Get links from the current node to test next
+                // Use node specified links if specified
+                Link[] links = currentNode.NextLinks();
+                if (links == null)
+                {
+                    links = _model.GetOutputLinks(currentNode).ToArray();
+                }
+                // Store the node in the loop checking HashSet if doing so
+                if (optimiseParallel)
+                    triedNodes.Add(currentNode);
+                // If the current node is blocking, kill the chain
+                if (currentNode.IsBlocking()) {
+                    if (recordNodePaths)
+                        checkinNodePaths.Add(path);
+                    return runnables;
+                }
+                // Test connected links
+                foreach (Link link in links)
+                {
+                    Node nextNode = _model.GetNodeFromID(link._to);
+                    // Add the tested link to the current link chain for live preview
+                    _currentLinks.Add(link);
+                    nextNodes.Add(nextNode);
+                }
             }
             currentNode.OnPassed(nextNodes, this);
             foreach (Node nextNode in nextNodes) {
+                // Record next node as an entry in the path
+                NodePath newPath = null;
+                if (recordNodePaths) {
+                    newPath = new NodePath();
+                    newPath.currentNode = nextNode;
+                    newPath.fromPath = path;
+                    path.toPath = newPath;
+                }
                 // If nextNode is an EndNode, kill the chain
                 if (nextNode is EndNode) {
+                    if (recordNodePaths)
+                        checkinNodePaths.Add(newPath);
                     return new HashSet<RunnableNode>();
                 }
                 // If nextNode is a RunnableNode, store it as the next return point.
@@ -208,7 +286,9 @@ namespace NodeMachine {
                 RunnableNode makeLastRunnable = lastRunnable;
                 if (nextNode is RunnableNode)
                     makeLastRunnable = nextNode as RunnableNode;
-                HashSet<RunnableNode> nextRunnables = FollowNode(nextNode, currentNode, makeLastRunnable);
+                // Set up new triedNodes listing
+                HashSet<Node> newTriedNodes = new HashSet<Node>(triedNodes);
+                HashSet<RunnableNode> nextRunnables = FollowNode(nextNode, currentNode, makeLastRunnable, newTriedNodes, newPath);
                 // If the model doesn't support parallel states, use first come first serve
                 if (!_model.supportParallel)
                     return nextRunnables;
@@ -231,6 +311,8 @@ namespace NodeMachine {
             if (runnableChange) {
                 runnables.Remove(lastRunnable);
             }
+            if (recordNodePaths)
+                checkinNodePaths.Add(path);
             return runnables;
         }
 

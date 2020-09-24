@@ -169,6 +169,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node4.png",
+    "visible": true,
     "linkIDs": [
         0
     ],
@@ -184,6 +185,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         2,
         12,
@@ -209,6 +211,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         6,
         5
@@ -233,6 +236,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         3,
         14
@@ -257,6 +261,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         1,
         4
@@ -281,6 +286,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         10,
         11
@@ -305,6 +311,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
+    "visible": true,
     "linkIDs": [
         0,
         15,
@@ -327,13 +334,14 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
+    "visible": true,
     "linkIDs": [
         3,
         2,
         5
     ],
     "activeBackground": "",
-    "runOnEncounter": true,
+    "runOnEncounter": false,
     "stateTypeName": "EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "stateMethodName": "Chasing",
     "normalBackground": "builtin skins/darkskin/images/node2.png"
@@ -347,6 +355,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node2.png",
+    "visible": true,
     "linkIDs": [
         12,
         10,
@@ -367,6 +376,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         6
     ],
@@ -383,6 +393,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         11,
         13

@@ -25,6 +25,8 @@ public class StateNodeGUIContent : NodeGUIContent {
         GUILayout.BeginVertical();
         GUILayout.Label(node.Valid ? node.stateType.ToString() : node.ToString(), smallText);
         GUILayout.Label(node.Valid ? node.stateMethodName : "State not found!", largeText);
+        if (node.runOnEncounter)
+            GUILayout.Label("Run on encounter", smallText);
         GUILayout.EndVertical();
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();

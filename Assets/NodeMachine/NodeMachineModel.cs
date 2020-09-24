@@ -25,6 +25,8 @@ public class NodeMachineModel : ScriptableObject {
     [SerializeField]
     private List<Node> nodesList = new List<Node>();
 
+    private Dictionary<string, FunctionNode> _functions = new Dictionary<string, FunctionNode>();
+
     public static readonly string STATE_MACHINE_FILE_EXT = "machine";
 
     public float CheckinTime {
@@ -451,6 +453,28 @@ public class NodeMachineModel : ScriptableObject {
             cachedNodeTypes.Add(nodeType, new List<Node>());
         }
         cachedNodeTypes[nodeType].Add(node);
+        if (node is FunctionNode) {
+            if (_functions == null)
+                _functions = new Dictionary<string, FunctionNode>();
+            FunctionNode funcNode = node as FunctionNode;
+            _functions.Add(funcNode.name, funcNode);
+        }
+    }
+
+    public void UpdateFunctionCache () {
+        _functions = new Dictionary<string, FunctionNode>();
+        foreach (FunctionNode funcNode in GetNodes<FunctionNode>()) {
+            _functions.Add(funcNode.name, funcNode);
+        }
+    }
+
+    public FunctionNode GetFunction (string name) {
+        if (_functions == null) {
+            _functions = new Dictionary<string, FunctionNode>();
+            return null;
+        } else if (_functions.ContainsKey(name))
+            return _functions[name];
+        return null;
     }
 
     private bool RemoveNodeFromCache (Node node) {
@@ -472,6 +496,7 @@ public class NodeMachineModel : ScriptableObject {
     private void ClearCache () {
         cachedNodeTypes.Clear();
         nodesList.Clear();
+        _functions.Clear();
     }
 
     public void PushError (string error, string errorFull, Node source) {

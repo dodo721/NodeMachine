@@ -15,6 +15,10 @@ namespace NodeMachine.Nodes {
 
         public override void Checkin (Machine machine) {}
 
+        public override bool CanBeHidden() {
+            return false;
+        }
+
     }
 
 }

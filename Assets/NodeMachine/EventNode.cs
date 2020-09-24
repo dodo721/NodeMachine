@@ -74,11 +74,6 @@ namespace NodeMachine.Nodes {
                 stateTypeName = stateType.AssemblyQualifiedName;
         }
 
-        public override bool CanCreateLinkFrom()
-        {
-            return true;
-        }
-
         public override bool IsBlocking()
         {
             return !Valid;

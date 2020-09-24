@@ -21,6 +21,18 @@ namespace NodeMachine.Nodes {
         {
             return false;
         }
+
+        public override bool CanBeHidden()
+        {
+            return false;
+        }
+
+        public override string BeforeAddLink (Link link) {
+            if (link._to == ID)
+                return "Cannot create a link to the Entry node.";
+            else
+                return null;
+        }
     }
 
 }

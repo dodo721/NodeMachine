@@ -33,9 +33,6 @@ public class DebugNodeGUIContent : NodeGUIContent {
 
         if (fieldNames == null)
             CacheFieldNames();
-        
-        GUIStyle labelBlack = new GUIStyle();
-        labelBlack.normal.textColor = Color.black;
 
         Rect content = new Rect();
         content.size = Transform.size;
@@ -55,7 +52,7 @@ public class DebugNodeGUIContent : NodeGUIContent {
 
         GUILayout.BeginArea(content);
         GUILayout.BeginVertical();
-        GUILayout.Label("Debug Node", labelBlack);
+        GUILayout.Label("Debug Node");
         GUILayout.FlexibleSpace();
 
         int newProp = EditorGUILayout.Popup(selectedProp, fieldNames);

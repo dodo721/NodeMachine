@@ -58,23 +58,20 @@ namespace NodeMachine {
                 if (machine == lastSelectedMachine && currentPropsObj != null) {
                     propsObj = currentPropsObj;
                 } else {
-                    if (machine.propsObject == null)
-                        machine.ReloadProperties();
                     propsObj = machine.propsObject;
                     if (propsObj == null) {
                         EditorGUILayout.LabelField("Add the " + machine._model._propertyType.ToString() + " state script to " + machine.name + " to begin editing.", EditorStyles.wordWrappedLabel);
-                        return false;
                     }
                 }
             }
             
-            if (machine != null)
+            if (propsObj != null)
                 EditorGUILayout.LabelField(propsObj.name, EditorStyles.boldLabel);
-            else
+            else if (machine == null)
                 EditorGUILayout.LabelField("Select a machine in the scene to view and edit it's properties.", EditorStyles.wordWrappedLabel);
 
             EditorGUILayout.Space();
-            EditorGUI.BeginDisabledGroup(machine == null);
+            EditorGUI.BeginDisabledGroup(propsObj == null);
             if (propsObj != null) {
                 if (!_editor._model.machinePropertiesDelegates.ContainsKey(propsObj)) {
                     EditorGUILayout.LabelField("Props are being loaded...");

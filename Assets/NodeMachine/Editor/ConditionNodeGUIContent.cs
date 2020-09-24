@@ -56,7 +56,8 @@ namespace NodeMachine.Nodes {
 
             GUIStyle wordWrap = new GUIStyle();
             wordWrap.wordWrap = true;
-
+            if (!node.Valid)
+                node.collapsed = true;
             if (node.collapsed)
             {
                 text = (!node.Valid ? "Invalid property!! " : "") + node.ToPrettyString();

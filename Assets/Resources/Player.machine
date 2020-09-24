@@ -7,8 +7,8 @@
             "_to": 1,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 1025.547119140625,
-                "y": 374.81097412109377,
+                "x": 953.7460327148438,
+                "y": 353.2880859375,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -19,8 +19,8 @@
             "_to": 3,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 754.6415405273438,
-                "y": 644.5468139648438,
+                "x": 710.3900756835938,
+                "y": 595.5932006835938,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -31,8 +31,8 @@
             "_to": 4,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 1052.4527587890625,
-                "y": 651.22607421875,
+                "x": 977.9154052734375,
+                "y": 601.59326171875,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -43,8 +43,8 @@
             "_to": 2,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 715.6415405273438,
-                "y": 372.92437744140627,
+                "x": 675.3561401367188,
+                "y": 351.59332275390627,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -55,8 +55,8 @@
             "_to": 9,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 897.9244995117188,
-                "y": 399.4620361328125,
+                "x": 839.1019287109375,
+                "y": 375.4322509765625,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -67,8 +67,8 @@
             "_to": 14,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 819.62255859375,
-                "y": 460.3111572265625,
+                "x": 768.7628784179688,
+                "y": 430.09332275390627,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -79,8 +79,8 @@
             "_to": 5,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 847.4527587890625,
-                "y": 550.4053955078125,
+                "x": 793.7628784179688,
+                "y": 511.0254821777344,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -91,8 +91,8 @@
             "_to": 6,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 946.5093994140625,
-                "y": 552.292236328125,
+                "x": 882.7459716796875,
+                "y": 512.720458984375,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -103,8 +103,8 @@
             "_to": 12,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 929.0565185546875,
-                "y": 459.36773681640627,
+                "x": 867.0679931640625,
+                "y": 429.245849609375,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -115,8 +115,8 @@
             "_to": 7,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 799.3396606445313,
-                "y": 495.6885070800781,
+                "x": 750.5426025390625,
+                "y": 461.87298583984377,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -127,8 +127,8 @@
             "_to": 13,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 666.7924194335938,
-                "y": 508.42431640625,
+                "x": 631.4747314453125,
+                "y": 473.3135986328125,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -139,8 +139,8 @@
             "_to": 10,
             "_transform": {
                 "serializedVersion": "2",
-                "x": 438.0188293457031,
-                "y": 511.72607421875,
+                "x": 425.9662780761719,
+                "y": 476.2796630859375,
                 "width": 25.0,
                 "height": 25.0
             }
@@ -157,6 +157,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node4.png",
+    "visible": true,
     "linkIDs": [],
     "activeBackground": "",
     "runOnEncounter": false
@@ -170,6 +171,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         9
     ],
@@ -186,6 +188,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         8
     ],
@@ -202,6 +205,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         1
     ],
@@ -218,6 +222,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         7
     ],
@@ -234,6 +239,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node1.png",
+    "visible": true,
     "linkIDs": [
         11
     ],
@@ -250,6 +256,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         1,
         4
@@ -274,6 +281,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         7,
         3
@@ -298,6 +306,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         9,
         2
@@ -322,6 +331,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         8,
         5
@@ -346,6 +356,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/condition-node.png",
+    "visible": true,
     "linkIDs": [
         0,
         2,
@@ -374,6 +385,7 @@
         "height": 75.0
     },
     "background": "builtin skins/darkskin/images/node5.png",
+    "visible": true,
     "linkIDs": [
         0
     ],
@@ -389,6 +401,7 @@
         "height": 50.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/else-node.png",
+    "visible": true,
     "linkIDs": [
         6,
         10
@@ -403,6 +416,7 @@
         "height": 100.0
     },
     "background": "Assets/NodeMachine/Editor/Editor Resources/debug-node.png",
+    "visible": true,
     "linkIDs": [
         10,
         11

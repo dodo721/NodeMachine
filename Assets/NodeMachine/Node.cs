@@ -23,6 +23,7 @@ namespace NodeMachine.Nodes {
         [NonSerialized]
         public Rect drawnTransform;
         public string background;
+        public bool visible = true;
         private bool _dragTarget = false;
         public bool Valid {
             get;
@@ -60,6 +61,7 @@ namespace NodeMachine.Nodes {
                         _dragTarget = true;
                         GUI.changed = true;
                         e.Use();
+                        OnMouseDown();
                     }
                     if (e.button == 1 && hasMouse)
                     {
@@ -74,6 +76,7 @@ namespace NodeMachine.Nodes {
                     if (_dragTarget)
                     {
                         _dragTarget = false;
+                        OnMouseUp();
                         return true;
                     }
                     break;
@@ -90,9 +93,10 @@ namespace NodeMachine.Nodes {
         }
     #endif
 
-        void Drag(Vector2 delta, float zoom)
+        public void Drag(Vector2 delta, float zoom)
         {
             transform.position += delta * zoom;
+            OnDrag(delta, zoom);
         }
 
         public void AddLink(Link link)
@@ -130,6 +134,30 @@ namespace NodeMachine.Nodes {
         }
 
         /// <summary>
+        ///  Triggered when the node is dragged by the mouse or other event
+        /// </summary>
+        public virtual void OnDrag(Vector2 drag, float zoom)
+        {
+
+        }
+
+        /// <summary>
+        ///  Triggered when the user uses left click on the node
+        /// </summary>
+        public virtual void OnMouseDown()
+        {
+
+        }
+
+        /// <summary>
+        ///  Triggered when the user releases left click on the node
+        /// </summary>
+        public virtual void OnMouseUp()
+        {
+
+        }
+
+        /// <summary>
         ///  Tells the editor if this node can support a new link from it.
         /// </summary>
         public virtual bool CanCreateLinkFrom()
@@ -149,6 +177,14 @@ namespace NodeMachine.Nodes {
         ///  Tells the editor if this node can be removed from the model.
         /// </summary>
         public virtual bool CanBeRemoved()
+        {
+            return true;
+        }
+
+        /// <summary>
+        ///  Tells the editor if this node can be hidden from view.
+        /// </summary>
+        public virtual bool CanBeHidden()
         {
             return true;
         }
@@ -177,11 +213,27 @@ namespace NodeMachine.Nodes {
         }
 
         /// <summary>
-        ///  Triggered just before a link is created. If false, the link is not created.
+        ///  Returns the next nodes to be tested by the machine.
         /// </summary>
-        public virtual bool BeforeAddLink(Link link)
+        /// <remarks>
+        ///  If <c>null</c> is returned, the machine will default to normal behaviour.<br/>
+        ///  Note: returning an empty <c>Node</c> array has the same effect as if <c>IsBlocking</c> returned <c>true</c>.
+        /// </remarks>
+        public virtual Node[] NextNodes()
         {
-            return true;
+            return null;
+        }
+
+        /// <summary>
+        ///  Triggered just before a link is created.
+        /// </summary>
+        /// <remarks>
+        ///  If null is returned, the link is created.
+        ///  Otherwise, the link is not created and the given string is displayed as an error.
+        /// </remarks>
+        public virtual string BeforeAddLink(Link link)
+        {
+            return null;
         }
 
         /// <summary>

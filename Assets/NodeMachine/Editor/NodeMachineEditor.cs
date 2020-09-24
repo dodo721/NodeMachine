@@ -14,7 +14,6 @@ namespace NodeMachine {
 
         public Rect _nodeEditor;
         private Rect _sideMenu;
-        private Rect _popupMenu;
         private Rect _toolbar;
 
         public Vector2 _offset;
@@ -22,6 +21,8 @@ namespace NodeMachine {
         public float _zoom = 1;
         private bool _creatingLink = false;
         private bool _dragging = false;
+        private bool _drawTransparentLinks;
+        public bool _showInivisibleNodes = false;
         private bool _changesMade = false;
         private static GUIContent titlePlain = new GUIContent("NodeMachine");
         private static GUIContent titleUnsaved = new GUIContent("NodeMachine *");
@@ -193,10 +194,21 @@ namespace NodeMachine {
             bool livePreview = _selectedMachine != null && EditorApplication.isPlaying;
 
             bool modelNeedsSaving = false;
-            _nodeEditor = new Rect(250, 0, position.width - 250, position.height);
-            _sideMenu = new Rect(10, 20, 230, position.height);
-            _popupMenu = new Rect(position.width - 240, 20, 230, position.height);
-            _toolbar = new Rect(0, 0, position.width, 20);
+            _nodeEditor = new Rect(250, 30, position.width - 250, position.height - 30);
+            _sideMenu = new Rect(10, 20, 230, position.height - 20);
+            _toolbar = new Rect(260, 5, position.width - 260, 25);
+
+            // ----- TOOLBAR --------
+
+            GUILayout.BeginArea(_toolbar);
+            GUILayout.BeginHorizontal();
+
+            _drawTransparentLinks = EditorGUILayout.Toggle("Link X-Ray", _drawTransparentLinks, GUILayout.ExpandWidth(false));
+            GUILayout.Label("  ", GUILayout.ExpandWidth(false));
+            _showInivisibleNodes = EditorGUILayout.Toggle("Reveal hidden nodes", _showInivisibleNodes, GUILayout.ExpandWidth(false));
+
+            GUILayout.EndHorizontal();
+            GUILayout.EndArea();
 
             // ----- SIDE MENU ------
 
@@ -282,6 +294,21 @@ namespace NodeMachine {
                 }
             }
 
+            // Draw transparent links over everything - looks like links are showing through from behind nodes
+            if (_drawTransparentLinks) {
+                foreach (Link link in _model.GetLinks())
+                {
+                    if (livePreview)
+                    {
+                        NodeMachineGUIUtils.DrawTransparentLink(link, _selectedMachine.CurrentLinks.Contains(link), this);
+                    }
+                    else
+                    {
+                        NodeMachineGUIUtils.DrawTransparentLink(link, false, this);
+                    }
+                }
+            }
+
             GUILayout.EndArea();
 
             // --------------------- PROCESS EVENTS ----------------------------
@@ -291,9 +318,11 @@ namespace NodeMachine {
                 Vector2 totalOffset = _offset + _nodeEditor.position;
                 foreach (Node node in _model.GetNodes().Reverse())
                 {
-                    if (node.ProcessEvents(Event.current, _zoom, SelectNode, ProcessNodeContextMenu))
-                    {
-                        modelNeedsSaving = true;
+                    if (node.visible || _showInivisibleNodes) {
+                        if (node.ProcessEvents(Event.current, _zoom, SelectNode, ProcessNodeContextMenu))
+                        {
+                            modelNeedsSaving = true;
+                        }
                     }
                 }
                 foreach (Link link in _model.GetLinks())
@@ -404,6 +433,12 @@ namespace NodeMachine {
                     }
                 }
             }
+
+            if (node.CanBeHidden())
+                genericMenu.AddItem(new GUIContent("Hide node"), !node.visible, () => node.visible = !node.visible);
+            else
+                genericMenu.AddDisabledItem(new GUIContent("Hide node"), !node.visible);
+            
             if (node.CanBeRemoved())
                 genericMenu.AddItem(new GUIContent("Remove node"), false, () => { RemoveNode(node); LoadModel(_model); });
             else
@@ -490,7 +525,18 @@ namespace NodeMachine {
                 return;
             }
             Link link = new Link(from, to, _model.GetFreeLinkID());
-            if (!from.BeforeAddLink(link) || !to.BeforeAddLink(link))
+            string fromNodeError = from.BeforeAddLink(link);
+            string toNodeError = to.BeforeAddLink(link);
+            bool dontAddLink = false;
+            if (fromNodeError != null) {
+                dontAddLink = true;
+                EditorUtility.DisplayDialog("Unable to create link", fromNodeError, "OK");
+            }
+            if (toNodeError != null) {
+                dontAddLink = true;
+                EditorUtility.DisplayDialog("Unable to create link", toNodeError, "OK");
+            }
+            if (dontAddLink)
                 return;
             _model.AddLink(link);
             from.AddLink(link);
@@ -547,14 +593,17 @@ namespace NodeMachine {
 
             foreach (Type type in nodeTypes)
             {
+                bool usedMenuHandler = false;
                 if (nodeMenuHandlers.ContainsKey(type))
                 {
                     INodeMenuHandler handler = nodeMenuHandlers[type];
                     NodeMenuItem[] menuItems = handler.AddNodeMenuItems(_model, mousePosition - _offset, this);
-                    if (menuItems != null)
+                    if (menuItems != null) {
                         menuItemsToAdd.AddRange(menuItems);
+                        usedMenuHandler = true;
+                    }
                 }
-                else
+                if (!usedMenuHandler)
                 {
                     if (type.IsAbstract) {
                         continue;

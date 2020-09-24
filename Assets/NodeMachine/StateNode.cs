@@ -67,8 +67,13 @@ namespace NodeMachine.Nodes {
                     MethodInfo method = stateType.GetMethod(stateMethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     if (method == null)
                         SetValid(false);
-                    else if (method.GetCustomAttribute<StateAttribute>() == null)
-                        SetValid(false);
+                    else {
+                        StateAttribute stateInfo = method.GetCustomAttribute<StateAttribute>();
+                        if (stateInfo == null)
+                            SetValid(false);
+                        else
+                            runOnEncounter = stateInfo.RunOnEncounter;
+                    }
                 }
             }
         }
@@ -85,11 +90,6 @@ namespace NodeMachine.Nodes {
         {
             if (stateType != null)
                 stateTypeName = stateType.AssemblyQualifiedName;
-        }
-
-        public override bool CanCreateLinkFrom()
-        {
-            return true;
         }
 
         public override void OnAddLink(Link link)
