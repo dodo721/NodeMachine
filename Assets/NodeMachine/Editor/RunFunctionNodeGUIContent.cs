@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-[NodeGUI(typeof(GotoFunctionNode))]
-public class GotoFunctionNodeGUIContent : NodeGUIContent {
+[NodeGUI(typeof(RunFunctionNode))]
+public class RunFunctionNodeGUIContent : NodeGUIContent {
 
-    public GotoFunctionNodeGUIContent (GotoFunctionNode node, NodeMachineEditor editor) : base (node, editor) {}
+    public RunFunctionNodeGUIContent (RunFunctionNode node, NodeMachineEditor editor) : base (node, editor) {}
 
     public override bool DrawContent(Event e) {
 
-        GotoFunctionNode node = _node as GotoFunctionNode;
+        RunFunctionNode node = _node as RunFunctionNode;
         bool modelNeedsSaving = false;
 
         Rect content = new Rect();
@@ -34,13 +34,15 @@ public class GotoFunctionNodeGUIContent : NodeGUIContent {
         GUILayout.BeginVertical();
         GUILayout.FlexibleSpace();
 
-        GUILayout.Label("GOTO", smallText);
+        GUILayout.Label("RUN", smallText);
         Node[] functions = _editor._model.GetNodes<FunctionNode>();
         string[] functionNames = new string[functions.Length];
         for (int i = 0; i < functions.Length; i++) {
             functionNames[i] = (functions[i] as FunctionNode).name;
         }
         int selected = Array.IndexOf(functionNames, node.function);
+        if (selected == -1)
+            selected = 0;
         
         int newSel = EditorGUILayout.Popup(selected, functionNames);
 

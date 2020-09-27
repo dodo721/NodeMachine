@@ -44,6 +44,13 @@ namespace NodeMachine.Nodes {
                     foreach (Node hide in funcNode.GetFunctionGroup()) {
                         hide.visible = true;
                     }
+                }, false, false),
+                new NodeMenuItem("Remove function group",() => {
+                    if (EditorUtility.DisplayDialog("Remove function group", "Are you sure you want to remove all nodes in this function?", "Yes", "No")) {
+                        foreach (Node remove in funcNode.GetFunctionGroup()) {
+                            model.RemoveNode(remove);
+                        }
+                    }
                 }, false, false)
             };
         }

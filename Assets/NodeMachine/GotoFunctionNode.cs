@@ -7,7 +7,7 @@ namespace NodeMachine.Nodes {
     [NodeInfo("Functions/Goto Function")]
     public class GotoFunctionNode : Node {
 
-        public string function = "function";
+        public string function;
 
         public GotoFunctionNode (NodeMachineModel model, Vector2 position) : base(model) {
             transform.position = position;
@@ -18,6 +18,10 @@ namespace NodeMachine.Nodes {
         public override Node[] NextNodes () {
             FunctionNode funcNode = model.GetFunction(function);
             return new Node[] {funcNode};
+        }
+
+        public override string ToString () {
+            return "GOTO " + function;
         }
 
     }

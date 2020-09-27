@@ -13,6 +13,10 @@ namespace NodeMachine.Nodes {
             background = "builtin skins/darkskin/images/node6.png";
         }
 
+        public override bool CanCreateLinkFrom () {
+            return false;
+        }
+
     }
 
 }

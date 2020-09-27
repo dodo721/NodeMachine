@@ -266,8 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 913c8ca177aac8645af9b847258f895b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _model: {fileID: -7837472317029320426, guid: 48ea2082ce5b4844689d8cb0fe253bd4, type: 3}
+  _model: {fileID: 11400000, guid: c2b99733968fb244eb2b0ae9ead8d95a, type: 2}
   optimiseParallel: 1
+  recordNodePaths: 0
 --- !u!114 &92802480
 MonoBehaviour:
   m_ObjectHideFlags: 0

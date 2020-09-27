@@ -23,7 +23,7 @@ namespace NodeMachine {
 
         public struct TimelineEvent {
             public Machine machine;
-            public HashSet<Machine.NodePath> currentNodePaths;
+            public HashSet<NodeFollower.NodePath> currentNodePaths;
             public float time;
         }
         public HashSet<TimelineEvent> events;
@@ -107,8 +107,8 @@ namespace NodeMachine {
 
         void OnCheckin () {
             if (Application.isPlaying && _recording) {
-                foreach (Machine.NodePath path in target.checkinNodePaths) {
-                    Machine.NodePath curPath = path;
+                /*foreach (NodeFollower.NodePath path in target.checkinNodePaths) {
+                    NodeFollower.NodePath curPath = path;
                     string log = "";
                     while (curPath != null) {
                         log += curPath.currentNode.ToString() + " < ";
@@ -116,7 +116,7 @@ namespace NodeMachine {
                     }
                     Debug.Log(log);
                 }
-                /*TimelineEvent tEvent;
+                TimelineEvent tEvent;
                 tEvent.currentNodePaths = new HashSet<Machine.NodePath>();
                 foreach (RunnableNode node in target.CurrentRunnables) {
                     foreach (Machine.NodePath path in target.checkinNodePaths) {

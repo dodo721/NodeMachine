@@ -98,6 +98,11 @@ public class EnemyStates : State
     public void KillPlayer () {
         player.dead = true;
     }
+
+    [Event]
+    public void MoveBackward () {
+        transform.Translate(Vector3.back * Time.deltaTime * speed);
+    }
     
     void Update () {
         if (player != null) {

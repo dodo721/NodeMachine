@@ -1,0 +1,153 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50756135ddbd67c4f8210079f889b117, type: 3}
+  m_Name: Enemy
+  m_EditorClassIdentifier: 
+  _checkinTime: 1
+  nodesList:
+  - _id: 0
+    transform:
+      serializedVersion: 2
+      x: 70
+      y: 201
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node4.png
+    visible: 1
+    linkIDs: 
+  - _id: 1
+    transform:
+      serializedVersion: 2
+      x: -394.99994
+      y: 12.499878
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node1.png
+    visible: 1
+    linkIDs: 
+  - _id: 2
+    transform:
+      serializedVersion: 2
+      x: -317.99994
+      y: -400.50012
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node1.png
+    visible: 1
+    linkIDs: 
+  - _id: 3
+    transform:
+      serializedVersion: 2
+      x: -361.99994
+      y: -245.50012
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node1.png
+    visible: 1
+    linkIDs: 
+  - _id: 4
+    transform:
+      serializedVersion: 2
+      x: 307.00006
+      y: -173.50012
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node1.png
+    visible: 1
+    linkIDs: 
+  - _id: 5
+    transform:
+      serializedVersion: 2
+      x: -88.99994
+      y: -112.50012
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node2.png
+    visible: 1
+    linkIDs: 
+  - _id: 6
+    transform:
+      serializedVersion: 2
+      x: 65.00006
+      y: -2.500122
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node2.png
+    visible: 1
+    linkIDs: 
+  - _id: 7
+    transform:
+      serializedVersion: 2
+      x: -38.99994
+      y: 115.49988
+      width: 150
+      height: 75
+    background: builtin skins/darkskin/images/node2.png
+    visible: 1
+    linkIDs: 
+  serializedJSON: "{\n\"links\":{\n    \"Items\": []\n},\n\"nodes\":[{\"Type\":\"NodeMachine.Nodes.EntryNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
+    \"_id\": 0,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": 70.0,\n        \"y\": 201.0,\n        \"width\": 150.0,\n        \"height\":
+    75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node4.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
+    \"runOnEncounter\": false\n}]},{\"Type\":\"NodeMachine.Nodes.EventNode, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n    \"_id\":
+    1,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    -394.99993896484377,\n        \"y\": 12.4998779296875,\n        \"width\": 150.0,\n       
+    \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"eventMethodName\": \"KillPlayer\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n},{\n   
+    \"_id\": 2,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -317.99993896484377,\n        \"y\": -400.5001220703125,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"eventMethodName\": \"MoveBackward\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n},{\n   
+    \"_id\": 3,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -361.99993896484377,\n        \"y\": -245.5001220703125,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"eventMethodName\": \"StopAvoidingWall\",\n    \"normalBackground\": \"builtin
+    skins/darkskin/images/node1.png\"\n},{\n    \"_id\": 4,\n    \"transform\": {\n       
+    \"serializedVersion\": \"2\",\n        \"x\": 307.00006103515627,\n        \"y\":
+    -173.5001220703125,\n        \"width\": 150.0,\n        \"height\": 75.0\n   
+    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n    \"visible\":
+    true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"eventMethodName\":
+    \"StartChase\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n}]},{\"Type\":\"NodeMachine.Nodes.StateNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
+    \"_id\": 5,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -88.99993896484375,\n        \"y\": -112.5001220703125,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
+    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
+    \"Searching\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n},{\n   
+    \"_id\": 6,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": 65.00006103515625,\n        \"y\": -2.5001220703125,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
+    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
+    \"Chasing\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n},{\n   
+    \"_id\": 7,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -38.99993896484375,\n        \"y\": 115.4998779296875,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
+    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
+    \"AvoidWall\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n}]}],\n}"
+  linkList: []
+  supportParallel: 1

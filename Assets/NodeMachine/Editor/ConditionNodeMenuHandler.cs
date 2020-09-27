@@ -16,7 +16,6 @@ namespace NodeMachine.Nodes {
         public NodeMenuItem[] AddNodeMenuItems(NodeMachineModel model, Vector2 mousePosition, NodeMachineEditor editor)
         {
             NodeMenuItem menuItem;
-
             if (model.machinePropsSchema.Count > 0) {
                 menuItem = new NodeMenuItem("Conditional/Condition", () =>
                 {
@@ -34,7 +33,7 @@ namespace NodeMachine.Nodes {
                     editor.AddNode(node);
                 }, false, false);
             } else {
-                menuItem = new NodeMenuItem("Condition", null, false, true);
+                menuItem = new NodeMenuItem("Conditional/Condition", null, false, true);
             }
 
             NodeMenuItem[] menuItems = {menuItem};

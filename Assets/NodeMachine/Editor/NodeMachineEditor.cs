@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using NodeMachine.Nodes;
@@ -202,10 +203,11 @@ namespace NodeMachine {
 
             GUILayout.BeginArea(_toolbar);
             GUILayout.BeginHorizontal();
-
-            _drawTransparentLinks = EditorGUILayout.Toggle("Link X-Ray", _drawTransparentLinks, GUILayout.ExpandWidth(false));
+            
+            _drawTransparentLinks = GUILayout.Toggle(_drawTransparentLinks," Link X-Ray", GUILayout.ExpandWidth(false));
             GUILayout.Label("  ", GUILayout.ExpandWidth(false));
-            _showInivisibleNodes = EditorGUILayout.Toggle("Reveal hidden nodes", _showInivisibleNodes, GUILayout.ExpandWidth(false));
+            _showInivisibleNodes = GUILayout.Toggle(_showInivisibleNodes," Reveal hidden nodes", GUILayout.ExpandWidth(false));
+            GUILayout.Label("  ", GUILayout.ExpandWidth(false));
 
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
@@ -214,6 +216,14 @@ namespace NodeMachine {
 
             GUILayout.BeginArea(_sideMenu);
             GUILayout.BeginVertical();
+
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            
+            EditorGUILayout.LabelField(_model.name, EditorStyles.boldLabel);
+
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            EditorGUILayout.Space();
 
             float checkinTimeBeforeDraw = _model.CheckinTime;
             bool supportParallelBeforeDraw = _model.supportParallel;
@@ -225,8 +235,6 @@ namespace NodeMachine {
 
             EditorGUILayout.Space();
 
-            // --------- ERRORS ---------
-
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
             EditorGUILayout.Space();
@@ -234,6 +242,8 @@ namespace NodeMachine {
             _propertyMenu.DrawMenu(EditorApplication.isPlayingOrWillChangePlaymode, _selectedMachine);
 
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            // --------- ERRORS ---------
 
             EditorGUILayout.Space();
 
@@ -493,16 +503,6 @@ namespace NodeMachine {
         void RemoveNode(Node node)
         {
             _model.RemoveNode(node);
-            List<Link> linksToRemove = new List<Link>();
-            foreach (int linkID in node.linkIDs)
-            {
-                Link link = _model.GetLinkFromID(linkID);
-                linksToRemove.Add(link);
-            }
-            foreach (Link link in linksToRemove)
-            {
-                RemoveLink(link);
-            }
             MarkUnsaved();
         }
 
@@ -572,8 +572,10 @@ namespace NodeMachine {
 
         void OnScroll(Vector2 delta)
         {
+            float prevZoom = _zoom;
             _zoom += delta.y * 0.02f;
             _zoom = Mathf.Clamp(_zoom, 1f, 2f);
+            _uncenteredOffset -= _uncenteredOffset * (_zoom - prevZoom) * 0.5f;
             GUI.changed = true;
         }
 

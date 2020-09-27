@@ -14,16 +14,24 @@ using NodeMachine;
 using NodeMachine.Util;
 using NodeMachine.Nodes;
 
+[CreateAssetMenu(fileName = "NodeMachine Model")]
 public class NodeMachineModel : ScriptableObject {
 
     private Dictionary<int, Node> nodes = new Dictionary<int, Node>();
     private Dictionary<int, Link> links = new Dictionary<int, Link>();
     public Type _propertyType;
+    
+    [SerializeField]
     private float _checkinTime = 1f;
     private Dictionary<Type, List<Node>> cachedNodeTypes = new Dictionary<Type, List<Node>>();
+    private List<Node> nodesList = new List<Node>();
 
     [SerializeField]
-    private List<Node> nodesList = new List<Node>();
+    private string serializedJSON;
+    
+    public string SerializedJSON {
+        get { return serializedJSON; }
+    }
 
     private Dictionary<string, FunctionNode> _functions = new Dictionary<string, FunctionNode>();
 
@@ -35,7 +43,6 @@ public class NodeMachineModel : ScriptableObject {
     }
 
     public bool supportParallel = true;
-    public string filepath;
 
     public delegate void PropValueChangeEvent (string name, dynamic value);
     public event PropValueChangeEvent OnPropValueChange;
@@ -64,6 +71,10 @@ public class NodeMachineModel : ScriptableObject {
 
     private bool hasLoadedOnce = false;
 
+    void Awake () {
+        Reload();
+    }
+
     void OnEnable () {
         hasLoadedOnce = false;
         Reload();
@@ -83,8 +94,7 @@ public class NodeMachineModel : ScriptableObject {
 
     public void ReloadOnce () {
         if (!hasLoadedOnce) {
-            LoadProperties();
-            ReloadModel();
+            Reload();
             hasLoadedOnce = true;
         }
     }
@@ -233,34 +243,19 @@ public class NodeMachineModel : ScriptableObject {
 
 #if UNITY_EDITOR
     public void SaveModel () {
-        if (File.Exists(filepath))
-            SaveToPath();
+        SaveToJSON();
         if (OnSave != null)
             OnSave.Invoke();
-    }
-
-    public static NodeMachineModel SaveNewModel (string filepath) {
-        NodeMachineModel model = ScriptableObject.CreateInstance<NodeMachineModel>();
-        EntryNode entryNode = new EntryNode(model);
-        model.AddNode(entryNode);
-        model.filepath = filepath;
-        model.SaveToPath();
-        DestroyImmediate(model);
-        model = AssetDatabase.LoadAssetAtPath<NodeMachineModel>(filepath);
-        Selection.activeObject = model;
-        return model;
     }
 #endif
 
     public void ReloadModel () {
-        if (filepath == null)
-            return;
-        if (filepath.Length == 0)
-            return;
-        if (File.Exists(filepath))
-            LoadFromPath();
-        else
-            Debug.LogError("File " + filepath + " doesn't exist!");
+        Clear();
+        ImportJSON(serializedJSON);
+        if (GetNodes<EntryNode>().Count() == 0) {
+            EntryNode entry = new EntryNode(this);
+            AddNode(entry);
+        }
     }
 
     public Node[] GetNodes () {
@@ -337,39 +332,39 @@ public class NodeMachineModel : ScriptableObject {
         return nodelinks;
     }
 
-    public void LoadFromPath () {
-        string jsonStr = File.ReadAllText(filepath);
-        JSONObject json = JSON.Parse(jsonStr).AsObject;
-        string propsJSON = json["props"].ToString();
-        string linksJSON = json["links"].ToString();
-        nodes = new Dictionary<int, Node>();
-        ClearCache();
-        JSONArray nodesListArr = json["nodes"].AsArray;
-        foreach (JSONNode nodeListJSON in nodesListArr) {
-            string typeName = nodeListJSON["Type"];
-            Type type = Type.GetType(typeName);
-            bool typeValid = type != null;
-            if (!typeof(Node).IsAssignableFrom(type))
-                typeValid = false;
-            if (!typeValid) {
-                Debug.LogError("Encountered a malformed Node type within the model (" + typeName + ").\nCheck all Node types referenced exist and extend Node!");
-                continue;
+    public void ImportJSON (string jsonStr) {
+        if (jsonStr != null && jsonStr != "") {
+            JSONObject json = JSON.Parse(jsonStr).AsObject;
+            string propsJSON = json["props"].ToString();
+            string linksJSON = json["links"].ToString();
+            JSONArray nodesListArr = json["nodes"].AsArray;
+            foreach (JSONNode nodeListJSON in nodesListArr) {
+                string typeName = nodeListJSON["Type"];
+                Type type = Type.GetType(typeName);
+                bool typeValid = type != null;
+                if (!typeof(Node).IsAssignableFrom(type))
+                    typeValid = false;
+                if (!typeValid) {
+                    Debug.LogError("Encountered a malformed Node type within the model (" + typeName + ").\nCheck all Node types referenced exist and extend Node!");
+                    continue;
+                }
+                Type jsonWrapperType = typeof(JsonGenericWrapper<>).MakeGenericType(type);
+                dynamic jsonWrapper = System.Activator.CreateInstance(jsonWrapperType);
+                foreach (JSONNode nodeJSON in nodeListJSON["Items"]) {
+                    Node node = jsonWrapper.FromJson(nodeJSON.ToString());
+                    AddNode(node);
+                }
             }
-            Type jsonWrapperType = typeof(JsonGenericWrapper<>).MakeGenericType(type);
-            dynamic jsonWrapper = System.Activator.CreateInstance(jsonWrapperType);
-            foreach (JSONNode nodeJSON in nodeListJSON["Items"]) {
-                Node node = jsonWrapper.FromJson(nodeJSON.ToString());
-                AddNode(node);
+            Dictionary<int, Link> importedLinks = IDArrayToDictionary(JsonHelper.FromJson<Link>(linksJSON));
+            foreach (int id in importedLinks.Keys) {
+                links.Add(id, importedLinks[id]);
             }
         }
-        links = IDArrayToDictionary(JsonHelper.FromJson<Link>(linksJSON));
-        _checkinTime = json["checkinTime"].AsFloat;
-        supportParallel = json["supportParallel"].AsBool;
         ReloadNodes();
     }
 
 #if UNITY_EDITOR
-    private void SaveToPath () {
+    private void SaveToJSON () {
         string linksJSON = JsonHelper.ToJson<Link>(links.Values.ToArray(), true);
         string nodesJSON = "[";
         Type[] types = cachedNodeTypes.Keys.ToArray();
@@ -378,9 +373,8 @@ public class NodeMachineModel : ScriptableObject {
             nodesJSON += typedNodeJSON + (i == types.Length - 1 ? "" : ",");
         }
         nodesJSON += "]";
-        string allDataJSON = "{\n\"links\":" + linksJSON + ",\n\"nodes\":" + nodesJSON + ",\n\"checkinTime\":" + _checkinTime + ",\n\"supportParallel\":" + supportParallel + "}";
-        File.WriteAllText(filepath, allDataJSON);
-        AssetDatabase.Refresh();
+        string allDataJSON = "{\n\"links\":" + linksJSON + ",\n\"nodes\":" + nodesJSON + ",\n}";
+        serializedJSON = allDataJSON;
     }
 #endif
 
@@ -493,7 +487,9 @@ public class NodeMachineModel : ScriptableObject {
         }
     }
 
-    private void ClearCache () {
+    public void Clear () {
+        nodes = new Dictionary<int, Node>();
+        links = new Dictionary<int, Link>();
         cachedNodeTypes.Clear();
         nodesList.Clear();
         _functions.Clear();
