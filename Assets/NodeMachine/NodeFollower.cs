@@ -11,6 +11,12 @@ namespace NodeMachine {
 
         private NodeMachineModel _model;
         private Machine _machine;
+        public NodeFollower Parent {
+            get; private set;
+        } = null;
+        public HashSet<NodeFollower> Children {
+            get; private set;
+        } = new HashSet<NodeFollower>();
         private bool optimiseParallel = true;
         private Node startNode;
         private bool started = false;
@@ -24,6 +30,10 @@ namespace NodeMachine {
 
         private string name;
         public bool restartable = false;
+        public bool Active {
+            get; private set;
+        } = true;
+        private bool encounteredEnd = false;
 
         public class NodePath {
             public NodePath fromPath;
@@ -33,19 +43,27 @@ namespace NodeMachine {
         public bool recordNodePaths = false;
         public HashSet<NodePath> checkinNodePaths;
 
-        public NodeFollower (Machine machine, Node startNode) {
+        public NodeFollower (Machine machine, Node startNode, NodeFollower parent) {
             this._machine = machine;
             this._model = machine._model;
             this.name = machine.name;
             this.startNode = startNode;
+            this.Parent = parent;
+            if (Parent != null) {
+                parent.Children.Add(this);
+            }
         }
 
-        public NodeFollower (Machine machine, Node startNode, bool restartable) {
+        public NodeFollower (Machine machine, Node startNode, NodeFollower parent, bool restartable) {
             this._machine = machine;
             this._model = machine._model;
             this.name = machine.name;
             this.startNode = startNode;
             this.restartable = restartable;
+            this.Parent = parent;
+            if (Parent != null) {
+                parent.Children.Add(this);
+            }
         }
 
         public CurrentFollowState? Checkin()
@@ -57,17 +75,17 @@ namespace NodeMachine {
                 _currentRunnables = new HashSet<RunnableNode>();
 
             foreach (RunnableNode runnable in _currentRunnables) {
-                runnable.Checkin(_machine);
+                runnable.Checkin(_machine, this);
             }
             // Test the model for the next nodes
             DoNodeFollow();
             
             // Check if the follower has ended
-            if (_currentRunnables.Count == 0) {
+            if (_currentRunnables.Count == 0 || encounteredEnd) {
                 if (restartable) {
                     started = false;
                 } else {
-                    _machine.FinishFollower(startNode);
+                    FinishFollower();
                 }
             }
             CurrentFollowState state;
@@ -83,6 +101,7 @@ namespace NodeMachine {
         bool DoNodeFollow()
         {
             _currentLinks.Clear();
+            encounteredEnd = false;
             HashSet<RunnableNode> nextNodes = new HashSet<RunnableNode>();
             HashSet<Node> testNodes = null;
             if (started) {
@@ -134,9 +153,9 @@ namespace NodeMachine {
                 // Trigger RunEnd and Start events on the differences
                 foreach (RunnableNode node in nodesChanged) {
                     if (!_currentRunnables.Contains(node)) {
-                        node.OnRunStart(_machine);
+                        node.OnRunStart(_machine, this);
                     } else if (!nextNodes.Contains(node)) {
-                        node.OnRunEnd(_machine);
+                        node.OnRunEnd(_machine, this);
                     } else
                         Debug.LogWarning("Node " + node + " marked as changed but not changed in current nodes or new nodes!");
                 }
@@ -160,7 +179,7 @@ namespace NodeMachine {
                 return retNodes;
             }*/
             // Node has been encountered - trigger the event
-            currentNode.OnEncountered(prevNode, _machine);
+            currentNode.OnEncountered(prevNode, _machine, this);
             // The current chain's HashSet of runnables to stop at
             HashSet<RunnableNode> runnables = new HashSet<RunnableNode>();
             runnables.Add(lastRunnable);
@@ -202,7 +221,7 @@ namespace NodeMachine {
                     nextNodes.Add(nextNode);
                 }
             }
-            currentNode.OnPassed(nextNodes, _machine);
+            currentNode.OnPassed(nextNodes, _machine, this);
             foreach (Node nextNode in nextNodes) {
                 // Record next node as an entry in the path
                 NodePath newPath = null;
@@ -216,6 +235,7 @@ namespace NodeMachine {
                 if (nextNode is EndNode) {
                     if (recordNodePaths)
                         checkinNodePaths.Add(newPath);
+                    encounteredEnd = true;
                     return new HashSet<RunnableNode>();
                 }
                 // If nextNode is a RunnableNode, store it as the next return point.
@@ -236,6 +256,7 @@ namespace NodeMachine {
                     }
                 }
             }
+            runnables.RemoveWhere(r => r == null);
             // Check if there are any runnables different from the last one given for this chain.
             bool runnableChange = false;
             foreach (RunnableNode runnable in runnables) {
@@ -274,6 +295,20 @@ namespace NodeMachine {
         {
             _currentRunnables = runnables;
             _currentLinks = links;
+        }
+
+        public void FinishFollower () {
+            Debug.Log("Finishing follower " + this + " from " + startNode + " with parent " + Parent);
+            Active = false;
+            if (Parent != null) {
+                Parent.FinishChild(this);
+            } else {
+                _machine.FinishFollower(startNode);
+            }
+        }
+
+        public void FinishChild (NodeFollower child) {
+            Children.Remove(child);
         }
 
     }

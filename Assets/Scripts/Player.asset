@@ -15,71 +15,57 @@ MonoBehaviour:
   _checkinTime: 0
   serializedJSON: "{\n\"links\":{\n    \"Items\": [\n        {\n            \"_id\":
     1,\n            \"_from\": 10,\n            \"_to\": 4,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 862.326416015625,\n               
-    \"y\": 294.9072265625,\n                \"width\": 25.0,\n                \"height\":
-    25.0\n            }\n        },\n        {\n            \"_id\": 0,\n           
-    \"_from\": 10,\n            \"_to\": 3,\n            \"_transform\": {\n               
-    \"serializedVersion\": \"2\",\n                \"x\": 736.5562744140625,\n               
-    \"y\": 288.51715087890627,\n                \"width\": 25.0,\n               
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 817.5402221679688,\n               
+    \"y\": 254.97862243652345,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
-    9,\n            \"_from\": 12,\n            \"_to\": 11,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 809.65185546875,\n               
-    \"y\": 733.0989379882813,\n                \"width\": 25.0,\n               
+    0,\n            \"_from\": 10,\n            \"_to\": 3,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 705.2454223632813,\n               
+    \"y\": 249.27320861816407,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
-    8,\n            \"_from\": 1,\n            \"_to\": 12,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 809.246337890625,\n               
-    \"y\": 838.3262939453125,\n                \"width\": 25.0,\n               
+    9,\n            \"_from\": 12,\n            \"_to\": 1,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 770.5875244140625,\n               
+    \"y\": 643.6228637695313,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    8,\n            \"_from\": 0,\n            \"_to\": 12,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 775.8613891601563,\n               
+    \"y\": 738.2459106445313,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
     4,\n            \"_from\": 3,\n            \"_to\": 9,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 606.0676879882813,\n               
-    \"y\": 190.8211669921875,\n                \"width\": 25.0,\n               
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 588.7377319335938,\n               
+    \"y\": 162.04466247558595,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
     5,\n            \"_from\": 4,\n            \"_to\": 8,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 972.1079711914063,\n               
-    \"y\": 190.67132568359376,\n                \"width\": 25.0,\n               
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 915.5594482421875,\n               
+    \"y\": 161.9108428955078,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
     6,\n            \"_from\": 5,\n            \"_to\": 7,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 1010.2177124023438,\n               
-    \"y\": 492.480712890625,\n                \"width\": 25.0,\n                \"height\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 949.5859375,\n               
+    \"y\": 431.383544921875,\n                \"width\": 25.0,\n                \"height\":
     25.0\n            }\n        },\n        {\n            \"_id\": 7,\n           
     \"_from\": 2,\n            \"_to\": 6,\n            \"_transform\": {\n               
-    \"serializedVersion\": \"2\",\n                \"x\": 641.7175903320313,\n               
-    \"y\": 486.92071533203127,\n                \"width\": 25.0,\n               
+    \"serializedVersion\": \"2\",\n                \"x\": 620.5680541992188,\n               
+    \"y\": 426.4192810058594,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
     2,\n            \"_from\": 10,\n            \"_to\": 2,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 768.166259765625,\n               
-    \"y\": 383.0769348144531,\n                \"width\": 25.0,\n               
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 733.4686279296875,\n               
+    \"y\": 333.70159912109377,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
     3,\n            \"_from\": 10,\n            \"_to\": 5,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 886.0462646484375,\n               
-    \"y\": 390.31689453125,\n                \"width\": 25.0,\n                \"height\":
-    25.0\n            }\n        },\n        {\n            \"_id\": 10,\n           
-    \"_from\": 12,\n            \"_to\": 13,\n            \"_transform\": {\n               
-    \"serializedVersion\": \"2\",\n                \"x\": 929.7119140625,\n               
-    \"y\": 783.3787841796875,\n                \"width\": 25.0,\n               
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 838.7186279296875,\n               
+    \"y\": 340.1658630371094,\n                \"width\": 25.0,\n               
     \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
-    11,\n            \"_from\": 13,\n            \"_to\": 14,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 1058.592041015625,\n               
-    \"y\": 784.7987060546875,\n                \"width\": 25.0,\n               
-    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
-    12,\n            \"_from\": 0,\n            \"_to\": 15,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 354.6103210449219,\n               
-    \"y\": 826.0269775390625,\n                \"width\": 25.0,\n               
-    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
-    13,\n            \"_from\": 15,\n            \"_to\": 16,\n            \"_transform\":
-    {\n                \"serializedVersion\": \"2\",\n                \"x\": 357.50006103515627,\n               
-    \"y\": 701.4998779296875,\n                \"width\": 25.0,\n               
-    \"height\": 25.0\n            }\n        }\n    ]\n},\n\"nodes\":[{\"Type\":\"NodeMachine.Nodes.EntryNode,
+    10,\n            \"_from\": 12,\n            \"_to\": 13,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 877.705810546875,\n               
+    \"y\": 691.114013671875,\n                \"width\": 25.0,\n                \"height\":
+    25.0\n            }\n        },\n        {\n            \"_id\": 11,\n           
+    \"_from\": 13,\n            \"_to\": 14,\n            \"_transform\": {\n               
+    \"serializedVersion\": \"2\",\n                \"x\": 992.7774658203125,\n               
+    \"y\": 692.3818359375,\n                \"width\": 25.0,\n                \"height\":
+    25.0\n            }\n        }\n    ]\n},\n\"nodes\":[{\"Type\":\"NodeMachine.Nodes.EntryNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
     \"_id\": 0,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -195.0,\n        \"y\": 128.0,\n        \"width\": 150.0,\n        \"height\":
-    75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node4.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [\n        12\n    ],\n    \"activeBackground\":
-    \"\",\n    \"runOnEncounter\": false\n}]},{\"Type\":\"NodeMachine.Nodes.ActiveNode,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
-    \"_id\": 1,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": 254.20008850097657,\n        \"y\": 135.31947326660157,\n        \"width\":
-    100.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node5.png\",\n   
+    \"x\": 266.9998474121094,\n        \"y\": 130.99993896484376,\n        \"width\":
+    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node4.png\",\n   
     \"visible\": true,\n    \"linkIDs\": [\n        8\n    ],\n    \"activeBackground\":
     \"\",\n    \"runOnEncounter\": false\n}]},{\"Type\":\"NodeMachine.Nodes.ConditionNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
@@ -119,18 +105,10 @@ MonoBehaviour:
     265.8514099121094,\n        \"y\": 23.22477149963379,\n        \"width\": 160.0,\n       
     \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
     Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
-    8,\n        9,\n        10\n    ],\n    \"condition\": {\n        \"_valueType\":
+    10,\n        8,\n        9\n    ],\n    \"condition\": {\n        \"_valueType\":
     2,\n        \"_comparison\": 0,\n        \"_compareMode\": 0,\n        \"_propName\":
     \"dead\",\n        \"_compPropName\": \"-constant-\",\n        \"_compareValueString\":
-    \"False\",\n        \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n},{\n   
-    \"_id\": 15,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -194.220458984375,\n        \"y\": 5.94573974609375,\n        \"width\":
-    160.0,\n        \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
-    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
-    12,\n        13\n    ],\n    \"condition\": {\n        \"_valueType\": 0,\n       
-    \"_comparison\": 2,\n        \"_compareMode\": 0,\n        \"_propName\": \"horizontal\",\n       
-    \"_compPropName\": \"-constant-\",\n        \"_compareValueString\": \"0\",\n       
-    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n}]},{\"Type\":\"NodeMachine.Nodes.EventNode,
+    \"False\",\n        \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n}]},{\"Type\":\"NodeMachine.Nodes.EventNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
     \"_id\": 6,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
     \"x\": -5.045825958251953,\n        \"y\": -212.56707763671876,\n        \"width\":
@@ -163,8 +141,8 @@ MonoBehaviour:
     \"PlayerStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
     \"eventMethodName\": \"Kill\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n}]},{\"Type\":\"NodeMachine.Nodes.GotoFunctionNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
-    \"_id\": 11,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": 255.01126098632813,\n        \"y\": -75.13522338867188,\n        \"width\":
+    \"_id\": 1,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": 255.18646240234376,\n        \"y\": -80.95567321777344,\n        \"width\":
     150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
     Resources/goto-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
     9\n    ],\n    \"function\": \"MovePlayer\"\n}]},{\"Type\":\"NodeMachine.Nodes.FunctionNode,
@@ -181,12 +159,5 @@ MonoBehaviour:
     \"x\": 435.1313781738281,\n        \"y\": 25.424575805664064,\n        \"width\":
     50.0,\n        \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
     Resources/else-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
-    10,\n        11\n    ]\n}]},{\"Type\":\"NodeMachine.Nodes.DebugNode, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n    \"_id\":
-    16,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
-    -189.22055053710938,\n        \"y\": -121.05419921875,\n        \"width\": 200.0,\n       
-    \"height\": 100.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
-    Resources/debug-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
-    13\n    ],\n    \"message\": \"Horizontal is up\",\n    \"propName\": \"-message-\",\n   
-    \"logProp\": false\n}]}],\n}"
+    10,\n        11\n    ]\n}]}],\n}"
   supportParallel: 1

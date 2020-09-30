@@ -17,7 +17,7 @@ namespace NodeMachine.Nodes {
             background = "Assets/NodeMachine/Editor/Editor Resources/debug-node.png";
         }
 
-        public override void OnEncountered (Node prevNode, Machine machine) {
+        public override void OnEncountered (Node prevNode, Machine machine, NodeFollower context) {
             if (!logProp) {
                 Debug.Log(message);
             } else {

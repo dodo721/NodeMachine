@@ -17,6 +17,11 @@ namespace NodeMachine.Nodes {
             transform.position = position;
             transform.size = new Vector2(150, 75);
             background = "Assets/NodeMachine/Editor/Editor Resources/function-node.png";
+            int addNameNum = 1;
+            while (model.GetFunction(name) != null) {
+                name = "function (" + addNameNum + ")";
+                addNameNum ++;
+            }
         }
 
         public HashSet<Node> GetFunctionGroup () {
@@ -37,6 +42,10 @@ namespace NodeMachine.Nodes {
                 functionGroup.Add(to);
                 FollowFunctionGroup(to, functionGroup);
             }
+        }
+
+        public override string ToString () {
+            return "Function " + name;
         }
 
         public override string BeforeAddLink (Link link) {

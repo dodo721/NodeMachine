@@ -1,4 +1,3 @@
-using NodeMachine.Nodes;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -20,7 +19,7 @@ namespace NodeMachine.Nodes {
             return !triggered;
         }
 
-        public override void OnPassed(HashSet<Node> nextNodes, NodeMachine.Machine machine) {
+        public override void OnPassed(HashSet<Node> nextNodes, Machine machine, NodeFollower context) {
             triggered = false;
         }
 

@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _model: {fileID: 11400000, guid: f7dfa43dd27cdbd4aaa70b8c8546533e, type: 2}
   optimiseParallel: 1
+  triggerModelCheckinEvent: 0
   recordNodePaths: 0
 --- !u!114 &2819795302870650006
 MonoBehaviour:

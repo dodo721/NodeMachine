@@ -18,10 +18,10 @@ namespace NodeMachine.Nodes {
         protected RunnableNode(NodeMachineModel model, Vector2 position) : base(model, position) { }
         protected RunnableNode(NodeMachineModel model) : base(model) { }
 
-        public abstract void Checkin(Machine machine);
+        public abstract void Checkin(Machine machine, NodeFollower context);
 
-        public virtual void OnRunStart(Machine machine) { }
-        public virtual void OnRunEnd(Machine machine) { }
+        public virtual void OnRunStart(Machine machine, NodeFollower context) { }
+        public virtual void OnRunEnd(Machine machine, NodeFollower context) { }
 
         public bool ActivateTrigger (string name) {
             bool foundTriggersOfName = false;
@@ -39,9 +39,9 @@ namespace NodeMachine.Nodes {
             return foundTriggersOfName;
         }
 
-        public override void OnEncountered(Node prevNode, Machine machine) {
+        public override void OnEncountered(Node prevNode, Machine machine, NodeFollower context) {
             if (runOnEncounter)
-                Checkin(machine);
+                Checkin(machine, context);
         }
 
     }

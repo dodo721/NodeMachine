@@ -34,7 +34,10 @@ namespace NodeMachine {
             get { return _currentLinks; }
         }
         private Dictionary<Node, NodeFollower> followers;
+        private HashSet<Node> followersToRemove = new HashSet<Node>();
         private float _lastCheckinTime = 0f;
+
+        [NonSerialized]
         public bool triggerModelCheckinEvent = false;
         private bool loadedInitialProps;
         public delegate void MachineChangeEvent ();
@@ -74,12 +77,11 @@ namespace NodeMachine {
                 {
                     node.OnGameStart(this);
                     if (node is ActiveNode) {
-                        Debug.Log("Found active node! Adding follower");
-                        followers.Add(node, new NodeFollower(this, node, true));
+                        followers.Add(node, new NodeFollower(this, node, null, true));
                     }
                 }
                 Node entry = _model.GetNodes<EntryNode>()[0];
-                followers.Add(entry, new NodeFollower(this, entry));
+                followers.Add(entry, new NodeFollower(this, entry, null));
             }
         }
 
@@ -109,16 +111,6 @@ namespace NodeMachine {
                 {
                     Checkin();
                     _lastCheckinTime = Time.time;
-                    string crStr = "Checkin at " + Time.time + " yielded runnables: ";
-                    foreach (RunnableNode runnable in _currentRunnables) {
-                        crStr += runnable.ToString() + " ";
-                    }
-                    Debug.Log(crStr);
-                    string fStr = "Checkin at " + Time.time + " tested from nodes: ";
-                    foreach (Node node in followers.Keys) {
-                        fStr += node.ToString() + " ";
-                    }
-                    Debug.Log(fStr);
                 }
             }
         }
@@ -127,12 +119,10 @@ namespace NodeMachine {
             _currentRunnables.Clear();
             _currentLinks.Clear();
             foreach (NodeFollower follower in followers.Values) {
-                NodeFollower.CurrentFollowState? followStateNullable = follower.Checkin();
-                if (followStateNullable != null) {
-                    NodeFollower.CurrentFollowState followState = (NodeFollower.CurrentFollowState) followStateNullable;
-                    AddCurrentRunnables(followState.runnables);
-                    AddCurrentLinks(followState.links);
-                }
+                UpdateCurrents(follower.Checkin());
+            }
+            foreach (Node startNode in followersToRemove) {
+                followers.Remove(startNode);
             }
             if (triggerModelCheckinEvent)
                 _model.TriggerCheckinEvent();
@@ -164,8 +154,18 @@ namespace NodeMachine {
             }
         }
 
+        public void UpdateCurrents (NodeFollower.CurrentFollowState? followStateNullable) {
+            if (followStateNullable != null) {
+                NodeFollower.CurrentFollowState followState = (NodeFollower.CurrentFollowState) followStateNullable;
+                AddCurrentRunnables(followState.runnables);
+                AddCurrentLinks(followState.links);
+            }
+        }
+
         public void FinishFollower (Node start) {
-            followers.Remove(start);
+            if (followersToRemove == null)
+                followersToRemove = new HashSet<Node>();
+            followersToRemove.Add(start);
         }
 
         public void SetModel(NodeMachineModel model)

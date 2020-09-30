@@ -13,7 +13,7 @@ namespace NodeMachine.Nodes {
             background = "builtin skins/darkskin/images/node3.png";
         }
 
-        public override void Checkin (Machine machine) {}
+        public override void Checkin (Machine machine, NodeFollower context) {}
 
     }
 

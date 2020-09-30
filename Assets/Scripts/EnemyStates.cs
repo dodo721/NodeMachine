@@ -101,7 +101,8 @@ public class EnemyStates : State
 
     [Event]
     public void MoveBackward () {
-        transform.Translate(Vector3.back * Time.deltaTime * speed);
+        timeSinceAvoidWallStart = Time.time - startAvoidingWallTime;
+        transform.Translate(Vector3.back * Time.deltaTime * speed * 2);
     }
     
     void Update () {

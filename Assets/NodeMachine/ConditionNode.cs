@@ -50,7 +50,7 @@ namespace NodeMachine.Nodes {
             return condition.ToPrettyString();
         }
 
-        public override void OnEncountered(Node prevNode, Machine machine)
+        public override void OnEncountered(Node prevNode, Machine machine, NodeFollower context)
         {
             conditionMet = ConditionMet(machine);
         }

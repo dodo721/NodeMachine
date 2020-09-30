@@ -107,7 +107,7 @@ namespace NodeMachine.Nodes {
             return !Valid;
         }
 
-        public override void OnEncountered(Node prevNode, Machine machine)
+        public override void OnEncountered(Node prevNode, Machine machine, NodeFollower context)
         {
             if (!Valid)
                 Debug.LogError("Encountered an invalid state! Check the referenced class exists and extends State");
@@ -132,7 +132,7 @@ namespace NodeMachine.Nodes {
             }
         }
 
-        public override void Checkin(Machine machine)
+        public override void Checkin(Machine machine, NodeFollower context)
         {
             if (stateMethods.ContainsKey(machine))
                 stateMethods[machine]();

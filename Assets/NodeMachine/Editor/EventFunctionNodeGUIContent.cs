@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
-[NodeGUI(typeof(RunFunctionNode))]
-public class RunFunctionNodeGUIContent : NodeGUIContent {
+[NodeGUI(typeof(EventFunctionNode))]
+public class EventFunctionNodeGUIContent : NodeGUIContent {
 
-    public RunFunctionNodeGUIContent (RunFunctionNode node, NodeMachineEditor editor) : base (node, editor) {}
+    public EventFunctionNodeGUIContent (EventFunctionNode node, NodeMachineEditor editor) : base (node, editor) {}
 
     public override bool DrawContent(Event e) {
 
-        RunFunctionNode node = _node as RunFunctionNode;
+        EventFunctionNode node = _node as EventFunctionNode;
         bool modelNeedsSaving = false;
 
         Rect content = new Rect();
@@ -31,7 +31,7 @@ public class RunFunctionNodeGUIContent : NodeGUIContent {
         GUILayout.BeginVertical();
         GUILayout.FlexibleSpace();
 
-        GUILayout.Label("RUN FUNC", smallText);
+        GUILayout.Label("EVENT FUNC", smallText);
         Node[] functions = _editor._model.GetNodes<FunctionNode>();
         string[] functionNames = new string[functions.Length];
         for (int i = 0; i < functions.Length; i++) {
@@ -43,12 +43,6 @@ public class RunFunctionNodeGUIContent : NodeGUIContent {
 
         if (newSel != selected) {
             node.function = functionNames[newSel];
-            modelNeedsSaving = true;
-        }
-        
-        bool continuous = GUILayout.Toggle(node.continuous, " Loop");
-        if (continuous != node.continuous) {
-            node.continuous = continuous;
             modelNeedsSaving = true;
         }
         

@@ -12,142 +12,186 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50756135ddbd67c4f8210079f889b117, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  _checkinTime: 1
-  nodesList:
-  - _id: 0
-    transform:
-      serializedVersion: 2
-      x: 70
-      y: 201
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node4.png
-    visible: 1
-    linkIDs: 
-  - _id: 1
-    transform:
-      serializedVersion: 2
-      x: -394.99994
-      y: 12.499878
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node1.png
-    visible: 1
-    linkIDs: 
-  - _id: 2
-    transform:
-      serializedVersion: 2
-      x: -317.99994
-      y: -400.50012
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node1.png
-    visible: 1
-    linkIDs: 
-  - _id: 3
-    transform:
-      serializedVersion: 2
-      x: -361.99994
-      y: -245.50012
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node1.png
-    visible: 1
-    linkIDs: 
-  - _id: 4
-    transform:
-      serializedVersion: 2
-      x: 307.00006
-      y: -173.50012
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node1.png
-    visible: 1
-    linkIDs: 
-  - _id: 5
-    transform:
-      serializedVersion: 2
-      x: -88.99994
-      y: -112.50012
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node2.png
-    visible: 1
-    linkIDs: 
-  - _id: 6
-    transform:
-      serializedVersion: 2
-      x: 65.00006
-      y: -2.500122
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node2.png
-    visible: 1
-    linkIDs: 
-  - _id: 7
-    transform:
-      serializedVersion: 2
-      x: -38.99994
-      y: 115.49988
-      width: 150
-      height: 75
-    background: builtin skins/darkskin/images/node2.png
-    visible: 1
-    linkIDs: 
-  serializedJSON: "{\n\"links\":{\n    \"Items\": []\n},\n\"nodes\":[{\"Type\":\"NodeMachine.Nodes.EntryNode,
+  _checkinTime: 0
+  serializedJSON: "{\n\"links\":{\n    \"Items\": [\n        {\n            \"_id\":
+    0,\n            \"_from\": 0,\n            \"_to\": 5,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 786.2571411132813,\n               
+    \"y\": 712.3509521484375,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    1,\n            \"_from\": 5,\n            \"_to\": 8,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 736.70068359375,\n               
+    \"y\": 620.1881103515625,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    2,\n            \"_from\": 8,\n            \"_to\": 4,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 685.361572265625,\n               
+    \"y\": 542.9561157226563,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    8,\n            \"_from\": 6,\n            \"_to\": 9,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 857.095947265625,\n               
+    \"y\": 482.0211181640625,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    4,\n            \"_from\": 9,\n            \"_to\": 5,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 858.57568359375,\n               
+    \"y\": 601.438232421875,\n                \"width\": 25.0,\n                \"height\":
+    25.0\n            }\n        },\n        {\n            \"_id\": 5,\n           
+    \"_from\": 6,\n            \"_to\": 10,\n            \"_transform\": {\n               
+    \"serializedVersion\": \"2\",\n                \"x\": 784.2030639648438,\n               
+    \"y\": 386.78912353515627,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    6,\n            \"_from\": 10,\n            \"_to\": 1,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 785.2308959960938,\n               
+    \"y\": 306.77410888671877,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    3,\n            \"_from\": 4,\n            \"_to\": 6,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 731.2061767578125,\n               
+    \"y\": 467.26434326171877,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    10,\n            \"_from\": 5,\n            \"_to\": 13,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 726.0098266601563,\n               
+    \"y\": 662.9070434570313,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    12,\n            \"_from\": 2,\n            \"_to\": 15,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 389.867919921875,\n               
+    \"y\": 410.4984130859375,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    13,\n            \"_from\": 15,\n            \"_to\": 3,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 388.51055908203127,\n               
+    \"y\": 298.3916320800781,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    9,\n            \"_from\": 7,\n            \"_to\": 2,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 392.3941955566406,\n               
+    \"y\": 524.781494140625,\n                \"width\": 25.0,\n                \"height\":
+    25.0\n            }\n        },\n        {\n            \"_id\": 14,\n           
+    \"_from\": 17,\n            \"_to\": 16,\n            \"_transform\": {\n               
+    \"serializedVersion\": \"2\",\n                \"x\": 641.55810546875,\n               
+    \"y\": 816.5634155273438,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    7,\n            \"_from\": 11,\n            \"_to\": 14,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 415.316650390625,\n               
+    \"y\": 76.73982238769531,\n                \"width\": 25.0,\n               
+    \"height\": 25.0\n            }\n        },\n        {\n            \"_id\":
+    11,\n            \"_from\": 13,\n            \"_to\": 17,\n            \"_transform\":
+    {\n                \"serializedVersion\": \"2\",\n                \"x\": 640.6919555664063,\n               
+    \"y\": 711.849609375,\n                \"width\": 25.0,\n                \"height\":
+    25.0\n            }\n        }\n    ]\n},\n\"nodes\":[{\"Type\":\"NodeMachine.Nodes.EntryNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
     \"_id\": 0,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
     \"x\": 70.0,\n        \"y\": 201.0,\n        \"width\": 150.0,\n        \"height\":
     75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node4.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
-    \"runOnEncounter\": false\n}]},{\"Type\":\"NodeMachine.Nodes.EventNode, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n    \"_id\":
-    1,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
-    -394.99993896484377,\n        \"y\": 12.4998779296875,\n        \"width\": 150.0,\n       
-    \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
-    \"eventMethodName\": \"KillPlayer\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n},{\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        0\n    ],\n    \"activeBackground\":
+    \"\",\n    \"runOnEncounter\": false\n}]},{\"Type\":\"NodeMachine.Nodes.EventNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
     \"_id\": 2,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -317.99993896484377,\n        \"y\": -400.5001220703125,\n        \"width\":
+    \"x\": -376.8395080566406,\n        \"y\": -123.50055694580078,\n        \"width\":
     150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        9,\n        12\n    ],\n    \"stateTypeName\":
+    \"EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
     \"eventMethodName\": \"MoveBackward\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n},{\n   
     \"_id\": 3,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -361.99993896484377,\n        \"y\": -245.5001220703125,\n        \"width\":
+    \"x\": -379.8799743652344,\n        \"y\": -374.619873046875,\n        \"width\":
     150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates,
-    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        13\n    ],\n    \"stateTypeName\":
+    \"EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
     \"eventMethodName\": \"StopAvoidingWall\",\n    \"normalBackground\": \"builtin
     skins/darkskin/images/node1.png\"\n},{\n    \"_id\": 4,\n    \"transform\": {\n       
-    \"serializedVersion\": \"2\",\n        \"x\": 307.00006103515627,\n        \"y\":
-    -173.5001220703125,\n        \"width\": 150.0,\n        \"height\": 75.0\n   
+    \"serializedVersion\": \"2\",\n        \"x\": -49.999664306640628,\n        \"y\":
+    -80.49990844726563,\n        \"width\": 150.0,\n        \"height\": 75.0\n   
     },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n    \"visible\":
-    true,\n    \"linkIDs\": [],\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"eventMethodName\":
-    \"StartChase\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n}]},{\"Type\":\"NodeMachine.Nodes.StateNode,
+    true,\n    \"linkIDs\": [\n        2,\n        3\n    ],\n    \"stateTypeName\":
+    \"EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"eventMethodName\": \"StartChase\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node1.png\"\n}]},{\"Type\":\"NodeMachine.Nodes.StateNode,
     Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
     \"_id\": 5,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -88.99993896484375,\n        \"y\": -112.5001220703125,\n        \"width\":
-    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
-    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
-    \"Searching\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n},{\n   
-    \"_id\": 6,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": 65.00006103515625,\n        \"y\": -2.5001220703125,\n        \"width\":
-    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
-    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
-    \"Chasing\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n},{\n   
-    \"_id\": 7,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
-    \"x\": -38.99993896484375,\n        \"y\": 115.4998779296875,\n        \"width\":
-    150.0,\n        \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
-    \"visible\": true,\n    \"linkIDs\": [],\n    \"activeBackground\": \"\",\n   
-    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates, Assembly-CSharp,
-    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n    \"stateMethodName\":
-    \"AvoidWall\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n}]}],\n}"
-  linkList: []
+    \"x\": 65.0,\n        \"y\": 92.4998779296875,\n        \"width\": 150.0,\n       
+    \"height\": 75.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        0,\n        1,\n        4,\n       
+    10\n    ],\n    \"activeBackground\": \"\",\n    \"runOnEncounter\": false,\n   
+    \"stateTypeName\": \"EnemyStates, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null\",\n    \"stateMethodName\": \"Searching\",\n    \"normalBackground\":
+    \"builtin skins/darkskin/images/node2.png\"\n},{\n    \"_id\": 6,\n    \"transform\":
+    {\n        \"serializedVersion\": \"2\",\n        \"x\": 61.68540954589844,\n       
+    \"y\": -174.9944305419922,\n        \"width\": 150.0,\n        \"height\": 75.0\n   
+    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n    \"visible\":
+    true,\n    \"linkIDs\": [\n        3,\n        5,\n        8\n    ],\n    \"activeBackground\":
+    \"\",\n    \"runOnEncounter\": false,\n    \"stateTypeName\": \"EnemyStates,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\",\n   
+    \"stateMethodName\": \"Chasing\",\n    \"normalBackground\": \"builtin skins/darkskin/images/node2.png\"\n}]},{\"Type\":\"NodeMachine.Nodes.ConditionNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
+    \"_id\": 8,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -41.006500244140628,\n        \"y\": -5.444793701171875,\n        \"width\":
+    160.0,\n        \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    1,\n        2\n    ],\n    \"condition\": {\n        \"_valueType\": 2,\n       
+    \"_comparison\": 0,\n        \"_compareMode\": 0,\n        \"_propName\": \"FoundPlayer\",\n       
+    \"_compPropName\": \"-constant-\",\n        \"_compareValueString\": \"True\",\n       
+    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n},{\n    \"_id\":
+    9,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    171.99356079101563,\n        \"y\": -47.4447021484375,\n        \"width\": 160.0,\n       
+    \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    4,\n        8\n    ],\n    \"condition\": {\n        \"_valueType\": 2,\n       
+    \"_comparison\": 0,\n        \"_compareMode\": 0,\n        \"_propName\": \"FoundPlayer\",\n       
+    \"_compPropName\": \"-constant-\",\n        \"_compareValueString\": \"False\",\n       
+    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n},{\n    \"_id\":
+    10,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    68.71343994140625,\n        \"y\": -260.7644958496094,\n        \"width\": 160.0,\n       
+    \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    5,\n        6\n    ],\n    \"condition\": {\n        \"_valueType\": 0,\n       
+    \"_comparison\": 5,\n        \"_compareMode\": 0,\n        \"_propName\": \"distToPlayer\",\n       
+    \"_compPropName\": \"-constant-\",\n        \"_compareValueString\": \"1.5\",\n       
+    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n},{\n    \"_id\":
+    13,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    -124.95404052734375,\n        \"y\": 90.24554443359375,\n        \"width\": 160.0,\n       
+    \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    10,\n        11\n    ],\n    \"condition\": {\n        \"_valueType\": 0,\n       
+    \"_comparison\": 1,\n        \"_compareMode\": 0,\n        \"_propName\": \"startAvoidingWallTime\",\n       
+    \"_compPropName\": \"-constant-\",\n        \"_compareValueString\": \"0\",\n       
+    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n},{\n    \"_id\":
+    15,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    -376.07269287109377,\n        \"y\": -259.1495666503906,\n        \"width\":
+    160.0,\n        \"height\": 50.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/condition-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    13,\n        12\n    ],\n    \"condition\": {\n        \"_valueType\": 0,\n       
+    \"_comparison\": 3,\n        \"_compareMode\": 1,\n        \"_propName\": \"timeSinceAvoidWallStart\",\n       
+    \"_compPropName\": \"avoidWallTime\",\n        \"_compareValueString\": \"1\",\n       
+    \"_enumTypeString\": \"\"\n    },\n    \"collapsed\": true\n}]},{\"Type\":\"NodeMachine.Nodes.RunFunctionNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
+    \"_id\": 1,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": 63.987823486328128,\n        \"y\": -354.2281188964844,\n        \"width\":
+    150.0,\n        \"height\": 100.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node2.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        6\n    ],\n    \"activeBackground\":
+    \"\",\n    \"runOnEncounter\": false,\n    \"function\": \"Avoid Wall\",\n   
+    \"continuous\": true\n}]},{\"Type\":\"NodeMachine.Nodes.FunctionNode, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n    \"_id\":
+    7,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    -370.413818359375,\n        \"y\": -3.155385971069336,\n        \"width\": 150.0,\n       
+    \"height\": 75.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/function-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    9\n    ],\n    \"name\": \"Avoid Wall\",\n    \"editingName\": false,\n    \"functionGroupIDs\":
+    [\n        2,\n        15,\n        3\n    ]\n},{\n    \"_id\": 11,\n    \"transform\":
+    {\n        \"serializedVersion\": \"2\",\n        \"x\": -344.5734558105469,\n       
+    \"y\": -503.5749816894531,\n        \"width\": 150.0,\n        \"height\": 75.0\n   
+    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor Resources/function-node.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        7\n    ],\n    \"name\": \"SayHi\",\n   
+    \"editingName\": false,\n    \"functionGroupIDs\": [\n        14\n    ]\n}]},{\"Type\":\"NodeMachine.Nodes.DebugNode,
+    Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n   
+    \"_id\": 14,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n       
+    \"x\": -351.3335266113281,\n        \"y\": -626.6947021484375,\n        \"width\":
+    200.0,\n        \"height\": 100.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/debug-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    7\n    ],\n    \"message\": \"Hello!\",\n    \"propName\": \"-message-\",\n   
+    \"logProp\": false\n},{\n    \"_id\": 16,\n    \"transform\": {\n        \"serializedVersion\":
+    \"2\",\n        \"x\": -123.01384735107422,\n        \"y\": 324.8045959472656,\n       
+    \"width\": 200.0,\n        \"height\": 100.0\n    },\n    \"background\": \"Assets/NodeMachine/Editor/Editor
+    Resources/debug-node.png\",\n    \"visible\": true,\n    \"linkIDs\": [\n       
+    14\n    ],\n    \"message\": \"AVOID WALL\",\n    \"propName\": \"-message-\",\n   
+    \"logProp\": false\n}]},{\"Type\":\"NodeMachine.Nodes.EventFunctionNode, Assembly-CSharp,
+    Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\", \"Items\":[{\n    \"_id\":
+    17,\n    \"transform\": {\n        \"serializedVersion\": \"2\",\n        \"x\":
+    -126.11205291748047,\n        \"y\": 202.1312713623047,\n        \"width\": 150.0,\n       
+    \"height\": 100.0\n    },\n    \"background\": \"builtin skins/darkskin/images/node1.png\",\n   
+    \"visible\": true,\n    \"linkIDs\": [\n        11,\n        14\n    ],\n   
+    \"function\": \"Avoid Wall\"\n}]}],\n}"
   supportParallel: 1

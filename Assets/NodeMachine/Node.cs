@@ -249,7 +249,7 @@ namespace NodeMachine.Nodes {
         /// <summary>
         ///  Triggered when this node is encountered while the machine is searching for the next node.
         /// </summary>
-        public virtual void OnEncountered(Node prevNode, Machine machine) { }
+        public virtual void OnEncountered(Node prevNode, Machine machine, NodeFollower context) { }
 
         /// <summary>
         ///  Triggered when this node is passed while the machine is searching for the next node.
@@ -257,7 +257,7 @@ namespace NodeMachine.Nodes {
         /// <remarks>
         ///  Note: if the model does not support parallel flow, then only the first element of <c>nextNodes</c> will be followed.
         /// </remarks>
-        public virtual void OnPassed(HashSet<Node> nextNodes, Machine machine) { }
+        public virtual void OnPassed(HashSet<Node> nextNodes, Machine machine, NodeFollower context) { }
 
         /// <summary>
         ///  Called when this node is loaded to the model.
