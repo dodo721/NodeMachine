@@ -7,3 +7,5 @@ Uses IML assembly generation with reflection to expose private variables at runt
 of any tagged variable attached to a NodeMachine.
 
 Shows realtime state of flow, and contains error handling with error tracing through the node graph.
+
+Project is a test environment showing how it is used, main code is found in Assets/NodeMachine
